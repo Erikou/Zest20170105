@@ -43,7 +43,7 @@ class ImportController extends Controller
         $path = $this->get('kernel')->getRootDir() . '/testDocs/sap_test_import.txt';
         $sapCo->fileOpen($path);
         $sapCo->readTable();
-        $sapCo->dataPersist($sapCo->results[0], $sapCo->getDate(), $em);
+        $sapCo->dataPersist($em);
         $sapCo->fileClose();
 
 

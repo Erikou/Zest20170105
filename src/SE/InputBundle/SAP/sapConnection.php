@@ -37,7 +37,7 @@ class sapConnection
             if ($row == 0) continue;                // first header, no data here
             $split_data = explode("|", $row_data);  // Split information
             $col = 26;                              // Total number of columns
-            $nb = (sizeof($split_data) - 3) / $col;   // Number of elements
+            $nb = (sizeof($split_data) - 3) / $col; // Number of elements
             for ($i = 0; $i < $nb; $i++) {
                 $this->results[$row-1][$i]['transfer_order'] = $split_data[$i * $col + 3];
                 $this->results[$row-1][$i]['material'] = $split_data[$i * $col + 4];
@@ -72,34 +72,36 @@ class sapConnection
         }
     }
 
-    public function dataPersist($data, $date, $em){
-
-            for($i=0; $i<sizeof($data); $i++){
+    public function dataPersist($em){
+        for($i=0; $i<sizeof($this->results) && $i < 10; $i++) {
+            $data = $this->results[$i];
+            for ($j = 0; $j < sizeof($data); $j++) {
                 $_saprf = new SAPRF;
-                $_saprf->setTransferOrder($data[$i]['transfer_order']);
-                $_saprf->setMaterial($data[$i]['material']);
-                $_saprf->setDateConfirmation(\DateTime::createFromFormat('d.m.Y', $data[$i]['date_confirmation']));
-                $_saprf->setTimeConfirmation(\DateTime::createFromFormat('H:i:s', $data[$i]['time_confirmation']));
-                $_saprf->setUser($data[$i]['user']);
-                $_saprf->setSourceStorageType($data[$i]['source_storage_type']);
-                $_saprf->setSourceStorageBin($data[$i]['source_storage_bin']);
-                $_saprf->setDestinationStorageType($data[$i]['destination_storage_type']);
-                $_saprf->setDestinationStorageBin($data[$i]['destination_storage_bin']);
-                $_saprf->setDateImport($date);
-                $_saprf->setStorageLocation($data[$i]['storage_location']);
+                $_saprf->setTransferOrder($data[$j]['transfer_order']);
+                $_saprf->setMaterial($data[$j]['material']);
+                $_saprf->setDateConfirmation(\DateTime::createFromFormat('d.m.Y', $data[$j]['date_confirmation']));
+                $_saprf->setTimeConfirmation(\DateTime::createFromFormat('H:i:s', $data[$j]['time_confirmation']));
+                $_saprf->setUser($data[$j]['user']);
+                $_saprf->setSourceStorageType($data[$j]['source_storage_type']);
+                $_saprf->setSourceStorageBin($data[$j]['source_storage_bin']);
+                $_saprf->setDestinationStorageType($data[$j]['destination_storage_type']);
+                $_saprf->setDestinationStorageBin($data[$j]['destination_storage_bin']);
+                $_saprf->setDateImport($this->getDate());
+                $_saprf->setStorageLocation($data[$j]['storage_location']);
 
                 $em->persist($_saprf);
             }
 
             $_sapImport = new SapImports();
-            $_sapImport->setDate($date);
+            $_sapImport->setDate($this->getDate());
             $_sapImport->setImport(true);
             $_sapImport->setProcess(false);
             $_sapImport->setReview(false);
             $_sapImport->setInputs(0);
 
             $em->flush();
-            return true;
+        }
+        return true;
     }
 
     public function getDate(){
