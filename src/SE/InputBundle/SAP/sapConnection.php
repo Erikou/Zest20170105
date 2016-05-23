@@ -31,35 +31,29 @@ class sapConnection
 
     public function readTable()
     {
-        try {
-            $full_file = fread($this->file, filesize($this->fileName));
-            $rows = explode("| TO Number|Material |Conf.dt. |Conf.t. |User |Typ|Source Bin|Typ|Dest. Bin |SLoc|WhN|Conf.dt. |ConfTme |Item|MvT|Created |Time |User |C| TR Number|Group |Actual qty|AUn|Delivery | Item|", $full_file);
-            foreach ($rows as $row => $row_data) {
-                if ($row == 0) continue;                // first header, no data here
-                $split_data = explode("|", $row_data);  // Split information
-                $col = 26;                              // Total number of columns
-                $nb = (sizeof($split_data) - 3) / $col;   // Number of elements
-                for ($i = 0; $i < $nb; $i++) {
-                    $this->results[$row-1][$i]['transfer_order'] = $split_data[$i * $col + 3];
-                    $this->results[$row-1][$i]['material'] = $split_data[$i * $col + 4];
-                    $this->results[$row-1][$i]['date_confirmation'] = $split_data[$i * $col + 5];
-                    $this->results[$row-1][$i]['time_confirmation'] = $split_data[$i * $col + 6];
-                    $this->results[$row-1][$i]['user'] = $split_data[$i * $col + 7];
-                    $this->results[$row-1][$i]['source_storage_type'] = $split_data[$i * $col + 8];
-                    $this->results[$row-1][$i]['source_storage_bin'] = $split_data[$i * $col + 9];
-                    $this->results[$row-1][$i]['destination_storage_type'] = $split_data[$i * $col + 10];
-                    $this->results[$row-1][$i]['destination_storage_bin'] = $split_data[$i * $col + 11];
-                    $this->results[$row-1][$i]['storage_location'] = $split_data[$i * $col + 12];
-                }
+        $full_file = fread($this->file, filesize($this->fileName));
+        $rows = explode("| TO Number|Material |Conf.dt. |Conf.t. |User |Typ|Source Bin|Typ|Dest. Bin |SLoc|WhN|Conf.dt. |ConfTme |Item|MvT|Created |Time |User |C| TR Number|Group |Actual qty|AUn|Delivery | Item|", $full_file);
+        foreach ($rows as $row => $row_data) {
+            if ($row == 0) continue;                // first header, no data here
+            $split_data = explode("|", $row_data);  // Split information
+            $col = 26;                              // Total number of columns
+            $nb = (sizeof($split_data) - 3) / $col;   // Number of elements
+            for ($i = 0; $i < $nb; $i++) {
+                $this->results[$row-1][$i]['transfer_order'] = $split_data[$i * $col + 3];
+                $this->results[$row-1][$i]['material'] = $split_data[$i * $col + 4];
+                $this->results[$row-1][$i]['date_confirmation'] = $split_data[$i * $col + 5];
+                $this->results[$row-1][$i]['time_confirmation'] = $split_data[$i * $col + 6];
+                $this->results[$row-1][$i]['user'] = $split_data[$i * $col + 7];
+                $this->results[$row-1][$i]['source_storage_type'] = $split_data[$i * $col + 8];
+                $this->results[$row-1][$i]['source_storage_bin'] = $split_data[$i * $col + 9];
+                $this->results[$row-1][$i]['destination_storage_type'] = $split_data[$i * $col + 10];
+                $this->results[$row-1][$i]['destination_storage_bin'] = $split_data[$i * $col + 11];
+                $this->results[$row-1][$i]['storage_location'] = $split_data[$i * $col + 12];
             }
-            // Debug print
-            //echo '<pre>'; print_r($this->results); echo '</pre>';
-            return $this->results;
-        } catch (Exception $e) {
-            return array(0 => false, 1 => "Exception type: " . $e . "\n" . "Exception key: " . $e->key . "\n" . "Exception message: " . $e->getMessage() . "\n");
-            //return array(0 => false, 1 => "Exception type: ".$e."\n"."Exception key: ".$e->key."\n"."Exception code: ".$e->code."\n"."Exception message: ".$e->getMessage()."\n");
-            throw new Exception('The function module failed.');
         }
+        // Debug print
+        //echo '<pre>'; print_r($this->results); echo '</pre>';
+        return $this->results;
     }
 
     public function displayTable($data){
@@ -80,8 +74,6 @@ class sapConnection
 
     public function dataPersist($data, $date, $em){
 
-        try
-        {
             for($i=0; $i<sizeof($data); $i++){
                 $_saprf = new SAPRF;
                 $_saprf->setTransferOrder($data[$i]['transfer_order']);
@@ -108,20 +100,10 @@ class sapConnection
 
             $em->flush();
             return true;
-        }
-        catch(Exception $e) //PDOException $e
-        {
-            echo( "Error" . $e->getMessage());
-            return false;
-        }
     }
 
     public function getDate(){
         return new \DateTime("now");
-    }
-
-    public function getDataSize($data){
-        return sizeof($data[1]);
     }
 
     public function checkImportExist($dateI){
@@ -140,62 +122,5 @@ class sapConnection
         else{
             return true;
         }
-    }
-
-    public function consolidateData($data, $date){
-        // prepare array
-        $multiArray = array();
-        $uniqueArray = array();
-        $compareMultiArray = array();
-        $compareUniqueArray = array();
-
-        $temp = date_create_from_format('Ymd', $date);
-        $temp->modify('+1 day');
-        $tomorrow = date_format($temp,'Y-m-d');
-        $today = date_create_from_format('Ymd', $date);
-        $today = date_format($today,'Y-m-d');
-
-        $time ='073000';
-        $time = date_create_from_format('His', $time);
-        //$time = $time->format('H:i:s');
-
-        for($i=0; $i<sizeof($data); $i++){
-            $cell = split("@",$data[$i]["WA"]);
-
-            $cell[2] = date_create_from_format('Ymd', $cell[2]);
-            $cell[2] = $cell[2]->format('Y-m-d');
-            $cell[3] = date_create_from_format('His', $cell[3]);
-
-
-            //if cell date/time included in the shift hours
-            if ( ($cell[2] == $today and $cell[3] >= $time) or ($cell[2] == $tomorrow and $cell[3] < $time) ) {
-
-                //format here to compare times
-                $cell[3] = $cell[3]->format('H:i:s');
-
-                // add to the prepared arrays
-                for($j=0; $j<sizeof($cell); $j++){
-                    $multiArray[$i][$j] = $cell[$j];
-                    //if cell[5] = "902" then compare by destbin else by sourcebin
-                    if($cell[5] != "902"){
-                        if($j == 0 or $j == 1 or $j == 4 or $j == 5 or $j == 6){
-                            $compareMultiArray[$i][$j] = $cell[$j];
-                        }
-                    }else{
-                        if($j == 0 or $j == 1 or $j == 4 or $j == 7 or $j == 8){
-                            $compareMultiArray[$i][$j] = $cell[$j];
-                        }
-                    }
-                }
-
-                //compare arrays with specific fields
-                if(!in_array($compareMultiArray[$i], $compareUniqueArray)){
-                    //if value not there in $compareuniquearray, add to compare and real array
-                    $compareUniqueArray[] = $compareMultiArray[$i];
-                    $uniqueArray[] = $multiArray[$i];
-                }
-            }
-        }
-        return $uniqueArray;
     }
 }
