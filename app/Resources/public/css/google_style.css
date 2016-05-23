@@ -16,7 +16,7 @@
     text-transform: none;
     font-weight: 300;
     font-family: 'Lato', Arial, sans-serif;
-    line-height: 60px;
+    /*line-height: 60px;*/
     z-index: 999;
 }
 
@@ -106,6 +106,7 @@
 .gn-menu li:not(:first-child),
 .gn-menu > li {
     box-shadow: inset 0 1px #555555;
+    height: 50px;
 }
 
 .gn-submenu li {
@@ -273,6 +274,7 @@ input.gn-search:focus {
 
 #gn-menu li a{
     font-family: 'Lato', Arial, sans-serif;
+    padding-top: 15px;
 }
 
 
@@ -287,7 +289,7 @@ input.gn-search:focus {
 }
 
 .indicator, .indicator:hover{
-    height: 60px;
+    height: 100%;
     width: 3px;
     float: left;
 }
