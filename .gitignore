@@ -64,3 +64,4 @@ composer.lock
 #########
 .htaccess
 .buildpath
+/nbproject/private/

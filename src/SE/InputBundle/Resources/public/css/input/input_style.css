@@ -145,6 +145,6 @@
   background: #555;
 }
 
-#presence-container[disabled],  {
+#presence-container[disabled]  {
     pointer-events: none;
 }

@@ -12,11 +12,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use SE\InputBundle\SAP;
 
 class EntryController extends Controller
 {
 	public function inputAction(Request $request)
 	{
+
     $listEmployees = $this->getDoctrine()
       ->getManager()
       ->getRepository('SEInputBundle:Employee')
