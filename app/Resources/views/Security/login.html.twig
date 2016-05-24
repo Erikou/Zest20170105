@@ -1,7 +1,12 @@
 {% extends "::layout.html.twig" %}
 
-{% block title %}
-    Login
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 'bundles/seinput/css/login/*' filter='cssrewrite' %}
+    <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 {% endblock %}
 
 {% block logo %}
