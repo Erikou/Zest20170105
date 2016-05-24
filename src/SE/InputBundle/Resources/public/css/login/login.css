@@ -5,6 +5,7 @@ body {
     -o-background-size: cover;
     background-size: cover;
     overflow: hidden;
+    text-align: center;
 }
 
 form {
@@ -13,11 +14,19 @@ form {
     left: 50%;
     background-color: rgba(245, 245, 245, 0.7);
     margin: -282px 0 0 -300px;
-    padding: 20px;
+    padding: 50px;
     width: 500px;
     height: 300px;
     border: 1px solid #e3e3e3;
     border-radius: 4px;
+}
+
+.field {
+    padding: 10px;
+}
+
+.form-button {
+    padding: 10px;
 }
 
 .credit{
