@@ -3,6 +3,7 @@
 namespace SE\InputBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var integer
@@ -118,5 +119,52 @@ class User
     public function getShift()
     {
         return $this->shift;
+    }
+
+    public function getUsername()
+    {
+        return $this->name;
+    }
+
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        return null;
+    }
+
+    public function getPassword()
+    {
+        return "";
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->name,
+            // $this->password,
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->name,
+            // $this->password,
+            // $this->salt
+            ) = unserialize($serialized);
     }
 }

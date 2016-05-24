@@ -9,3 +9,7 @@ se_report:
 se_input:
     resource: "@SEInputBundle/Resources/config/routing.yml"
     prefix:   /
+
+login:
+    path:     /login
+    defaults: { _controller: SEInputBundle:Security:login }

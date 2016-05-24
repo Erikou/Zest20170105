@@ -3,7 +3,7 @@
 security:
     # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: plaintext # FIXME
 
     # http://symfony.com/doc/current/book/security.html#hierarchical-roles
     role_hierarchy:
@@ -12,11 +12,15 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        db_provider:
+            entity:
+                class: SE\InputBundle\Entity\User
+                property: name
+        #in_memory:
+        #    memory:
+        #        users:
+        #            user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+        #            admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
@@ -25,10 +29,13 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        # the login page has to be accessible for everybody
-        demo_login:
-            pattern:  ^/demo/secured/login$
-            security: false
+        login_firewall:
+            pattern:   ^/login$
+            anonymous: ~
+
+        #secured_area:
+        #    pattern:    ^/
+        #   form_login: ~
 
         # secures part of the application
         demo_secured_area:
@@ -36,9 +43,9 @@ security:
             # it's important to notice that in this case _demo_security_check and _demo_login
             # are route names and that they are specified in the AcmeDemoBundle
             form_login:
-                check_path: _demo_security_check
-                login_path: _demo_login
-            logout:
+                check_path: login #_demo_security_check
+                login_path: login #_demo_login
+            logout: # TODO
                 path:   _demo_logout
                 target: _demo
             #anonymous: ~
