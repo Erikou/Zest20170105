@@ -15,7 +15,7 @@ security:
         db_provider:
             entity:
                 class: SE\InputBundle\Entity\User
-                property: name
+                property: username
         #in_memory:
         #    memory:
         #        users:
@@ -26,25 +26,29 @@ security:
     # for specific sections of your app
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        #dev:
+        #    pattern:  ^/(_(profiler|wdt)|css|images|js)/
+        #    security: false
         login_firewall:
             pattern:   ^/login$
             anonymous: ~
+            provider: db_provider
 
-        #secured_area:
-        #    pattern:    ^/
+        secured_area:
+            pattern:    ^/
+            provider: db_provider
         #   form_login: ~
 
         # secures part of the application
-        demo_secured_area:
-            pattern:    ^/demo/secured/
+        #demo_secured_area:
+            #pattern:    ^/demo/secured/
             # it's important to notice that in this case _demo_security_check and _demo_login
             # are route names and that they are specified in the AcmeDemoBundle
             form_login:
-                check_path: login #_demo_security_check
-                login_path: login #_demo_login
+                check_path: /login #_demo_security_check
+                login_path: /login #_demo_login
+                username_parameter: _username
+                password_parameter: _password
             logout: # TODO
                 path:   _demo_logout
                 target: _demo
@@ -56,4 +60,7 @@ security:
     # of your application based on roles, ip, host or methods
     # http://symfony.com/doc/current/cookbook/security/access_control.html
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/, roles: ROLE_USER }
+    - { path: ^/admin, roles: ROLE_ADMIN }

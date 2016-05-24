@@ -13,6 +13,7 @@ use SE\InputBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 
 class SecurityController extends Controller
 {
@@ -21,21 +22,51 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $session = $request->getSession();
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        // \Symfony\Component\Security\Core\Security
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
 
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        // security.csrf.token_manager
+        $csrfToken = $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+        
+        return $this->renderLogin(array(
+            'last_username' => $lastUsername,
+            'error' => $error,
+            //'csrf_token' => $csrfToken,
+        ));
+    }
 
-        return $this->render(
-            'Security/login.html.twig',
-            array(
-                // last username entered by the user
-                'last_username' => $lastUsername,
-                'error'         => $error,
-            )
-        );
+    /**
+     * Renders the login template with the given parameters. Overwrite this function in
+     * an extended controller to provide additional data for the login template.
+     *
+     * @param array $data
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderLogin(array $data)
+    {
+        return $this->render('Security/login.html.twig', $data);
+    }
+
+    public function logoutAction()
+    {
+        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 }
