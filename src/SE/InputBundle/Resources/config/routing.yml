@@ -87,6 +87,6 @@ se_input_review_edit:
         _method:  POST
         id:  \d+
 
-se_input_testsap:
-    path:     /testsap
-    defaults: { _controller: SEInputBundle:Entry:testSap }
+se_input_sap:
+    path:     /sapimport
+    defaults: { _controller: SEInputBundle:Import:sap }

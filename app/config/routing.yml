@@ -1,3 +1,13 @@
+login:
+    prefix:   /login
+    defaults: { _controller: SEUserBundle:Security:login }
+
+login_check:
+    prefix:   /login_check
+
+logout:
+    prefix:   /logout
+
 se_admin:
     resource: "@SEAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
@@ -9,7 +19,3 @@ se_report:
 se_input:
     resource: "@SEInputBundle/Resources/config/routing.yml"
     prefix:   /
-
-login:
-    path:     /login
-    defaults: { _controller: SEInputBundle:Security:login }

@@ -22,7 +22,7 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $session = $request->getSession();
+        /*$session = $request->getSession();
 
         // \Symfony\Component\Security\Core\Security
         $authErrorKey = Security::AUTHENTICATION_ERROR;
@@ -49,6 +49,16 @@ class SecurityController extends Controller
             'last_username' => $lastUsername,
             'error' => $error,
             //'csrf_token' => $csrfToken,
+        ));*/
+
+        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('/');
+        }
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+        return $this->render('OCUserBundle:Security:login.html.twig', array(
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error'         => $authenticationUtils->getLastAuthenticationError(),
         ));
     }
 
