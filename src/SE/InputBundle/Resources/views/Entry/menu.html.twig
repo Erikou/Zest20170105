@@ -9,22 +9,29 @@
 				<span class="indicator dashboard"></span>
 				<a href="{{ path('se_input_review') }}" class="gn-icon glyphicon glyphicon-dashboard">Dashboard</a>
 			</li>
+			{% if is_granted('ROLE_INPUT_READ') %}
 			<li>
 				<span class="indicator manhours"></span>
-				<a href="{{ path('se_input_home') }}" class="gn-icon glyphicon glyphicon-pencil">Manhours Input</a>
+				<a href="{{ path('se_input_create') }}" class="gn-icon glyphicon glyphicon-pencil">Manhours Input</a>
 			</li>
+			{% endif %}
 {#			<li>
 				<span class="indicator weight"></span>
 				<a class="gn-icon glyphicon glyphicon-scale">Weight control imports</a>
 			</li>
-#}			<li>
+#}			
+			{% if is_granted('ROLE_INPUT_READ') %}
+			<li>
 				<span class="indicator employee"></span>
 				<a href="{{ path('se_input_employees') }}" class="gn-icon glyphicon glyphicon-user">Employees</a>
 			</li>
+			{% endif %}
+			{% if is_granted('ROLE_INPUT_READ') %}
 			<li>
 				<span class="indicator activity"></span>
 				<a href="{{ path('se_input_activities') }}"class="gn-icon glyphicon glyphicon-briefcase">Activities</a>
 			</li>
+			{% endif %}
 		</ul>
 	</div><!-- /gn-scroller -->
 </nav>

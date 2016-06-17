@@ -13,6 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use SE\InputBundle\SAP;
+use SE\InputBundle\Entity\Permission;
+use SE\InputBundle\Entity\Abilitation;
+use Symfony\Component\Validator\Constraints\Time;
 
 class EntryController extends Controller
 {
@@ -51,7 +54,28 @@ class EntryController extends Controller
 
   public function welcomeAction()
     {
-      return $this->render('SEInputBundle:Entry:welcome.html.twig');
+    	/*$em = $this->getDoctrine()->getManager();
+    	$perm1 = new Permission();
+    	$perm1->setName("ROLE_INPUT_READ");
+    	$perm1->setDescription("input read");
+    	$perm2 = new Permission();
+    	$perm2->setName("ROLE_INPUT_COMMENT");
+    	$perm2->setDescription("input comment");
+    	$abi = new Abilitation();
+    	$abi->setName("input commenter");
+    	$abi->setDescription("can read and comment inputs");
+    	$abi->addPermission($perm1);
+    	$abi->addPermission($perm2);
+    	$usr = $this->get('security.context')->getToken()->getUser();
+    	$usr->addAbilitation($abi);
+
+    	$em->persist($perm1);
+    	$em->persist($perm2);
+    	$em->persist($abi);
+    	$em->persist($usr);
+    	$em->flush();*/
+    	
+      	return $this->render('SEInputBundle:Entry:welcome.html.twig');
     }
 
   public function populateAction()

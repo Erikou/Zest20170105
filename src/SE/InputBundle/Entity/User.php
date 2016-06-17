@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SE\InputBundle\Entity\UserRepository")
  */
 class User implements UserInterface
 {
@@ -51,9 +51,31 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
+    private $plainPassword;
+    
+	/**
+	 * @var Abilitation[]
+	 * @ORM\ManyToMany(targetEntity="SE\InputBundle\Entity\Abilitation", cascade={"persist"})
+	 * @ORM\JoinTable(
+     *     name="user_abilitation",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="abilitation_id", referencedColumnName="id")})
+	 */
+	private $abilitations;
+	
+	public function _construct(){
+		$this->abilitations = array();
+	}
 
     /**
      * Get id
@@ -158,6 +180,30 @@ class User implements UserInterface
     }
 
     /**
+     * Set email
+     *
+     * @param string $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+
+    /**
      * Set password
      *
      * @param string $password
@@ -166,6 +212,13 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+    
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
 
         return $this;
     }
@@ -179,6 +232,11 @@ class User implements UserInterface
     {
         return $this->password;
     }
+    
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
 
     public function getSalt()
     {
@@ -186,9 +244,77 @@ class User implements UserInterface
         return null;
     }
 
+    /**
+     * Add abilitations
+     *
+     * @param \SE\InputBundle\Entity\Abilitation $abilitations
+     * @return User
+     */
+    public function addAbilitation(\SE\InputBundle\Entity\Abilitation $abilitations)
+    {
+    	$this->abilitations[] = $abilitations;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove abilitations
+     *
+     * @param \SE\InputBundle\Entity\Abilitation $abilitations
+     */
+    public function removeAbilitation(\SE\InputBundle\Entity\Abilitation $abilitations)
+	{
+		$this->abilitations->removeElement($abilitations);
+	}
+
+	/**
+	 * Get abilitations
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+    public function getAbilitations()
+    {
+    	return $this->abilitations;
+    }
+    
+    /**
+     * Returns the roles granted to the user.
+     *
+     * @return Role[] The user roles
+     */
     public function getRoles()
     {
-        return array('ROLE_USER');
+    	$arr = array();
+    	$arr[] = "ROLE_USER";
+    	try {
+    		foreach ($this->abilitations as $value){
+    			foreach($value->getPermissions() as $value2){ $arr[] = $value2->getName(); } }
+    	} catch (\Exception $e) {
+    		if ($e instanceof HandledErrorException) {
+    			$e->cleanOutput();
+			}
+    		$this->abilitations = array();
+    	}
+        return $arr;
+    }
+    
+    public function setRoles($roles){
+    	if (is_array($roles)){
+    		foreach ($roles as $ab){
+    			$this->addAbilitation($ab);
+    		}
+    	}
+    }
+    
+    public function getRolesDescription(){
+    	$arr = array();
+    	foreach ($this->abilitations as $i => $value){
+    		$arr[] = $this->abilitations[$i]->getName();
+    		foreach($this->abilitations[$i]->permissions as $j => $value2){
+    			$arr[] = $this->abilitations[$i]->permissions[$j]->getName();
+    		}
+    	}
+    	return implode($arr);
     }
 
     public function eraseCredentials()

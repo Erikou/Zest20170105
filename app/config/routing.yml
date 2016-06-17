@@ -1,12 +1,20 @@
+se_transfer:
+    resource: "@SETransferBundle/Resources/config/routing.yml"
+    prefix:   /
+
 login:
-    prefix:   /login
-    defaults: { _controller: SEUserBundle:Security:login }
+    path:   /login
+    defaults:  { _controller: SEInputBundle:Security:login }
 
 login_check:
-    prefix:   /login_check
+    path:   /login_check
 
 logout:
-    prefix:   /logout
+    path:   /logout
+    
+account:
+    path:   /account
+    defaults:  { _controller: SEInputBundle:Security:account }
 
 se_admin:
     resource: "@SEAdminBundle/Resources/config/routing.yml"
@@ -19,3 +27,8 @@ se_report:
 se_input:
     resource: "@SEInputBundle/Resources/config/routing.yml"
     prefix:   /
+    
+se_performance:
+    resource: "@SEPerformanceBundle/Resources/config/routing.yml"
+    prefix:   /performance
+    

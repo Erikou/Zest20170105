@@ -72,7 +72,7 @@ class sapConnection
         }
     }
 
-    public function dataPersist($em){
+    public function dataPersist($em, $date){
         for($i=0; $i<sizeof($this->results) && $i < 10; $i++) {
             $data = $this->results[$i];
             for ($j = 0; $j < sizeof($data); $j++) {
@@ -86,18 +86,19 @@ class sapConnection
                 $_saprf->setSourceStorageBin($data[$j]['source_storage_bin']);
                 $_saprf->setDestinationStorageType($data[$j]['destination_storage_type']);
                 $_saprf->setDestinationStorageBin($data[$j]['destination_storage_bin']);
-                $_saprf->setDateImport($this->getDate());
+                $_saprf->setDateImport($date);
                 $_saprf->setStorageLocation($data[$j]['storage_location']);
 
                 $em->persist($_saprf);
             }
 
             $_sapImport = new SapImports();
-            $_sapImport->setDate($this->getDate());
+            $_sapImport->setDate($date);
             $_sapImport->setImport(true);
             $_sapImport->setProcess(false);
             $_sapImport->setReview(false);
             $_sapImport->setInputs(0);
+            $em->persist($_sapImport);
 
             $em->flush();
         }

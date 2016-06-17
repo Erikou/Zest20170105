@@ -33,7 +33,8 @@ class AttendanceController extends Controller
 	    $month = $request->get('month');
 	    $days = $em->getRepository('SEReportBundle:Calendar')->getMonthArray($month, $year);
 
-	    /////////////////////////LA SUPER FONCTION//////////////////////////// 
+	    /////////////////////////LA SUPER FONCTION////////////////////////////
+		//(sérieux ?)
 	    $data = $em->getRepository('SEReportBundle:AttendanceData')->findOneBy(array('year' => $year, 'month' => $month));
 	    if(!$data || $data->getRefresher()){
 	    	//need to refresh -> go to refresher Controller
@@ -65,7 +66,7 @@ class AttendanceController extends Controller
 
 	public function activitiesDetailsAction()
 	{ 
-		$em = $this->getDoctrine()->getManager();
+		//$em = $this->getDoctrine()->getManager();
 	    $request = $this->get('request');        
 	    $y = $request->get('y');
 	    $m = $request->get('m');

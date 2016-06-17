@@ -1,0 +1,30 @@
+{% extends "SEAdminBundle::layout.html.twig" %}
+
+{% block title %}
+  Edit role - {{ parent() }}
+{% endblock %}
+
+{% block seadmin_header %}
+  
+  <header class="h-sap">
+  	<div class="line"></div>
+  	<h2><i class="glyphicon glyphicon-group"></i> Edit role</h2>
+  </header>
+
+{% endblock %}
+
+{% block seadmin_body %}
+<form style="color: black;" method="POST">
+{{ form_start(form) }}
+	{{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.permissions) }}
+    <button type="submit" class="btn btn-primary">Confirm</button>
+{{ form_end(form) }}
+</form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

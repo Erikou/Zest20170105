@@ -1,0 +1,3 @@
+se_transfer_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SETransferBundle:Default:index }

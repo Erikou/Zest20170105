@@ -1,0 +1,47 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Perf - {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-html5-1.1.0,b-print-1.1.0/datatables.min.css"/>
+  {% stylesheets 'bundles/seperformance/css/*' %}
+    <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+{% endblock %}
+
+{% block menu %}
+	{# { render(controller("SEPerformanceBundle:Performance:menu")) } #}
+{% endblock %}
+
+{% block logo %}
+  <li class="logo-zest">
+    <img alt="Zest" src="{{ asset('bundles/seperformance/images/zest.png') }}"/>
+  </li>
+{% endblock %}
+
+{% block body %}
+
+  <div class="header-block">
+    {% block seperformance_header %}
+    {% endblock %}
+  </div>
+
+  {% block seperformance_body %}
+  {% endblock %}
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/s/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-html5-1.1.0,b-print-1.1.0/datatables.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/highcharts-more.js"></script>
+  <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
+  {% javascripts '@SEPerformanceBundle/Resources/public/js/*' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+{% endblock %}

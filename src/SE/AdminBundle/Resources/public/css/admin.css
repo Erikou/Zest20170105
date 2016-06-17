@@ -37,6 +37,7 @@ body{
 .gn-menu a.glyphicon-cloud:hover, .gn-menu li.active a{color:#77C5F7;}
 .gn-menu a.glyphicon-edit:hover, .gn-menu li.active a {color:#FAC51C;}
 .gn-menu a.glyphicon-home:hover, .gn-menu li.active a{color:#EB7260;}
+.gn-menu a.glyphicon-group:hover, .gn-menu li.active a{color:#A38F84;}
 
 li.active{background: #009530;}
 
@@ -58,6 +59,13 @@ li.active{background: #009530;}
 }
 
 #request-panel .panel-footer{
-	padding:0px;
+	padding:0;
 	height: 35px;
+}
+
+/* Form */
+.input {
+	color: black;
+	margin: 5px;
+}
 }

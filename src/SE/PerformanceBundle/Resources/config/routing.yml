@@ -1,0 +1,3 @@
+se_performance_homepage:
+    path:     /
+    defaults: { _controller: SEPerformanceBundle:Default:index }

@@ -8,7 +8,7 @@
   
   <header class="h-sap">
   	<div class="line"></div>
-  	<h2><i class="glyphicon glyphicon-cloud"> </i> SAP Import</h2>
+  	<h2><i class="glyphicon glyphicon-cloud"></i> SAP Import</h2>
   </header>
 
 {% endblock %}
@@ -16,7 +16,7 @@
 {% block seadmin_body %}
 
 	<div class="well well-black col-md-12">
-		<form class="form-inline" method="post" action="http://localhost/SE/Import/Import.php"> 
+		<form class="form-inline" method="post" action="{{ path('se_admin_import_confirm') }}"> 
    			<div class="form-group">
 			    <label for="dateinput">Date of confirmation : </label>
 			    <input type="date" class="form-control" id="dateinput" value="{{ 'now'|date_modify("-1 day")|date('d/m/Y') }}" name="date">

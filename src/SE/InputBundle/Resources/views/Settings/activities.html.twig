@@ -10,12 +10,14 @@
   	<h2><i class="glyphicon glyphicon-briefcase"> </i> Activities</h2>
   </header>
 
+	{% if is_granted('ROLE_INPUT_EDIT') %}
   	<p>
 	    <a href="{{ path('se_input_activities_add') }}"  class="btn btn-success">
 	      <i class="glyphicon glyphicon-plus"></i>
 	      Add a new Activity
 	    </a>
 	</p>
+	{% endif %}
 
 	<p> Here will be the Activities List -> table with criteria + edit in line </p>
 

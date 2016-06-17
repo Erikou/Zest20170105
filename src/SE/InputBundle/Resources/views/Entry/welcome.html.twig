@@ -14,8 +14,8 @@
 
 {% block body %}
 	<div class="well welcome">
-		<img alt="Zest" src="{{ asset('bundles/sereport/images/zest.png') }}"></br>
-		<h1>Welcome to Zest.</h1>
+		<img alt="Zest" src="{{ asset('bundles/sereport/images/zest.png') }}"><br/>
+		<h1>Welcome to Zest, {{ app.user.getName }}</h1>
 		<a href ="{{ path('se_input_home') }}"><h3 class="lead">let's get to work! <i class="glyphicon glyphicon-hand-right"> </i></h3></a>
 		<div class="credit">
 			© <a href="mailto:lucas@bettarel.fr">Lucas Bettarel</a> - 2015

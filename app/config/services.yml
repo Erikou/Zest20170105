@@ -7,3 +7,34 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    inputBundle_adduser:
+        class: "SE\InputBundle\Form\AddUserType"
+        tags:
+            -  { name: form.type }
+
+    inputBundle_edituser:
+        class: "SE\InputBundle\Form\EditUserType"
+        tags:
+            -  { name: form.type }
+            
+    inputBundle_addabilitation:
+        class: "SE\InputBundle\Form\AddAbilitationType"
+        tags:
+            -  { name: form.type }
+
+    inputBundle_editabilitation:
+        class: "SE\InputBundle\Form\EditAbilitationType"
+        tags:
+            -  { name: form.type }
+            
+    inputBundle_editaccount:
+        class: "SE\InputBundle\Form\EditAccountType"
+        tags:
+            -  { name: form.type }
+            
+    inputBundle_editpassword:
+        class: "SE\InputBundle\Form\EditPasswordType"
+        tags:
+            -  { name: form.type }
+            

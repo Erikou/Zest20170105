@@ -71,6 +71,9 @@ class DashboardController extends Controller
     return new Response(json_encode($response)); 
   }
 
+  /**
+  * @Security("has_role('ROLE_INPUT_EDIT')")
+  */
   public function deleteAction()
   { 
     $em = $this->getDoctrine()->getManager();
@@ -284,6 +287,9 @@ class DashboardController extends Controller
     return new Response(json_encode($response)); 
   }
 
+  /**
+   * @Security("has_role('ROLE_INPUT_EDIT')")
+   */
   public function editPopulateAction()
   {
     $em = $this->getDoctrine()->getManager();
@@ -297,26 +303,29 @@ class DashboardController extends Controller
     return new Response(json_encode($response)); 
   }
 
+  /**
+   * @Security("has_role('ROLE_INPUT_EDIT')")
+   */
   public function editDeleteAction()
   { 
     $em = $this->getDoctrine()->getManager();
     $request = $this->get('request');        
     $idInput = $request->get('idEntry');
     
-    $deleteEntry = $em->getRepository('SEInputBundle:InputEntry')->findOneBy(array('id' => $idEntry));
-    if($deleteEntry){
-      $deleteActivityHours = $em->getRepository('SEInputBundle:ActivityHours')->findBy(array('input' => $deleteEntry));
+    $deleteInput = $em->getRepository('SEInputBundle:InputEntry')->findOneBy(array('id' => $idInput));
+    if($deleteInput){
+      $deleteActivityHours = $em->getRepository('SEInputBundle:ActivityHours')->findBy(array('input' => $deleteInput));
       if ($deleteActivityHours) {
         foreach ($deleteActivityHours as $deleteActivityHour) {
           // un-record to lines too
-          foreach ($em->getRepository('SEInputBundle:SAPRF')->getRecordedTo($deleteEntry->getUserInput()->getDateInput(), $deleteEntry->getSesa()) as $recordedTo) {
+          foreach ($em->getRepository('SEInputBundle:SAPRF')->getRecordedTo($deleteInput->getUserInput()->getDateInput(), $deleteInput->getSesa()) as $recordedTo) {
             $recordedTo->setRecorded(0);
           }
           $em->remove($deleteActivityHour);
         }
       }
-      $deleteEntry->getUserInput()->setProcess(0);
-      $em->remove($deleteEntry);  
+      $deleteInput->getUserInput()->setProcess(0);
+      $em->remove($deleteInput);
       $em->flush();
       $response = array("code" => 100, "success" => true);
     }else{
@@ -325,6 +334,9 @@ class DashboardController extends Controller
     return new Response(json_encode($response)); 
   }
 
+  /**
+   * @Security("has_role('ROLE_INPUT_EDIT')")
+   */
   public function editorAction(Request $request, $id)
   {
     //This is optional. Do not do this check if you want to call the same action using a regular request.

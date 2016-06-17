@@ -1,0 +1,41 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}Account{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# stylesheets 'bundles/seinput/css/login/*' filter='cssrewrite' %}
+    <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
+    {% endstylesheets #}
+{% endblock %}
+
+{% block logo %}
+    <li class="logo-zest"><img alt="Zest" src="{{ asset('bundles/sereport/images/zest.png') }}"></li>
+{% endblock %}
+
+{% block body %}
+<div class="col-xs-12 col-md-6 col-md-offset-3">
+{% if is_granted('ROLE_CAN_CHANGE_CREDENTIALS') %}
+<form style="color: black;" method="POST">
+{{ form_start(form1) }}
+	{{ form_errors(form1) }}
+    {{ form_row(form1.name) }}
+    {{ form_row(form1.username) }}
+    {{ form_row(form1.email) }}
+{{ form_end(form1) }}
+</form>
+{% else %}
+<p><strong>Name: </strong>{{ user.name }}</p>
+<p><strong>Username: </strong>{{ user.username }}</p>
+<p><strong>Email: </strong>{{ user.email }}</p>
+{% endif %}
+</div>
+<div class="col-xs-12 col-md-6 col-md-offset-3">
+<form style="color: black;" method="POST">
+{{ form_start(form2) }}
+	{{ form_errors(form2) }}
+    {{ form_row(form2.newPassword) }}
+{{ form_end(form2) }}
+</form>
+</div>
+{% endblock %}

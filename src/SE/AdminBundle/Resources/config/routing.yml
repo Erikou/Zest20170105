@@ -9,27 +9,65 @@ se_admin_editor:
 se_admin_import_sap:
     path:     /import
     defaults: { _controller: SEAdminBundle:Import:sap }
+    
+se_admin_manage_rights:
+    path:     /rights
+    defaults: { _controller: SEAdminBundle:Rights:index }
+    
+    
+se_admin_import_confirm:
+    path:     /import/confirm
+    defaults: {_controller: SEAdminBundle:Import:confirm }
+    requirements:
+        _method: POST
 
 se_admin_editor_currentEntry:
-    pattern:  /editor/currentEntry
+    path:  /editor/currentEntry
     defaults: { _controller: SEAdminBundle:Editor:currentEntry }
     requirements:
         _method:  GET
 
 se_admin_editor_accept:
-    pattern:  /editor/accept
+    path:  /editor/accept
     defaults: { _controller: SEAdminBundle:Editor:accept }
     requirements:
         _method:  POST
 
 se_admin_editor_reject:
-    pattern:  /editor/reject
+    path:  /editor/reject
     defaults: { _controller: SEAdminBundle:Editor:reject }
     requirements:
         _method:  POST
 
 se_admin_editor_ignore:
-    pattern:  /editor/ignore
+    path:  /editor/ignore
     defaults: { _controller: SEAdminBundle:Editor:ignore }
     requirements:
         _method:  POST
+        
+se_admin_add_user:
+    path:     /user/add
+    defaults: { _controller: SEAdminBundle:Rights:addUser }
+    
+se_admin_edit_user:
+    path:     /user/{user_id}/edit
+    defaults: { _controller: SEAdminBundle:Rights:editUser }
+    requirements:
+        id:  \d+
+        
+se_admin_add_abilitation:
+    path:     /role/add
+    defaults: { _controller: SEAdminBundle:Rights:addAbilitation }
+    
+se_admin_edit_abilitation:
+    path:     /role/{abilitation_id}/edit
+    defaults: { _controller: SEAdminBundle:Rights:editAbilitation }
+    requirements:
+        id:  \d+
+        
+se_admin_delete_abilitation:
+    path:     /role/{abilitation_id}/delete
+    defaults: { _controller: SEAdminBundle:Rights:deleteAbilitation }
+    requirements:
+        id:  \d+
+    

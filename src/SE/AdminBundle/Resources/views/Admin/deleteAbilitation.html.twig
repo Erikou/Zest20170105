@@ -1,0 +1,27 @@
+{% extends "SEAdminBundle::layout.html.twig" %}
+
+{% block title %}
+  Delete role - {{ parent() }}
+{% endblock %}
+
+{% block seadmin_header %}
+  
+  <header class="h-sap">
+  	<div class="line"></div>
+  	<h2><i class="glyphicon glyphicon-group"></i> Delete role</h2>
+  </header>
+
+{% endblock %}
+
+{% block seadmin_body %}
+<form method="POST">
+{{ form_start(form) }}
+	<div>Are you sure ?</div>
+    <button type="submit" class="btn btn-primary">Yes, delete</button>
+{{ form_end(form) }}
+</form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

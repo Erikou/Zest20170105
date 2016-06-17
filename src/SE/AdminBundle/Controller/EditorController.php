@@ -46,6 +46,7 @@ class EditorController extends Controller
 	   		if($request){
 	   			$editorType = $request->getEditorType()->getId();
 
+				$response = [];
 	   			//addition
 	   			if($editorType == 1){$response = $editor->addRequest($request);}
 	   			//edition

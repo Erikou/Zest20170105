@@ -1,6 +1,6 @@
 .hide {
 	display: none;
-	width:0px;
+	width:0;
 }
 
 .table input[type=checkbox], .input-rmv{
@@ -8,8 +8,8 @@
 }
 
 .ghost{
-	width: 0px;
-	height: 0px;
+	width: 0;
+	height: 0;
 }
 
 .txtarea-sm{
@@ -139,8 +139,8 @@
   width: 15px;
   height: 15px;
   position: absolute;
-  top:0px;
-  left:0px;
+  top:0;
+  left:0;
   overflow: hidden;
   background: #555;
 }

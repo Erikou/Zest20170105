@@ -1,4 +1,8 @@
 se_input_home:
+    path:     /review
+    defaults: { _controller: SEInputBundle:Dashboard:review }
+    
+se_input_create:
     path:     /input
     defaults: { _controller: SEInputBundle:Entry:input }
 
@@ -86,7 +90,3 @@ se_input_review_edit:
     requirements:
         _method:  POST
         id:  \d+
-
-se_input_sap:
-    path:     /sapimport
-    defaults: { _controller: SEInputBundle:Import:sap }

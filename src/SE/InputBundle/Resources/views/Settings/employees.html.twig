@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block seinput_body %}
-  <header class="h-employee">
-  	<div class="line"></div>
-  	<h2><i class="glyphicon glyphicon-user"> </i> Employees</h2>
-  </header>
+  	<header class="h-employee">
+  		<div class="line"></div>
+  		<h2><i class="glyphicon glyphicon-user"> </i> Employees</h2>
+  	</header>
 
-  <p>
-	    <a href="{{ path('se_input_employees_add') }}"  class="btn btn-success">
-	      <i class="glyphicon glyphicon-plus"></i>
+	{% if is_granted('ROLE_INPUT_EDIT') %}
+  	<p>
+  		<a href="{{ path('se_input_employees_add') }}"  class="btn btn-success">
+	  		<i class="glyphicon glyphicon-plus"></i>
 	      Add a new employee
-	    </a>
+		</a>
 	</p>
+	{% endif %}
 
 	<p> Here will be the Employees List -> table with criteria + edit in line </p>
 
