@@ -21,30 +21,29 @@ class EntryController extends Controller
 {
 	public function inputAction(Request $request)
 	{
+    	$listEmployees = $this->getDoctrine()
+      		->getManager()
+      		->getRepository('SEInputBundle:Employee')
+      		->getAlphaCurrentEmployees()
+    	;
 
-    $listEmployees = $this->getDoctrine()
-      ->getManager()
-      ->getRepository('SEInputBundle:Employee')
-      ->getAlphaCurrentEmployees()
-    ;
+    	$userInput = new UserInput();
+    	$form = $this->createForm(new UserInputType(), $userInput);
 
-    $userInput = new UserInput();
-    $form = $this->createForm(new UserInputType(), $userInput);
+    	if ($form->handleRequest($request)->isValid()) {
+      		$em = $this->getDoctrine()->getManager();
+      		$em->persist($userInput);
+      		$em->flush();
 
-    if ($form->handleRequest($request)->isValid()) {
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($userInput);
-      $em->flush();
+    	$request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
 
-    $request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
+    	return $this->redirect($this->generateUrl('se_input_review'));
+   		}
 
-    return $this->redirect($this->generateUrl('se_input_review'));
-    }
-
-    return $this->render('SEInputBundle:Entry:input_form.html.twig', array(
-    'form' => $form->createView(),
-    'listEmployees' => $listEmployees
-    ));
+    	return $this->render('SEInputBundle:Entry:input_form.html.twig', array(
+    	'form' => $form->createView(),
+    	'listEmployees' => $listEmployees
+    	));
 	}
 
 	public function menuAction()
@@ -52,7 +51,7 @@ class EntryController extends Controller
     	return $this->render('SEInputBundle:Entry:menu.html.twig');
   	}
 
-  public function welcomeAction()
+  	public function welcomeAction()
     {
     	/*$em = $this->getDoctrine()->getManager();
     	$perm1 = new Permission();

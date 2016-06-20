@@ -9,7 +9,34 @@
 	</header>
 {% endblock %}
 
+  
 {% block setransfer_body %}
+    
+	<div class="well well-black col-md-12">
+		<h3>Teams</h3>
+		<div class="table-responsive">
+			<table id="imports" class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Departement</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for team in listTeams %}
+			      		<tr>
+			      			<td>{{ team.id }}</td>
+			      			<td>{{ team.name }}</td>
+			      			<td>{{ team.departement.name }}</td>
+						</tr>
+			    {% else %}
+			      <tr><td> No team </td></tr>
+			    {% endfor %}
+			  </tbody>
+			</table>
+		</div>
+	</div>
 	<div class="well well-black col-md-12">
 		<h3>Employees</h3>
 		<div class="table-responsive">
@@ -20,6 +47,7 @@
 						<th>Name</th>
 						<th>Job</th>
 						<th>Team</th>
+						<th>Departement</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -29,6 +57,7 @@
 			      			<td>{{ employee.name }}</td>
 			      			<td>{{ employee.job.description }}</td>
 			      			<td>{{ employee.defaultTeam.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
 						</tr>
 			    {% else %}
 			      <tr><td> No employee listed </td></tr>
