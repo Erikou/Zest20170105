@@ -9,7 +9,7 @@
   {% block stylesheets %}
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    {% stylesheets '../app/Resources/public/css/*' %}
+    {% stylesheets '../app/Resources/public/css/general/*' %}
       <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
     {% endstylesheets %}
   {% endblock %}
@@ -34,6 +34,9 @@
 	{% endif %}
     {% if is_granted('ROLE_PERFORMANCE_READ') %}
     <li><a href="{{ path('se_performance_homepage') }}"><i class="glyphicon glyphicon-time"></i> Performance</a></li>
+	{% endif %}
+    {% if is_granted('ROLE_TRANSFER_READ') %}
+    <li><a href="{{ path('se_transfer_homepage') }}"><i class="glyphicon glyphicon-resize-horizontal"></i> Transfer</a></li>
 	{% endif %}
     {% if is_granted('ROLE_ADMIN') %}
     <li><a href="{{ path('se_admin_index') }}"><i class="glyphicon glyphicon-cog"></i> Admin</a></li>
