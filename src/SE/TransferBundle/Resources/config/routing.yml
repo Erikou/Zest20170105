@@ -6,3 +6,15 @@ se_transfer_add:
     path:     /add
     defaults: { _controller: SETransferBundle:Transfer:addTransfer }
     
+se_transfer_accept:
+    path:     /accept/{transfer_id}
+    defaults: { _controller: SETransferBundle:Transfer:accept }
+    requirements:
+        id:  \d+
+        
+se_transfer_refuse:
+    path:     /refuse/{transfer_id}
+    defaults: { _controller: SETransferBundle:Transfer:refuse }
+    requirements:
+        id:  \d+
+    

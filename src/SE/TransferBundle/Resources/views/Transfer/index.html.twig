@@ -24,6 +24,7 @@
 						<th>To</th>
 						<th>Date</th>
 						<th>Validated</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,7 +37,13 @@
 			      			<td>{{ transfer.dateStartString }}</td>
 			      			<td>{% if transfer.validated %}
 			      				<i style="color: green;" class="glyphicon glyphicon-ok"> </i>
-			      				{% else %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i> {% endif %}</td>
+			      				{% else %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i> {% endif %}
+							</td>
+							<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and not transfer.validated %}
+								<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
+								<a href="{{ path('se_transfer_refuse', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-warning btn-sm">Refuse</a>
+								{% endif %}
+							</td>
 						</tr>
 			    {% else %}
 			      <tr><td> No transfer </td></tr>
@@ -44,8 +51,10 @@
 			  </tbody>
 			</table>
 		</div>
+		{% if usrDepId != -1 %}
 		<a href="{{ path('se_transfer_add') }}" role="button"
 		class="btn btn-primary">Ask for new transfer</a>
+		{% endif %}
 	</div>
 	
 	<div class="well well-black col-md-12">
@@ -63,6 +72,7 @@
 				</thead>
 				<tbody>
 					{% for employee in listEmployees %}
+						{% if usrDepId == employee.defaultTeam.departement.id %}
 			      		<tr>
 			      			<td>{{ employee.id }}</td>
 			      			<td>{{ employee.name }}</td>
@@ -70,8 +80,9 @@
 			      			<td>{{ employee.defaultTeam.name }}</td>
 			      			<td>{{ employee.defaultTeam.departement.name }}</td>
 						</tr>
+			    		{% endif %}
 			    {% else %}
-			      <tr><td> No employee listed </td></tr>
+			      <tr><td> No employee listed in your departement </td></tr>
 			    {% endfor %}
 			  </tbody>
 			</table>

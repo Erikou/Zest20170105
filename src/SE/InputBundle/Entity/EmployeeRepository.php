@@ -71,4 +71,20 @@ class EmployeeRepository extends EntityRepository
 		;
 		return $qb;
 	}
+	public function getDepartementEmployees($depId)
+	{
+		$qb = $this
+		->createQueryBuilder('e')
+		->select("e")
+		->leftJoin('e.team', 't')
+		->addSelect('t')
+		->leftJoin('t.departement', 'd')
+		->addSelect('d')
+		->where("d.id = ".$depId)
+        ->orderBy('e.id', 'ASC')
+		->getQuery()
+		->getResult()
+		;
+		return $qb;
+	}
 }

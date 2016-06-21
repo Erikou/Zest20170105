@@ -10,6 +10,15 @@ use SE\InputBundle\Entity\Transfer;
 
 class TransferController extends Controller
 {
+	private function getUsrDepId(){
+		$usr= $this->get('security.context')->getToken()->getUser();
+		$usrTeam = $usr->getTeam();
+		$usrDepId = -1;
+		if ($usrTeam != null)
+			$usrDepId = $usrTeam->getDepartement()->getId();
+		return $usrDepId;
+	}
+	
     public function indexAction(Request $request)
     {
     	$listTransfers = $this->getDoctrine()
@@ -30,6 +39,8 @@ class TransferController extends Controller
       		->getCurrentTeams()
     	;
     	
+      	$usrDepId = $this->getUsrDepId();
+    	
       	$userInput = new UserInput();
     	$form = $this->createForm(new UserInputType(), $userInput);
     	
@@ -37,16 +48,18 @@ class TransferController extends Controller
         		array('listEmployees' => $listEmployees,
         				'listTeams' => $listTeams,
         				'listTransfers' => $listTransfers,
+        				'usrDepId' => $usrDepId,
         				'form' => $form->createView()
         		));
     }
     
     public function addTransferAction(Request $request)
 	{
+      	$usrDepId = $this->getUsrDepId();
 		// Build the form
 		$transfer = new Transfer();
 		$transfer->setValidated(false);
-		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer);
+		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer, array());
 		
 		// Handle the submit (will only happen on POST)
 		$form->handleRequest($request);
@@ -72,5 +85,36 @@ class TransferController extends Controller
     public function menuAction()
 	{
 		return $this->render('SETransferBundle:Transfer:menu.html.twig');
+	}
+	
+	public function acceptAction($transfer_id){
+
+		$em = $this->getDoctrine()->getManager();
+		$transfer = $em->find(Transfer::class, $transfer_id);
+
+		$usrDepId = $this->getUsrDepId();
+		
+      	if ($usrDepId == $transfer->getDepartement()->getId()){
+			$transfer->setValidated(true);
+			$em->persist($transfer);
+			$em->flush();
+      	}
+		
+		return $this->redirectToRoute('se_transfer_homepage');
+	}
+	
+	public function refuseAction($transfer_id){
+
+		$em = $this->getDoctrine()->getManager();
+		$transfer = $em->find(Transfer::class, $transfer_id);
+
+		$usrDepId = $this->getUsrDepId();
+		
+      	if ($usrDepId == $transfer->getDepartement()->getId()){
+			$em->remove($transfer);
+			$em->flush();
+      	}
+
+		return $this->redirectToRoute('se_transfer_homepage');
 	}
 }

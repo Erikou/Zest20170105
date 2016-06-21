@@ -15,7 +15,7 @@ class TransferRepository extends EntityRepository
 		$qb = $this
 		->createQueryBuilder('a')
 		->select("a")
-		->orderBy('a.date_start', 'DESC')
+		->orderBy('a.date_start')
 		->getQuery()
 		->getResult()
 		;

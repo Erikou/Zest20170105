@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 'bundles/seinput/css/login/*' filter='cssrewrite' %}
+    {% stylesheets '../app/Resources/public/css/login/*' filter='cssrewrite' %}
     <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
