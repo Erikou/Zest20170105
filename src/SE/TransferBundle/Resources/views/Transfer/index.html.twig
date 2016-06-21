@@ -11,32 +11,43 @@
 
   
 {% block setransfer_body %}
-    
+
 	<div class="well well-black col-md-12">
-		<h3>Teams</h3>
+		<h3>Transfers</h3>
 		<div class="table-responsive">
 			<table id="imports" class="table">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Name</th>
-						<th>Departement</th>
+						<th>Employee</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Date</th>
+						<th>Validated</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for team in listTeams %}
+					{% for transfer in listTransfers %}
 			      		<tr>
-			      			<td>{{ team.id }}</td>
-			      			<td>{{ team.name }}</td>
-			      			<td>{{ team.departement.name }}</td>
+			      			<td>{{ transfer.id }}</td>
+			      			<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
+			      			<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
+			      			<td>{{ transfer.departement.name }}</td>
+			      			<td>{{ transfer.dateStartString }}</td>
+			      			<td>{% if transfer.validated %}
+			      				<i style="color: green;" class="glyphicon glyphicon-ok"> </i>
+			      				{% else %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i> {% endif %}</td>
 						</tr>
 			    {% else %}
-			      <tr><td> No team </td></tr>
+			      <tr><td> No transfer </td></tr>
 			    {% endfor %}
 			  </tbody>
 			</table>
 		</div>
+		<a href="{{ path('se_transfer_add') }}" role="button"
+		class="btn btn-primary">Ask for new transfer</a>
 	</div>
+	
 	<div class="well well-black col-md-12">
 		<h3>Employees</h3>
 		<div class="table-responsive">

@@ -1,0 +1,30 @@
+{% extends "SETransferBundle::layout.html.twig" %}
+
+{% block title %}
+  New transfer - {{ parent() }}
+{% endblock %}
+
+{% block setransfer_header %}
+  
+  <header class="h-sap">
+  	<div class="line"></div>
+  	<h2><i class="glyphicon glyphicon-retweet"></i> Ask for new transfer</h2>
+  </header>
+
+{% endblock %}
+
+{% block setransfer_body %}
+<form style="color: black;" method="POST">
+{{ form_start(form) }}
+	{{ form_errors(form) }}
+    {{ form_row(form.date_start) }}
+    {{ form_row(form.employee) }}
+    {{ form_row(form.departement) }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+{{ form_end(form) }}
+</form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

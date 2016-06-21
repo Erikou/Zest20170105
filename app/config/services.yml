@@ -38,3 +38,8 @@ services:
         tags:
             -  { name: form.type }
             
+    inputBundle_addtransfer:
+        class: "SE\InputBundle\Form\TransferType"
+        tags:
+            -  { name: form.type }
+            

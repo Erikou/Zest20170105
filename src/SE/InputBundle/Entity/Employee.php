@@ -160,6 +160,14 @@ class Employee
     {
         return $this->id;
     }
+    
+    /**
+     * Get name and id
+     */
+    public function getNameDepartement()
+    {
+        return $this->name . ' (' . $this->default_team->getDepartement()->getName() . ')';
+    }
 
     /**
      * Set name
