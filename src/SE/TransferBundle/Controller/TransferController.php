@@ -8,6 +8,7 @@ use SE\InputBundle\Form\UserInputType;
 use Symfony\Component\HttpFoundation\Request;
 use SE\InputBundle\Entity\Transfer;
 use SE\InputBundle\Form\TransferType;
+use SE\InputBundle\Entity\Notification;
 
 class TransferController extends Controller
 {
@@ -71,9 +72,20 @@ class TransferController extends Controller
 			// Save the User
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($transfer);
-			$em->flush();
 		
-			//$notif = new Notification();
+			$notif = new Notification();
+			$usr = $this->get('security.context')->getToken()->getUser();
+			$notif->setSender($usr);
+			$notif->setReceiver($usr);//todo
+			$notif->setTitle('Transfer demand');
+			$notif->setText($usr->getName().' demands the transfer of '
+					.$transfer->getEmployee()->getNameDepartement().' to '
+					.$transfer->getDepartement()->getName()." the "
+					.$transfer->getDateStartString()
+					.". You have to confirm/invalidate this transfer.");//todo add link
+
+			$em->persist($notif);
+			$em->flush();
 		
 			return $this->redirectToRoute('se_transfer_homepage');
 		}
@@ -99,6 +111,18 @@ class TransferController extends Controller
       	if ($usrDepId == $transfer->getDepartement()->getId()){
 			$transfer->setValidated(true);
 			$em->persist($transfer);
+		
+			$notif = new Notification();
+			$usr = $this->get('security.context')->getToken()->getUser();
+			$notif->setSender($usr);
+			$notif->setReceiver($usr);//todo
+			$notif->setTitle('Transfer confirmed');
+			$notif->setText($usr->getName().' confirmed the transfer of '
+					.$transfer->getEmployee()->getNameDepartement().' to '
+					.$transfer->getDepartement()->getName()." the "
+					.$transfer->getDateStartString().".");
+
+			$em->persist($notif);
 			$em->flush();
       	}
 		
@@ -114,6 +138,18 @@ class TransferController extends Controller
 		
       	if ($usrDepId == $transfer->getDepartement()->getId()){
 			$em->remove($transfer);
+		
+			$notif = new Notification();
+			$usr = $this->get('security.context')->getToken()->getUser();
+			$notif->setSender($usr);
+			$notif->setReceiver($usr);//todo
+			$notif->setTitle('Transfer refused');
+			$notif->setText($usr->getName().' refused the transfer of '
+					.$transfer->getEmployee()->getNameDepartement().' to '
+					.$transfer->getDepartement()->getName()." the "
+					.$transfer->getDateStartString().".");
+
+			$em->persist($notif);
 			$em->flush();
       	}
 
