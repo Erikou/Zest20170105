@@ -7,6 +7,7 @@ use SE\InputBundle\Entity\UserInput;
 use SE\InputBundle\Form\UserInputType;
 use Symfony\Component\HttpFoundation\Request;
 use SE\InputBundle\Entity\Transfer;
+use SE\InputBundle\Form\TransferType;
 
 class TransferController extends Controller
 {
@@ -59,7 +60,9 @@ class TransferController extends Controller
 		// Build the form
 		$transfer = new Transfer();
 		$transfer->setValidated(false);
-		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer, array());
+		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer, array('max_length' => $usrDepId));
+		//$form = new TransferType();
+		//$form->buildForm($this->createFormBuilder(), array('data' => $transfer, 'option1' => $usrDepId));
 		
 		// Handle the submit (will only happen on POST)
 		$form->handleRequest($request);
@@ -70,8 +73,7 @@ class TransferController extends Controller
 			$em->persist($transfer);
 			$em->flush();
 		
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
+			//$notif = new Notification();
 		
 			return $this->redirectToRoute('se_transfer_homepage');
 		}

@@ -76,14 +76,12 @@ class EmployeeRepository extends EntityRepository
 		$qb = $this
 		->createQueryBuilder('e')
 		->select("e")
-		->leftJoin('e.team', 't')
+		->leftJoin('e.default_team', 't')
 		->addSelect('t')
 		->leftJoin('t.departement', 'd')
 		->addSelect('d')
 		->where("d.id = ".$depId)
         ->orderBy('e.id', 'ASC')
-		->getQuery()
-		->getResult()
 		;
 		return $qb;
 	}

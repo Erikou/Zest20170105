@@ -6,19 +6,25 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use SE\InputBundle\Entity\EmployeeRepository;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TransferType extends AbstractType
 {
-    protected $usrDepId;
 
-    public function __construct(/*$usrDepId*/)
-    {
-        $this->usrDepId = 8;//$usrDepId;
-    }
-    
+	public function __construct(array $options = array())
+	{
+		/*$resolver = new OptionsResolver();
+		$this->configureOptions($resolver);
+	
+		$this->options = $resolver->resolve($options);*/
+	}
+	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-      	$usrDepId = $this->usrDepId;
+      	$usrDepId = -1;
+      	if (isset($options['max_length'])){
+      		$usrDepId = $options['max_length'];
+      	}
       	
 		$builder
 		->add('date_start', 'date', array('error_bubbling' => true))
@@ -37,12 +43,23 @@ class TransferType extends AbstractType
 		));
 	}
 
+	/*
+	 * Confusing. OptionsResolverInterface is supposed to be deprecated and replaced with OptionsResolver
+	 * but it creates a compilation error...
+	 * Also using this function deactivates configureOptions, and data_class is undefined...
+	 * I don't get this error by removing data_class from configureOptions...
+	 * I'm confused.
+	 * */
+	public function getDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$this->configureOptions($resolver);
+	}
+
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
 				'data_class' => 'AppBundle\Entity\Transfer',
-            	'usrDepId' => -1,
-				'zzzconnard' => 'raaaah'
+            	'option1' => 14 //Not working ?
 		));
 	}
 
