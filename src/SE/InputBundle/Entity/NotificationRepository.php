@@ -9,12 +9,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class NotificationRepository extends EntityRepository
 {
-	public function getAll()
+	public function getByUser($userid)
 	{
 		$qb = $this
 		->createQueryBuilder('a')
 		->select("a")
-		->orderBy('a.name', 'DESC')
+		->where("a.receiver = ".$userid)
+		->orderBy('a.dateCreation', 'DESC')
 		->getQuery()
 		->getResult()
 		;

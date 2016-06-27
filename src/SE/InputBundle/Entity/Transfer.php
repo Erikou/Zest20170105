@@ -24,6 +24,18 @@ class Transfer
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $demand;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $decision;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\Employee")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -114,6 +126,52 @@ class Transfer
     public function getEmployee()
     {
         return $this->employee;
+    }
+
+    /**
+     * Set demand
+     *
+     * @param \SE\InputBundle\Entity\User $demand
+     * @return Transfer
+     */
+    public function setDemand(\SE\InputBundle\Entity\User $demand = null)
+    {
+        $this->demand = $demand;
+
+        return $this;
+    }
+
+    /**
+     * Get demand
+     *
+     * @return \SE\InputBundle\Entity\User 
+     */
+    public function getDemand()
+    {
+        return $this->demand;
+    }
+
+    /**
+     * Set decision
+     *
+     * @param \SE\InputBundle\Entity\User $decision
+     * @return Transfer
+     */
+    public function setDecision(\SE\InputBundle\Entity\User $decision = null)
+    {
+        $this->decision = $decision;
+
+        return $this;
+    }
+
+    /**
+     * Get decision
+     *
+     * @return \SE\InputBundle\Entity\User 
+     */
+    public function getDecision()
+    {
+        return $this->decision;
     }
 
     /**

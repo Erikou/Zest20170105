@@ -59,7 +59,7 @@ class Notification
     /**
      * @var \DateTime
      * @Assert\DateTime()
-     * @ORM\Column(name="date_creation", type="date", nullable=false)
+     * @ORM\Column(name="date_creation", type="datetime", nullable=false)
      */
     private $dateCreation;
 
@@ -67,6 +67,7 @@ class Notification
     {
         $this->dateCreation = new \Datetime();
         $this->hasBeenRead = false;
+        $this->receiver = null;
     }
 
 
@@ -103,6 +104,12 @@ class Notification
     {
         return $this->dateCreation;
     }
+    public function getDateCreationString()
+    {
+    	$this->dateCreation->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+    	$this->dateCreation->setTimezone(new \DateTimeZone("Asia/Shanghai"));
+        return $this->dateCreation->format('d/m/Y H:i');
+    }
 
     /**
      * Set receiver
@@ -112,7 +119,10 @@ class Notification
      */
     public function setReceiver(\SE\InputBundle\Entity\User $receiver = null)
     {
+    	if ($this->receiver != null)
+    		$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() - 1);
         $this->receiver = $receiver;
+    	$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() + 1);
 
         return $this;
     }
@@ -158,6 +168,10 @@ class Notification
      */
     public function setHasBeenRead($hasBeenRead)
     {
+    	if ($hasBeenRead)
+    		$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() - 1);
+    	else
+    		$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() + 1);
         $this->hasBeenRead = $hasBeenRead;
 
         return $this;
@@ -217,6 +231,12 @@ class Notification
     public function getText()
     {
     	return $this->text;
+    }
+    public function getMessagePreview(){
+    	$sub = substr($this->text, 0, 128 - strlen($this->title));
+    	if (strlen($sub) < strlen($this->text))
+    		$sub = $sub."...";
+    	return $sub;
     }
     
 }

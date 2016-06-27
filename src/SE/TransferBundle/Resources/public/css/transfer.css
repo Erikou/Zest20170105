@@ -2,5 +2,9 @@
 
 .transfer-urgent td {
 	font-weight: bold;
+	color: #f60;
+}
+.transfer-late td {
+	font-weight: bold;
 	color: red;
 }

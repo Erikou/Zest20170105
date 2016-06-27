@@ -1,0 +1,7 @@
+se_notification_homepage:
+    path:     /
+    defaults: { _controller: SENotificationBundle:Notification:index }
+
+se_notification_detailed:
+    path:     /{id}
+    defaults: { _controller: SENotificationBundle:Notification:detailed }

@@ -11,83 +11,123 @@
 
   
 {% block setransfer_body %}
-
-	<div class="well well-black col-md-12">
-		<p>{{ monthlytotal }} transfers requested for this month.<br>
-			{% if confirmed > 0 %}<strong style="color: green;">
+<div class="well well-black col-md-12">
+	<p>{{ monthlytotal }} transfers requested for this month.<br>
+		{% if confirmed > 0 %}<strong style="color: green;">
 			{{ confirmed }} ({{ '%.0f'|format(100 * confirmed / monthlytotal) }}%)</strong> confirmed.<br>{% endif %}
-			{% if refused > 0 %}<strong style="color: red;">
+		{% if refused > 0 %}<strong style="color: red;">
 			{{ refused }} ({{ '%.0f'|format(100 * refused / monthlytotal) }}%)</strong> refused.<br>{% endif %}
-			{% if pending > 0 %}<strong style="color: orange;">
+		{% if pending > 0 %}<strong style="color: #f60;">
 			{{ pending }} ({{ '%.0f'|format(100 * pending / monthlytotal) }}%)</strong> pending.<br>{% endif %}
-		</p>
-		<h3>Current transfers</h3>
-		<div class="table-responsive">
-			<table id="imports" class="table">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Employee</th>
-						<th>From</th>
-						<th>To</th>
-						<th>Date</th>
-						<th>Validated</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for transfer in listTransfers %}
-					{% if date(transfer.dateStart) > date('-1days') or transfer.validated == 0 %}
+	</p>
+	<h3>Current transfers</h3>
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Employee</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Date</th>
+					<th>Validated</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for transfer in listTransfers %}
+				{% if date(transfer.dateStart) > date('-1days') or transfer.validated == 0 %}
+			      	{% if date(transfer.dateStart) < date() and transfer.validated == 0 %}
+			      		<tr class="transfer-late">
+			      	{% else %}
 			      		{% if date(transfer.dateStart) < date('+3days') and transfer.validated == 0 %}
-			      		<tr class="transfer-urgent">
+			      			<tr class="transfer-urgent">
 			      		{% else %}
-			      		<tr>
-			      		{% endif %}
-			      			<td>{{ transfer.id }}</td>
-			      			<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
-			      			<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
-			      			<td>{{ transfer.departement.name }}</td>
-			      			<td>{{ transfer.dateStartString }}</td>
-			      			<td>{% if transfer.validated == 1 %}
-			      				<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
-			      				{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
-			      				{% else %} <i style="color: orange;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
-							</td>
-							<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and transfer.validated == 0 %}
-								<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
-								<a href="{{ path('se_transfer_refuse', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-warning btn-sm">Refuse</a>
-								{% endif %}
-							</td>
-						</tr>
-					{% endif %}
-			    	{% else %}
-			      <tr><td> No transfer </td></tr>
-			    	{% endfor %}
-			  </tbody>
-			</table>
-		</div>
-		{% if usrDepId != -1 %}
-		<a href="{{ path('se_transfer_add') }}" role="button"
-		class="btn btn-primary">Ask for new transfer</a>
-		{% endif %}
-	</div>
-	
-	<div class="well well-black col-md-12">
-		<h3>Employees</h3>
-		<div class="table-responsive">
-			<table id="imports" class="table">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Name</th>
-						<th>Job</th>
-						<th>Team</th>
-						<th>Departement</th>
+			      			<tr>
+			    		{% endif %}
+			    	{% endif %}
+			      		<td>{{ transfer.id }}</td>
+			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
+			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
+			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.dateStartString }}</td>
+			      		<td>{% if transfer.validated == 1 %}
+			      			<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
+			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
+			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
+						</td>
+						<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and transfer.validated == 0 %}
+							<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
+							<a href="{{ path('se_transfer_refuse', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-warning btn-sm">Refuse</a>
+							{% endif %}
+						</td>
 					</tr>
+				{% endif %}
+			    {% else %}
+			    <tr><td> No transfer </td></tr>
+			    {% endfor %}
+			 </tbody>
+		</table>
+	</div>
+	{% if usrDepId != -1 %}
+	<a href="{{ path('se_transfer_add') }}" role="button"
+	class="btn btn-primary">Ask for new transfer</a>
+	{% endif %}
+</div>
+<div class="well well-black col-md-12">
+	<h3>Past transfers</h3>
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Employee</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Date</th>
+					<th>Validated</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for transfer in listTransfers|reverse %}
+				{% if date(transfer.dateStart) < date('-1days') %}
+			      	<tr>
+			      		<td>{{ transfer.id }}</td>
+			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
+			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
+			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.dateStartString }}</td>
+			      		<td>{% if transfer.validated == 1 %}
+			      			<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
+			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
+			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
+						</td>
+					</tr>
+				{% endif %}
+			    {% else %}
+			    <tr><td> No transfer </td></tr>
+			    {% endfor %}
+			 </tbody>
+		</table>
+	</div>
+</div>
+	
+<div class="well well-black col-md-12">
+	<h3>Department employees</h3>
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Job</th>
+					<th>Team</th>
+					<th>Departement</th>
+				</tr>
 				</thead>
-				<tbody>
-					{% for employee in listEmployees %}
-						{% if usrDepId == employee.defaultTeam.departement.id %}
+			<tbody>
+				{% for employee in listEmployees %}
+					{% if usrDepId == employee.defaultTeam.departement.id %}
 			      		<tr>
 			      			<td>{{ employee.id }}</td>
 			      			<td>{{ employee.name }}</td>
@@ -95,16 +135,12 @@
 			      			<td>{{ employee.defaultTeam.name }}</td>
 			      			<td>{{ employee.defaultTeam.departement.name }}</td>
 						</tr>
-			    		{% endif %}
+			    	{% endif %}
 			    {% else %}
-			      <tr><td> No employee listed in your departement </td></tr>
+			    	<tr><td> No employee listed in your departement </td></tr>
 			    {% endfor %}
-			  </tbody>
-			</table>
-		</div>
+			 </tbody>
+		</table>
 	</div>
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
+</div>
 {% endblock %}

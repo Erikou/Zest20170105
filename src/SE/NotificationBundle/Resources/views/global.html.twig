@@ -1,0 +1,35 @@
+{% extends "SENotificationBundle::index.html.twig" %}
+
+{% block title %}Global - {{ parent() }}{% endblock %}
+  
+{% block body %}
+	{% block detailed %}
+	{% endblock %}
+	<div class="well well-black col-md-12">
+		<h3>Notifications</h3>
+		<div class="table-responsive">
+			<table id="imports" class="table">
+				<thead>
+					<tr>
+						<th>Sender</th>
+						<th>Title</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for notif in notifs %}
+						<tr class="{% if not notif.hasBeenRead %}unread-notification{% endif %}">
+			      			<td>{{ notif.sender.name }}</td>
+			      			<td><a class="see-more" href="{{ path('se_notification_detailed', {'id': notif.id }) }}">
+			      			{{ notif.title }} <strong class="message-preview">({{ notif.messagePreview }})</strong>
+			      			</a></td>
+			      			<td>{{ notif.dateCreationString }}</td>
+						</tr>
+			    {% else %}
+			      <tr><td> No notification yet. </td></tr>
+			    {% endfor %}
+			  </tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

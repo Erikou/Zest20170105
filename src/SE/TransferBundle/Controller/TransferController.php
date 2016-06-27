@@ -80,29 +80,76 @@ class TransferController extends Controller
 		$transfer = new Transfer();
 		$transfer->setValidated(false);
 		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer, array('max_length' => $usrDepId));
-		//$form = new TransferType();
-		//$form->buildForm($this->createFormBuilder(), array('data' => $transfer, 'option1' => $usrDepId));
 		
 		// Handle the submit (will only happen on POST)
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
+			
+			$user = $this->get('security.context')->getToken()->getUser();
 		
-			// Save the User
+			// Save the new Transfer Demand
+			$transfer->setDemand($user);
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($transfer);
-		
+			
+			$receivers = [];
+			$listUsers = $em->getRepository('SEInputBundle:User')->getAll();
+			
+			// Find all users who can accept the transfer and create notifications
+			foreach ($listUsers as $usr){
+				$t = $usr->getTeam();
+				if ($t != null && $t->getDepartement() == $transfer->getDepartement()){
+					if (in_array('ROLE_TRANSFER_EDIT', $usr->getRoles(), true)){
+						$notif = new Notification();
+						$notif->setDateCreation(new \DateTime("now"));
+						$notif->setSender($user);
+						$notif->setReceiver($usr);
+						$receivers[] = $usr->getName();
+						$notif->setTitle('Transfer demand');
+						$notif->setText($user->getName().' demands the transfer of '
+								.$transfer->getEmployee()->getNameDepartement().' to '
+								.$transfer->getDepartement()->getName()." the "
+								.$transfer->getDateStartString()
+								.". You have to confirm/invalidate this transfer.");//todo add link
+						
+						$em->persist($notif);
+					}
+				}
+			}
+			
+			// If no manager is registered, the administrators are warned via notifications
+			if (empty($receivers)){
+				$receivers[] = "no one (no manager has been set for this department. The administrator has been warned.)";
+				foreach ($listUsers as $usr){
+					if (in_array('ROLE_ADMIN', $usr->getRoles(), true)){
+						$notif = new Notification();
+						$notif->setDateCreation(new \DateTime("now"));
+						$notif->setSender($user);
+						$notif->setReceiver($usr);
+						$notif->setTitle('Manager missing');
+						$notif->setText('No user in the '
+						.$transfer->getDepartement()->getName()
+						." department has the right to confirm transfers.");
+				
+						$em->persist($notif);
+			}
+			
+			// A feedback notification is created for the demander
 			$notif = new Notification();
-			$usr = $this->get('security.context')->getToken()->getUser();
-			$notif->setSender($usr);
-			$notif->setReceiver($usr);//todo
-			$notif->setTitle('Transfer demand');
-			$notif->setText($usr->getName().' demands the transfer of '
+			$notif->setDateCreation(new \DateTime("now"));
+			$notif->setSender($user);
+			$notif->setReceiver($user);
+			$notif->setTitle('Transfer demand sent');
+			$notif->setText('You have sent a demand of transfer of '
 					.$transfer->getEmployee()->getNameDepartement().' to '
 					.$transfer->getDepartement()->getName()." the "
 					.$transfer->getDateStartString()
-					.". You have to confirm/invalidate this transfer.");//todo add link
-
+					." to ".implode(", ", $receivers)
+					.". Wait until they confirm/invalidate this transfer.");
+						
 			$em->persist($notif);
+		
+			// Send all notifications and save entities
 			$em->flush();
 		
 			return $this->redirectToRoute('se_transfer_homepage');
@@ -128,12 +175,14 @@ class TransferController extends Controller
 		
       	if ($usrDepId == $transfer->getDepartement()->getId()){
 			$transfer->setValidated(1);
+			$transfer->setDecision($this->get('security.context')->getToken()->getUser());
 			$em->persist($transfer);
 		
 			$notif = new Notification();
 			$usr = $this->get('security.context')->getToken()->getUser();
+			$notif->setDateCreation(new \DateTime("now"));
 			$notif->setSender($usr);
-			$notif->setReceiver($usr);//todo
+			$notif->setReceiver($transfer->getDemand());
 			$notif->setTitle('Transfer confirmed');
 			$notif->setText($usr->getName().' confirmed the transfer of '
 					.$transfer->getEmployee()->getNameDepartement().' to '
@@ -156,12 +205,14 @@ class TransferController extends Controller
 		
       	if ($usrDepId == $transfer->getDepartement()->getId()){
 			$transfer->setValidated(2);
+			$transfer->setDecision($this->get('security.context')->getToken()->getUser());
 			$em->persist($transfer);
 		
 			$notif = new Notification();
 			$usr = $this->get('security.context')->getToken()->getUser();
+			$notif->setDateCreation(new \DateTime("now"));
 			$notif->setSender($usr);
-			$notif->setReceiver($usr);//todo
+			$notif->setReceiver($transfer->getDemand());
 			$notif->setTitle('Transfer refused');
 			$notif->setText($usr->getName().' refused the transfer of '
 					.$transfer->getEmployee()->getNameDepartement().' to '

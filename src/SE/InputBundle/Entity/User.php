@@ -72,9 +72,17 @@ class User implements UserInterface
      *     inverseJoinColumns={@ORM\JoinColumn(name="abilitation_id", referencedColumnName="id")})
 	 */
 	private $abilitations;
+
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="unread_notifications", type="integer")
+	 */
+	private $unreadNotifications;
 	
 	public function _construct(){
 		$this->abilitations = array();
+		$this->unreadNotifications = 0;
 	}
 
     /**
@@ -315,6 +323,29 @@ class User implements UserInterface
     		}
     	}
     	return implode($arr);
+    }
+
+    /**
+     * Set unreadNotifications
+     *
+     * @param integer $unreadNotifications
+     * @return User
+     */
+    public function setUnreadNotifications($unreadNotifications)
+    {
+    	$this->unreadNotifications = $unreadNotifications;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get unreadNotifications
+     *
+     * @return integer
+     */
+    public function getUnreadNotifications()
+    {
+    	return $this->unreadNotifications;
     }
 
     public function eraseCredentials()

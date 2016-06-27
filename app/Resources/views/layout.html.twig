@@ -42,6 +42,10 @@
     <li><a href="{{ path('se_admin_index') }}"><i class="glyphicon glyphicon-cog"></i> Admin</a></li>
 	{% endif %}
     {% if is_granted('ROLE_USER') %}
+    <li><a href="{{ path('se_notification_homepage') }}" {% if app.user.unreadNotifications > 0 %}style="color: orange;"{% endif %}>
+    	<i class="glyphicon glyphicon-envelope"> </i> Notifs{% if app.user.unreadNotifications > 0 %} ({{ app.user.unreadNotifications }}){% endif %}</a></li>
+	{% endif %}
+    {% if is_granted('ROLE_USER') %}
     <li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
 	{% endif %}
     {% if is_granted('ROLE_USER') %}
