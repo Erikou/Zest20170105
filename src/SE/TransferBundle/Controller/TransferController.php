@@ -132,6 +132,8 @@ class TransferController extends Controller
 						." department has the right to confirm transfers.");
 				
 						$em->persist($notif);
+					}
+				}
 			}
 			
 			// A feedback notification is created for the demander
