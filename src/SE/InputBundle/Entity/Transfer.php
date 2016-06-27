@@ -36,9 +36,9 @@ class Transfer
     private $departement;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="validated", type="boolean")
+     * @ORM\Column(name="validated", type="integer")
      */
     private $validated;
 
@@ -142,7 +142,7 @@ class Transfer
     /**
      * Set validated
      *
-     * @param boolean $validated
+     * @param integer $validated
      * @return Transfer
      */
     public function setValidated($validated)
@@ -155,7 +155,7 @@ class Transfer
     /**
      * Get validated
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getValidated()
     {

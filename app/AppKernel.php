@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new SE\AdminBundle\SEAdminBundle(),
             new SE\PerformanceBundle\SEPerformanceBundle(),
             new SE\TransferBundle\SETransferBundle(),
+            new SE\NotificationBundle\SENotificationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

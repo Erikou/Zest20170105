@@ -13,7 +13,15 @@
 {% block setransfer_body %}
 
 	<div class="well well-black col-md-12">
-		<h3>Transfers</h3>
+		<p>{{ monthlytotal }} transfers requested for this month.<br>
+			{% if confirmed > 0 %}<strong style="color: green;">
+			{{ confirmed }} ({{ '%.0f'|format(100 * confirmed / monthlytotal) }}%)</strong> confirmed.<br>{% endif %}
+			{% if refused > 0 %}<strong style="color: red;">
+			{{ refused }} ({{ '%.0f'|format(100 * refused / monthlytotal) }}%)</strong> refused.<br>{% endif %}
+			{% if pending > 0 %}<strong style="color: orange;">
+			{{ pending }} ({{ '%.0f'|format(100 * pending / monthlytotal) }}%)</strong> pending.<br>{% endif %}
+		</p>
+		<h3>Current transfers</h3>
 		<div class="table-responsive">
 			<table id="imports" class="table">
 				<thead>
@@ -29,25 +37,32 @@
 				</thead>
 				<tbody>
 					{% for transfer in listTransfers %}
+					{% if date(transfer.dateStart) > date('-1days') or transfer.validated == 0 %}
+			      		{% if date(transfer.dateStart) < date('+3days') and transfer.validated == 0 %}
+			      		<tr class="transfer-urgent">
+			      		{% else %}
 			      		<tr>
+			      		{% endif %}
 			      			<td>{{ transfer.id }}</td>
 			      			<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
 			      			<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
 			      			<td>{{ transfer.departement.name }}</td>
 			      			<td>{{ transfer.dateStartString }}</td>
-			      			<td>{% if transfer.validated %}
-			      				<i style="color: green;" class="glyphicon glyphicon-ok"> </i>
-			      				{% else %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i> {% endif %}
+			      			<td>{% if transfer.validated == 1 %}
+			      				<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
+			      				{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
+			      				{% else %} <i style="color: orange;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
 							</td>
-							<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and not transfer.validated %}
+							<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and transfer.validated == 0 %}
 								<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
 								<a href="{{ path('se_transfer_refuse', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-warning btn-sm">Refuse</a>
 								{% endif %}
 							</td>
 						</tr>
-			    {% else %}
+					{% endif %}
+			    	{% else %}
 			      <tr><td> No transfer </td></tr>
-			    {% endfor %}
+			    	{% endfor %}
 			  </tbody>
 			</table>
 		</div>

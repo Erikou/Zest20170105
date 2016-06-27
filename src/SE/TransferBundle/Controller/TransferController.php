@@ -28,6 +28,20 @@ class TransferController extends Controller
       		->getRepository('SEInputBundle:Transfer')
       		->getAll()
     	;
+    	$confirmed = 0;
+    	$refused = 0;
+    	$pending = 0;
+    	$now = (new \DateTime("now"))->format("m-Y");
+    	foreach ($listTransfers as $tr){
+    		if ($tr->getDateStart()->format("m-Y") == $now){
+    			if ($tr->getValidated() == 0)
+    				$pending += 1;
+    			else if ($tr->getValidated() == 1)
+    				$confirmed += 1;
+    			else
+    				$refused += 1;
+    		}
+    	}
 
     	$listEmployees = $this->getDoctrine()
       		->getManager()
@@ -51,7 +65,11 @@ class TransferController extends Controller
         				'listTeams' => $listTeams,
         				'listTransfers' => $listTransfers,
         				'usrDepId' => $usrDepId,
-        				'form' => $form->createView()
+        				'form' => $form->createView(),
+        				'refused' => $refused,
+        				'confirmed' => $confirmed,
+        				'pending' => $pending,
+        				'monthlytotal' => $refused + $confirmed + $pending
         		));
     }
     
@@ -109,7 +127,7 @@ class TransferController extends Controller
 		$usrDepId = $this->getUsrDepId();
 		
       	if ($usrDepId == $transfer->getDepartement()->getId()){
-			$transfer->setValidated(true);
+			$transfer->setValidated(1);
 			$em->persist($transfer);
 		
 			$notif = new Notification();
@@ -137,7 +155,8 @@ class TransferController extends Controller
 		$usrDepId = $this->getUsrDepId();
 		
       	if ($usrDepId == $transfer->getDepartement()->getId()){
-			$em->remove($transfer);
+			$transfer->setValidated(2);
+			$em->persist($transfer);
 		
 			$notif = new Notification();
 			$usr = $this->get('security.context')->getToken()->getUser();

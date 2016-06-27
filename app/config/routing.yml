@@ -1,3 +1,7 @@
+se_notification:
+    resource: "@SENotificationBundle/Resources/config/routing.yml"
+    prefix:   /
+
 login:
     path:   /login
     defaults:  { _controller: SEInputBundle:Security:login }
