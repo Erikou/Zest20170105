@@ -9,6 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use SE\InputBundle\Entity\Transfer;
 use SE\InputBundle\Form\TransferType;
 use SE\InputBundle\Entity\Notification;
+use SE\InputBundle\Form\EmployeeType;
+use SE\InputBundle\Entity\Employee;
+use SE\InputBundle\Entity\EmployeeRepository;
+use SE\InputBundle\Entity\DepartementRepository;
 
 class TransferController extends Controller
 {
@@ -42,28 +46,23 @@ class TransferController extends Controller
     				$refused += 1;
     		}
     	}
-
-    	$listEmployees = $this->getDoctrine()
-      		->getManager()
-      		->getRepository('SEInputBundle:Employee')
-      		->getCurrentEmployees()
-    	;
-
-    	$listTeams = $this->getDoctrine()
-      		->getManager()
-      		->getRepository('SEInputBundle:Team')
-      		->getCurrentTeams()
-    	;
     	
       	$usrDepId = $this->getUsrDepId();
     	
-      	$userInput = new UserInput();
-    	$form = $this->createForm(new UserInputType(), $userInput);
+    	$form = $this->createFormBuilder()
+        		->add('tag', 'entity', array(
+            		'class' => 'SEInputBundle:Employee',
+        			'property' => 'name',
+            		'multiple' => true,
+            		'expanded' => false,
+            		'query_builder' => function(EmployeeRepository $er){
+                		return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+        		))
+        		->add('Filter', 'submit')
+        		->getForm();
     	
         return $this->render('SETransferBundle:Transfer:index.html.twig',
-        		array('listEmployees' => $listEmployees,
-        				'listTeams' => $listTeams,
-        				'listTransfers' => $listTransfers,
+        		array('listTransfers' => $listTransfers,
         				'usrDepId' => $usrDepId,
         				'form' => $form->createView(),
         				'refused' => $refused,
@@ -71,6 +70,117 @@ class TransferController extends Controller
         				'pending' => $pending,
         				'monthlytotal' => $refused + $confirmed + $pending
         		));
+    }
+
+    public function historyAction(Request $request)
+    {
+    	$listTransfers = $this->getDoctrine()
+    	->getManager()
+    	->getRepository('SEInputBundle:Transfer')
+    	->getAll()
+    	;
+    	 
+    	$form = $this->createFormBuilder()
+    	->add('employee', 'entity', array(
+    			'class' => 'SEInputBundle:Employee',
+    			'property' => 'nameDepartement',
+    			'multiple' => true, 'expanded' => false,
+    			'required' => false,
+    			'query_builder' => function(EmployeeRepository $er){
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+    			))
+    	->add('from', 'entity', array(
+    			'class' => 'SEInputBundle:Departement',
+    			'property' => 'name',
+    			'multiple' => true, 'expanded' => true,
+    			'required' => false,
+    			'query_builder' => function(DepartementRepository $er){
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+    			))
+    	->add('to', 'entity', array(
+    			'class' => 'SEInputBundle:Departement',
+    			'property' => 'name',
+    			'multiple' => true, 'expanded' => true,
+    			'required' => false,
+    			'query_builder' => function(DepartementRepository $er){
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+    			))
+    			->add('Filter', 'submit')
+    			->getForm();
+    	
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {    			
+    		$listA = [];
+    		if (sizeof($form->get('employee')->getData()) == 0){ // No employee specified
+    			$listA = $listTransfers;
+    		} else {
+	    		foreach ($listTransfers as $tr){
+	    			foreach ($form->get('employee')->getData() as $emp){
+	    				if ($emp->getId() == $tr->getEmployee()->getId()){
+	    					$listA[] = $tr;
+	    					break;
+	    				}
+	    			}
+	    		}
+    		}    			
+    		$listB = [];
+    		if (sizeof($form->get('from')->getData()) == 0){ // No department specified
+    			$listB = $listA;
+    		} else {
+	    		foreach ($listA as $tr){
+	    			foreach ($form->get('from')->getData() as $dep){
+	    				if ($dep->getId() == $tr->getEmployee()->getDefaultTeam()->getDepartement()->getId()){
+	    					$listB[] = $tr;
+	    					break;
+	    				}
+	    			}
+	    		}
+    		}     			
+    		$listC = [];
+    		if (sizeof($form->get('to')->getData()) == 0){ // No department specified
+    			$listC = $listB;
+    		} else {
+	    		foreach ($listB as $tr){
+	    			foreach ($form->get('to')->getData() as $dep){
+	    				if ($dep->getId() == $tr->getDepartement()->getId()){
+	    					$listC[] = $tr;
+	    					break;
+	    				}
+	    			}
+	    		}
+    		}   
+    		
+    		$listTransfers = $listC;
+    	}
+    			 
+    	return $this->render('SETransferBundle:Transfer:history.html.twig',
+    					array(
+    							'listTransfers' => $listTransfers,
+    							'form' => $form->createView(),
+    					));
+    }
+    
+    public function employeesAction()
+    {    
+    	$listEmployees = $this->getDoctrine()
+    	->getManager()
+    	->getRepository('SEInputBundle:Employee')
+    	->getCurrentEmployees()
+    	;
+    
+    	$listTeams = $this->getDoctrine()
+    	->getManager()
+    	->getRepository('SEInputBundle:Team')
+    	->getCurrentTeams()
+    	;
+    	 
+    	$usrDepId = $this->getUsrDepId();
+    			 
+    	return $this->render('SETransferBundle:Transfer:employees.html.twig',
+    					array('listEmployees' => $listEmployees,
+    							'listTeams' => $listTeams,
+    							'usrDepId' => $usrDepId,
+    					));
     }
     
     public function addTransferAction(Request $request)

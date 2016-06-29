@@ -1,0 +1,46 @@
+{% extends "SETransferBundle::layout.html.twig" %}
+
+{% block title %}Dashboard - {{ parent() }}{% endblock %}
+
+{% block setransfer_header %}
+	<header class="h-review">
+		<div class="line"></div>
+		<h2><i class="glyphicon glyphicon-home"> </i> Department employees</h2>
+	</header>
+{% endblock %}
+
+  
+{% block setransfer_body %}
+	
+<div class="well well-black col-md-12">
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Job</th>
+					<th>Team</th>
+					<th>Departement</th>
+				</tr>
+				</thead>
+			<tbody>
+				{% for employee in listEmployees %}
+					{% if usrDepId == employee.defaultTeam.departement.id %}
+			      		<tr>
+			      			<td>{{ employee.id }}</td>
+			      			<td>{{ employee.name }}</td>
+			      			<td>{{ employee.job.description }}</td>
+			      			<td>{{ employee.defaultTeam.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+						</tr>
+			    	{% endif %}
+			    {% else %}
+			    	<tr><td> No employee listed in your departement </td></tr>
+			    {% endfor %}
+			 </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}

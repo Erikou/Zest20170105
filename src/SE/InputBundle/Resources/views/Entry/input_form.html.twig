@@ -1,216 +1,210 @@
 {% extends "SEInputBundle:Entry:input.html.twig" %}
 
 {% macro entryCollection(entry) %}
-  <tr>
-    <td>time_name</td>
-    <td>
-      <div class="pull-left input-employee">
-        {{ form_widget(entry.employee, {'attr': {'class': 'form-control'}}) }}
-      </div>
-      <div class="pull-left input-sesa">
-        {{ form_widget(entry.sesa, {'attr': {'class': 'form-control'}}) }}
-      </div>
-      <div id="presence">
-        <div id="presence-container" class="pull-left" data-state="Present" data-toggle="tooltip" title="Present" >
-          <div class="presence-gauge">
-          </div>
-        </div>
-		{% if is_granted('ROLE_INPUT_EDIT') %}
-        <div class="hide toggling">
-          {{ form_widget(entry.absence_reason, {'attr': {'class': 'form-control input-reason'}}) }}
-        </div>
-      	{% endif %}
-        <div id="present" class="hide"> 
-          {{ form_widget(entry.present, {'attr': {'class': 'input-present' }}) }}
-          {{ form_widget(entry.halfday, {'attr': {'class': 'input-halfday' }}) }}
-        </div>
-      </div>
-    </td>
-    <td id="activities">
-      <div 
-        id="activities-prototype"
-        data-prototype="{{ _self.activityCollection(entry.activity_hours.vars.prototype) | e }}">
-          {% for activity in entry.activity_hours %}
-            {{ _self.activityCollection(activity) }}
-          {% endfor %}
-      </div>
-    </td>
+<tr>
+	<td>time_name</td>
+	<td>
+		<div class="pull-left input-employee">{{ form_widget(entry.employee,
+			{'attr': {'class': 'form-control'}}) }}</div>
+		<div class="pull-left input-sesa">{{ form_widget(entry.sesa, {'attr':
+			{'class': 'form-control'}}) }}</div>
+		<div id="presence">
+			<div id="presence-container" class="pull-left" data-state="Present"
+				data-toggle="tooltip" title="Present">
+				<div class="presence-gauge"></div>
+			</div>
+			{% if is_granted('ROLE_INPUT_EDIT') %}
+			<div class="hide toggling">{{ form_widget(entry.absence_reason,
+				{'attr': {'class': 'form-control input-reason'}}) }}</div>
+			{% endif %}
+			<div id="present" class="hide">
+			{{ form_widget(entry.present, {'attr': {'class': 'input-present' }}) }}
+			{{ form_widget(entry.halfday, {'attr': {'class': 'input-halfday' }}) }}</div>
+		</div>
+	</td>
+	<td id="activities">
+		<div id="activities-prototype"
+			data-prototype="{{ _self.activityCollection(entry.activity_hours.vars.prototype) | e }}">
+			{% for activity in entry.activity_hours %}
+			{{ _self.activityCollection(activity) }}
+			{% endfor %}</div>
+	</td>
+	
 	{% if is_granted('ROLE_INPUT_EDIT') %}
-    <td>
-      <div class="btn-group">
-        <a href=# id="add" class="btn btn-success" data-target="activities-prototype" data-toggle="tooltip" title="Add an activity">
-          <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a href=# id="comment" class="btn btn-primary" data-toggle="tooltip" title="Add a comment">
-          <i class="glyphicon glyphicon-comment"></i>
-        </a>
-        {#
-        <a href=# id="manual" class="btn btn-warning" data-toggle="tooltip" title="Add manual TO lines">
-          <i class="glyphicon glyphicon-link"></i>
-        </a>
-        <a href=# id="info" class="btn btn-info" data-toggle="tooltip" title="Go to employee details (not functionnal yet)">
-          <i class="glyphicon glyphicon-info-sign"></i>
-        </a>
-        #}
-        <a href=# id="rmv" class="btn btn-danger" data-target="entries-prototype" data-toggle="tooltip" title="Delete employee from input">
-          <i class="glyphicon glyphicon-trash"></i>
-        </a>
-      </div>
-      <div class="hide toggling txtarea-sm">
-        {{ form_widget(entry.comments, {'attr': {'class': 'form-control'}}) }}
-      </div>  
-    </td>
-      {% endif %}
-    {{ form_widget(entry) }}
-  </tr>
+	<td>
+		<div class="btn-group">
+			<a href=# id="add" class="btn btn-success"
+				data-target="activities-prototype" data-toggle="tooltip"
+				title="Add an activity"> <i class="glyphicon glyphicon-plus"></i>
+			</a>
+			<a href=# id="comment" class="btn btn-primary"
+				data-toggle="tooltip" title="Add a comment"> <i
+				class="glyphicon glyphicon-comment"></i>
+			</a>
+			{# <a href=# id="manual" class="btn btn-warning"
+			data-toggle="tooltip" title="Add manual TO lines"> <i
+			class="glyphicon glyphicon-link"></i> </a> <a href=# id="info"
+			class="btn btn-info" data-toggle="tooltip" title="Go to employee
+			details (not functionnal yet)"> <i class="glyphicon
+			glyphicon-info-sign"></i> </a> #}
+			<a href=# id="rmv"
+				class="btn btn-danger" data-target="entries-prototype"
+				data-toggle="tooltip" title="Delete employee from input"> <i
+				class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<div class="hide toggling txtarea-sm">
+		{{ form_widget(entry.comments, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	</td>
+	{% endif %}
+	{{ form_widget(entry) }}
+</tr>
 {% endmacro %}
 
 {% macro activityCollection(activity) %}
-  <div class="row">
-    <div class="input-activity pull-left">{{ form_widget(activity.activity, {'attr': {'class': 'form-control'}}) }} </div>
-    <div class="pull-left">
-      <div class="pull-left input-regular-hours">
-        {{ form_widget(activity.regularHours, {'attr': {'class': 'form-control'}}) }}
-      </div>
-      <div class="pull-left input-overtime">
-        {{ form_widget(activity.otHours, {'attr': {'class': 'form-control'}}) }}
-      </div>
-    </div>
-    {#
-    <div class="pull-left" data-toggle="tooltip" title="Transfer out">
-      <input class="transfer" type="checkbox" value="0">
-    </div>
-    #}
-    <div class="pull-left" data-toggle="tooltip" title="Remove activity">
-      <a href=# id="rmv" class="text-danger input-rmv" data-target="activities-prototype">
-        <i class="glyphicon glyphicon-remove"></i>
-      </a>
-    </div>   
-    {{ form_widget(activity) }}
-  </div>
-  {% endmacro %}
-
- {% block seinput_form %}
-
-  <div class="well">
-   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-
-    <div class="col-md-12 hide">
-      <div id="errors" class="alert alert-danger">
-        {{ form_errors(form) }}
-        {{ form_errors(form.dateInput) }}
-        {{ form_errors(form.user) }}
-      </div>
-    </div>
-
-     <div class="form-group">
-        <div class="col-md-3" id="input-user" data-toggle="tooltip" title="Please select your name">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <span id="user" class="glyphicon glyphicon-user">
-              </span>
-            </span>
-            {{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
-          </div>
-        </div>
-        <div class="col-md-2" data-toggle="tooltip" title="Team">
-          <div class="input-group">
-          <span class="input-group-addon">
-              <span id="team" class="glyphicon glyphicon-retweet">
-              </span>
-            </span>
-            {{ form_widget(form.team, {'attr': {'class': 'input-team form-control'}}) }}
-          </div>
-        </div>
-        <div class="col-md-2" id="input-shift" data-toggle="tooltip" title="Shift">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <span id="shift" class="glyphicon glyphicon-time">
-              </span>
-            </span>
-            {{ form_widget(form.shift, {'attr': {'class': 'form-control input-shift'}}) }}
-          </div>
-        </div>
-        <div class="col-md-2" id="input-date" data-toggle="tooltip" title="Date of input">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <span id="date-input" class="glyphicon glyphicon-calendar">
-              </span>
-            </span>
-            {{ form_widget(form.dateInput, {'attr': {'class': 'form-control input-date'}}) }}
-          </div>
-        </div>
-      <div class="pull-right input-ot-time">
-        <div class="pull-left input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" data-toggle="tooltip" title="Start overtime">
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-time"></span>
-          </span>
-          {{ form_widget(form.otStartTime, {'attr': {'class': 'form-control', 'type' : 'text'}}) }}
-        </div>
-        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" data-toggle="tooltip" title="End overtime">
-          {{ form_widget(form.otEndTime, {'attr': {'class': 'form-control', 'type' : 'text'}}) }}
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-time"></span>
-          </span>
-        </div>
-      </div>
-        
-    </div>
-    
-    <div class="form-group">
-     
-     <div class="table-responsive"> 
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th class="th-employee">Employee</th>
-              <th class="th-activity">
-                <div class="input-activity pull-left">Activity</div>
-                <div class="input-regular-hours pull-left">Hours</div>
-                <div class="header-overtime pull-left">Overtime</div>
-              </th>
-              <th class="th-options">Options</th>
-            </tr>
-          </thead>
-          <tbody id="entries">
-            <div 
-            id="entries-prototype"
-            data-prototype="{{ _self.entryCollection(form.input_entries.vars.prototype)|e }}">
-              {% for entry in form.input_entries %}
-                {{ _self.entryCollection(entry) }}
-              {% endfor %}
-            </div>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-	{% if is_granted('ROLE_INPUT_EDIT') %}
-    <div class="pull-left">
-      <a href=# id="add" class="btn btn-success" data-target="entries-prototype">
-        <i class="glyphicon glyphicon-plus"></i> Add Employee (Transfer IN or VTeam)
-      </a>
-    </div> 
-    <div class="form-group">
-      {{ form_widget(form.save, {'attr': {'class': 'saver btn btn-success pull-right'}}) }}
-      <div class="confirmation btn btn-success pull-right"><i class="glyphicon glyphicon-ok"> </i> Confirm input</div>
-    </div>
-    {% endif %}
-
-    
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-
+<div class="row">
+	<div class="input-activity pull-left">{{ form_widget(activity.activity,
+		{'attr': {'class': 'form-control'}}) }}</div>
+	<div class="pull-left">
+		<div class="pull-left input-regular-hours">{{
+			form_widget(activity.regularHours, {'attr': {'class':
+			'form-control'}}) }}</div>
+		<div class="pull-left input-overtime">{{ form_widget(activity.otHours,
+			{'attr': {'class': 'form-control'}}) }}</div>
+	</div>
+	{# <div class="pull-left" data-toggle="tooltip" title="Transfer out">
+	<input class="transfer" type="checkbox" value="0"> </div> #}
+	<div class="pull-left" data-toggle="tooltip" title="Remove activity">
+		<a href=# id="rmv" class="text-danger input-rmv"
+			data-target="activities-prototype"> <i
+			class="glyphicon glyphicon-remove"></i>
+		</a>
+	</div>
+	{{ form_widget(activity) }}
 </div>
+{% endmacro %}
 
+{% block seinput_form %}
+<div class="well">
+	{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
+	<div class="col-md-12 hide">
+		<div id="errors" class="alert alert-danger">
+		{{ form_errors(form) }}
+		{{ form_errors(form.dateInput) }}
+		{{ form_errors(form.user) }}
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-3" id="input-user" data-toggle="tooltip"
+			title="Please select your name">
+			<div class="input-group">
+				<span class="input-group-addon"> <span id="user"
+					class="glyphicon glyphicon-user"> </span>
+				</span>
+				{{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-2" data-toggle="tooltip" title="Team">
+			<div class="input-group">
+				<span class="input-group-addon"> <span id="team"
+					class="glyphicon glyphicon-retweet"> </span>
+				</span>
+				{{ form_widget(form.team, {'attr': {'class': 'input-team form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-2" id="input-shift" data-toggle="tooltip"
+			title="Shift">
+			<div class="input-group">
+				<span class="input-group-addon"> <span id="shift"
+					class="glyphicon glyphicon-time"> </span>
+				</span>
+				{{ form_widget(form.shift, {'attr': {'class': 'form-control input-shift'}}) }}
+			</div>
+		</div>
+		<div class="col-md-2" id="input-date" data-toggle="tooltip"
+			title="Date of input">
+			<div class="input-group">
+				<span class="input-group-addon"> <span id="date-input"
+					class="glyphicon glyphicon-calendar"> </span>
+				</span>
+				{{ form_widget(form.dateInput, {'attr': {'class': 'form-control input-date'}}) }}
+			</div>
+		</div>
+		<div class="pull-right input-ot-time">
+			<div class="pull-left input-group clockpicker" data-placement="left"
+				data-align="top" data-autoclose="true" data-toggle="tooltip"
+				title="Start overtime">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-time"></span>
+				</span>
+				{{ form_widget(form.otStartTime, {'attr': {'class': 'form-control', 'type' : 'text'}}) }}
+			</div>
+			<div class="input-group clockpicker" data-placement="left"
+				data-align="top" data-autoclose="true" data-toggle="tooltip"
+				title="End overtime">
+				{{ form_widget(form.otEndTime, {'attr': {'class': 'form-control', 'type' : 'text'}}) }}
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-time"></span>
+				</span>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="form-group">
+		<div class="table-responsive">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th class="th-employee">Employee</th>
+						<th class="th-activity">
+							<div class="input-activity pull-left">Activity</div>
+							<div class="input-regular-hours pull-left">Hours</div>
+							<div class="header-overtime pull-left">Overtime</div>
+						</th>
+						<th class="th-options">Options</th>
+					</tr>
+				</thead>
+				<tbody id="entries">
+					<div id="entries-prototype"
+						data-prototype="{{ _self.entryCollection(form.input_entries.vars.prototype)|e }}">
+						{% for entry in form.input_entries %} {{
+						_self.entryCollection(entry) }} 
+						{% endfor %}
+					</div>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	{% if is_granted('ROLE_INPUT_EDIT') %}
+	<div class="pull-left">
+		<a href=# id="add" class="btn btn-success"
+			data-target="entries-prototype"> <i class="glyphicon glyphicon-plus"></i>
+			Add Employee (Transfer IN or VTeam)
+		</a>
+	</div>
+	<div class="form-group">
+		{{ form_widget(form.save, {'attr': {'class': 'saver btn btn-success
+		pull-right'}}) }}
+		<div class="confirmation btn btn-success pull-right">
+			<i class="glyphicon glyphicon-ok"> </i> Confirm input
+		</div>
+	</div>
+	{% endif %}
+	{{ form_rest(form) }}
+	{{ form_end(form) }}
+</div>
 {% endblock %}
 
 {% block javascripts %}
-  {{ parent() }}
+{{ parent() }}
 
-  <script type="text/javascript">
+<script type="text/javascript">
     //global variable containing details of all employees
     var employeesData = [];
     var singleData = [];
@@ -221,7 +215,6 @@
 
     var ajaxPopulate = '{{path('se_input_populate')}}';
   </script>
-  {% javascripts '@SEInputBundle/Resources/public/js/input/*' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-  {% endjavascripts %}
-{% endblock %}
+{% javascripts '@SEInputBundle/Resources/public/js/input/*' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %} {% endblock %}

@@ -2,6 +2,14 @@ se_transfer_homepage:
     path:     /
     defaults: { _controller: SETransferBundle:Transfer:index }
     
+se_transfer_history:
+    path:     /history
+    defaults: { _controller: SETransferBundle:Transfer:history }
+    
+se_transfer_employees:
+    path:     /employees
+    defaults: { _controller: SETransferBundle:Transfer:employees }
+    
 se_transfer_add:
     path:     /add
     defaults: { _controller: SETransferBundle:Transfer:addTransfer }

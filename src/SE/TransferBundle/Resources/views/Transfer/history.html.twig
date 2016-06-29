@@ -1,0 +1,53 @@
+{% extends "SETransferBundle::layout.html.twig" %}
+
+{% block title %}History - {{ parent() }}{% endblock %}
+
+{% block setransfer_header %}
+	<header class="h-review">
+		<div class="line"></div>
+		<h2><i class="glyphicon glyphicon-folder-open"> </i> Past transfers</h2>
+	</header>
+{% endblock %}
+
+  
+{% block setransfer_body %}
+<div class="well well-black col-md-12">	
+	{{ form(form) }}
+	
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Employee</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Date</th>
+					<th>Validated</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for transfer in listTransfers|reverse %}
+				{% if date(transfer.dateStart) < date('-1days') %}
+			      	<tr>
+			      		<td>{{ transfer.id }}</td>
+			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
+			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
+			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.dateStartString }}</td>
+			      		<td>{% if transfer.validated == 1 %}
+			      			<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
+			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
+			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
+						</td>
+					</tr>
+				{% endif %}
+			    {% else %}
+			    <tr><td> No transfer </td></tr>
+			    {% endfor %}
+			 </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}
