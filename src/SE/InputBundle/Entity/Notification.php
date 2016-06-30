@@ -168,9 +168,9 @@ class Notification
      */
     public function setHasBeenRead($hasBeenRead)
     {
-    	if ($hasBeenRead)
+    	if ($hasBeenRead && !$this->hasBeenRead)
     		$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() - 1);
-    	else
+    	else if (!$hasBeenRead && $this->hasBeenRead)
     		$this->receiver->setUnreadNotifications($this->receiver->getUnreadNotifications() + 1);
         $this->hasBeenRead = $hasBeenRead;
 

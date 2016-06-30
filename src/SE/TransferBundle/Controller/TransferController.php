@@ -81,21 +81,13 @@ class TransferController extends Controller
     	;
     	 
     	$form = $this->createFormBuilder()
-    	->add('employee', 'entity', array(
-    			'class' => 'SEInputBundle:Employee',
-    			'property' => 'nameDepartement',
-    			'multiple' => true, 'expanded' => false,
-    			'required' => false,
-    			'query_builder' => function(EmployeeRepository $er){
-    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
-    			))
     	->add('from', 'entity', array(
     			'class' => 'SEInputBundle:Departement',
     			'property' => 'name',
     			'multiple' => true, 'expanded' => true,
     			'required' => false,
     			'query_builder' => function(DepartementRepository $er){
-    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');},
     			))
     	->add('to', 'entity', array(
     			'class' => 'SEInputBundle:Departement',
@@ -103,7 +95,15 @@ class TransferController extends Controller
     			'multiple' => true, 'expanded' => true,
     			'required' => false,
     			'query_builder' => function(DepartementRepository $er){
-    			return $er->createQueryBuilder('u')->orderBy('u.name', 'DESC');},
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');},
+    			))
+    	->add('employee', 'entity', array(
+    			'class' => 'SEInputBundle:Employee',
+    			'property' => 'nameDepartement',
+    			'multiple' => true, 'expanded' => false,
+    			'required' => false,
+    			'query_builder' => function(EmployeeRepository $er){
+    			return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');},
     			))
     			->add('Filter', 'submit')
     			->getForm();

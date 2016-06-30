@@ -8,3 +8,18 @@
 	font-weight: bold;
 	color: red;
 }
+
+#transfer-history .form-group {
+    margin-bottom: 15px;
+    width: 33%;
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
+    vertical-align: top;
+}
+#transfer-history .form-group select[multiple] {
+	display: inline-block;
+    height: -webkit-fill-available;
+    height: -moz-available;
+    max-height: 100%;
+}

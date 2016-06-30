@@ -12,9 +12,10 @@ a[disabled] {
     pointer-events: none;
 }
 
-.logo-zest{
+.logo-zest, .menu-right {
   float:right!important;
-  margin-right: 5px;
+  border-left: 1px solid #555;
+  /*margin-right: 5px;*/
 }
 
 .panel-body{
