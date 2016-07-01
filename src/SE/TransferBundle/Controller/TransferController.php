@@ -24,6 +24,14 @@ class TransferController extends Controller
 			$usrDepId = $usrTeam->getDepartement()->getId();
 		return $usrDepId;
 	}
+	private function getUsrDep(){
+		$usr= $this->get('security.context')->getToken()->getUser();
+		$usrTeam = $usr->getTeam();
+		$usrDep = null;
+		if ($usrTeam != null)
+			$usrDep = $usrTeam->getDepartement();
+		return $usrDep;
+	}
 	
     public function indexAction(Request $request)
     {
@@ -161,25 +169,33 @@ class TransferController extends Controller
     }
     
     public function employeesAction()
-    {    
+    {
+    	$usrDep = $this->getUsrDep();
+    	
     	$listEmployees = $this->getDoctrine()
     	->getManager()
     	->getRepository('SEInputBundle:Employee')
     	->getCurrentEmployees()
     	;
-    
-    	$listTeams = $this->getDoctrine()
+    	
+    	$listTransfers = $this->getDoctrine()
     	->getManager()
-    	->getRepository('SEInputBundle:Team')
-    	->getCurrentTeams()
+    	->getRepository('SEInputBundle:Transfer')
+    	->getValidToday()
     	;
-    	 
-    	$usrDepId = $this->getUsrDepId();
+
+    	foreach ($listEmployees as $emp){
+    		$emp->setTmpDep($emp->getDefaultTeam()->getDepartement());
+    		foreach ($listTransfers as $tr){
+    			if ($tr->getEmployee() == $emp){
+    				$emp->setTmpDep($tr->getDepartement());
+    			}
+    		}
+    	}
     			 
     	return $this->render('SETransferBundle:Transfer:employees.html.twig',
     					array('listEmployees' => $listEmployees,
-    							'listTeams' => $listTeams,
-    							'usrDepId' => $usrDepId,
+    							'usrDepId' => $usrDep->getId()
     					));
     }
     

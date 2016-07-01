@@ -19,7 +19,7 @@
 }
 #transfer-history .form-group select[multiple] {
 	display: inline-block;
+    height: 400px;
     height: -webkit-fill-available;
-    height: -moz-available;
     max-height: 100%;
 }

@@ -38,10 +38,10 @@
 				{% for transfer in listTransfers %}
 				{% if date(transfer.dateStart) > date('-1days') or transfer.validated == 0 %}
 			      	{% if date(transfer.dateStart) < date() and transfer.validated == 0 %}
-			      		<tr class="transfer-late">
+			      		<tr class="transfer-late danger">
 			      	{% else %}
 			      		{% if date(transfer.dateStart) < date('+3days') and transfer.validated == 0 %}
-			      			<tr class="transfer-urgent">
+			      			<tr class="transfer-urgent warning">
 			      		{% else %}
 			      			<tr>
 			    		{% endif %}

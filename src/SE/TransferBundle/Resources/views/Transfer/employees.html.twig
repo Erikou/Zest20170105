@@ -22,18 +22,42 @@
 					<th>Job</th>
 					<th>Team</th>
 					<th>Departement</th>
+					<th>Current Departement</th>
 				</tr>
 				</thead>
 			<tbody>
 				{% for employee in listEmployees %}
 					{% if usrDepId == employee.defaultTeam.departement.id %}
+						{% if usrDepId == employee.tmpDep.id %}
 			      		<tr>
 			      			<td>{{ employee.id }}</td>
 			      			<td>{{ employee.name }}</td>
 			      			<td>{{ employee.job.description }}</td>
 			      			<td>{{ employee.defaultTeam.name }}</td>
 			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
 						</tr>
+						{% else %}
+			      		<tr class="danger">
+			      			<td>{{ employee.id }}</td>
+			      			<td>{{ employee.name }}</td>
+			      			<td>{{ employee.job.description }}</td>
+			      			<td>{{ employee.defaultTeam.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+			      			<td>{{ employee.tmpDep.name }}</td>
+						</tr>
+						{% endif %}
+					{% else %}
+						{% if usrDepId == employee.tmpDep.id %}
+			      		<tr class="success">
+			      			<td>{{ employee.id }}</td>
+			      			<td>{{ employee.name }}</td>
+			      			<td>{{ employee.job.description }}</td>
+			      			<td>{{ employee.defaultTeam.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+			      			<td>{{ employee.tmpDep.name }}</td>
+						</tr>
+						{% endif %}
 			    	{% endif %}
 			    {% else %}
 			    	<tr><td> No employee listed in your departement </td></tr>

@@ -21,4 +21,20 @@ class TransferRepository extends EntityRepository
 		;
 		return $qb;
 	}
+	
+
+	public function getValidToday()
+	{
+		$now = new \DateTime("now");
+		$qb = $this
+		->createQueryBuilder('a')
+		->select("a")
+		->where("a.validated = 1")
+		->andWhere("a.date_start >= '".$now->format('Y-m-d 00:00:00')."'")
+		->andWhere("a.date_start <= '".$now->format('Y-m-d 23:59:59')."'")
+		->getQuery()
+		->getResult()
+		;
+		return $qb;
+	}
 }

@@ -623,4 +623,12 @@ class Employee
     {
         return $this->jobEndDate;
     }
+    
+    private $tmpDep;
+    public function setTmpDep($tmpDep){
+    	$this->tmpDep = $tmpDep;
+    }
+    public function getTmpDep(){
+    	return $this->tmpDep;
+    }
 }
