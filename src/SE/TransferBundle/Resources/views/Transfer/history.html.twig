@@ -36,9 +36,9 @@
 			      		<td>{{ transfer.departement.name }}</td>
 			      		<td>{{ transfer.dateStartString }}</td>
 			      		<td>{% if transfer.validated == 1 %}
-			      			<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
-			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
-			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
+			      			<i style="color: green;" class="glyphicon glyphicon-ok-sign"> </i>{% else %}
+			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove-sign"> </i>
+			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-question-sign"> </i> {% endif %}{% endif %}
 						</td>
 					</tr>
 				{% endif %}

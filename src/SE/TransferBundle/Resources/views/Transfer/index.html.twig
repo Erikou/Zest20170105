@@ -20,6 +20,20 @@
 		{% if pending > 0 %}<strong style="color: #f60;">
 			{{ pending }} ({{ '%.0f'|format(100 * pending / monthlytotal) }}%)</strong> pending.<br>{% endif %}
 	</p>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-success"
+	  style="width: {{ 100 * confirmed / monthlytotal }}%;">
+	    <span class="sr-only">confirmed</span>
+	  </div>
+	  <div class="progress-bar progress-bar-warning"
+	  style="width: {{ 100 * pending / monthlytotal }}%;">
+	    <span class="sr-only">pending</span>
+	  </div>
+	  <div class="progress-bar progress-bar-danger"
+	  style="width: {{ 100 * refused / monthlytotal }}%;">
+	    <span class="sr-only">refused</span>
+	  </div>
+	</div>
 	<h3>Current transfers</h3>
 	<div class="table-responsive">
 		<table id="imports" class="table">
@@ -52,9 +66,9 @@
 			      		<td>{{ transfer.departement.name }}</td>
 			      		<td>{{ transfer.dateStartString }}</td>
 			      		<td>{% if transfer.validated == 1 %}
-			      			<i style="color: green;" class="glyphicon glyphicon-ok"> </i>{% else %}
-			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove"> </i>
-			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-asterisk"> </i> {% endif %}{% endif %}
+			      			<i style="color: green;" class="glyphicon glyphicon-ok-sign"> </i>{% else %}
+			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove-sign"> </i>
+			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-question-sign"> </i> {% endif %}{% endif %}
 						</td>
 						<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and transfer.validated == 0 %}
 							<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
