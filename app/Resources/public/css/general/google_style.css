@@ -55,10 +55,6 @@
 	user-select: none;
 }
 
-.gn-menu-main>li:last-child {
-	border-right: none;
-}
-
 .gn-menu-main>li>a {
 	padding: 0 16px;
 	text-transform: uppercase;
@@ -66,17 +62,24 @@
 	font-weight: bold;
 }
 
+.gn-menu-main li.menu-right a {
+	padding: 0;
+}
+.gn-menu-main li.menu-right a i {
+	margin-top: 20px;
+}
+
 .gn-menu-main li .hovertext {
 	position: relative;
 	visibility: hidden;
-	top: -100%;
+	top: -62%;
 	background: rgba(0,0,0,0.8);
-	width: 60px;
-	min-width: 100%;
+	min-width: 60px;
 	height: 100%;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	line-height: 20px;
+	font-size: 0.8em;
 }
 .gn-menu-main li:hover .hovertext {
 	visibility: visible;
@@ -303,6 +306,10 @@ input.gn-search:focus {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	line-height: 20px;
+}
+
+#gn-menu li.menu-right a {
+	padding: 0;
 }
 
 #gn-menu li a:before {

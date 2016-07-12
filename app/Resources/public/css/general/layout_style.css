@@ -15,6 +15,7 @@ a[disabled] {
 .logo-zest, .menu-right {
   float:right!important;
   border-left: 1px solid #555;
+  border-right: none !important;
   /*margin-right: 5px;*/
 }
 

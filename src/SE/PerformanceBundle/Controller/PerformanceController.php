@@ -8,7 +8,15 @@ class PerformanceController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('SEPerformanceBundle:Performance:index.html.twig', array());
+    	$listEmployees = $this->getDoctrine()
+    	->getManager()
+    	->getRepository('SEInputBundle:Employee')
+    	->getCurrentEmployees()
+    	;
+    	
+    	return $this->render('SEPerformanceBundle:Performance:index.html.twig',
+    					array('listEmployees' => $listEmployees,
+    					));
     }
 
     public function menuAction()

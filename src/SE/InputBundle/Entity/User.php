@@ -333,7 +333,10 @@ class User implements UserInterface
      */
     public function setUnreadNotifications($unreadNotifications)
     {
-    	$this->unreadNotifications = $unreadNotifications;
+    	if ($unreadNotifications > 0)
+    		$this->unreadNotifications = $unreadNotifications;
+    	else
+    		$this->unreadNotifications = 0;
     
     	return $this;
     }

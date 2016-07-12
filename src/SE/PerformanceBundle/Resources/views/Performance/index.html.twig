@@ -5,11 +5,39 @@
 {% block seperformance_header %}
 	<header class="h-review">
 		<div class="line"></div>
-		<h2><i class="glyphicon glyphicon-home"> </i> Performance Dashboard</h2>
+		<h2><i class="glyphicon glyphicon-dashboard"> </i> Performance Dashboard</h2>
 	</header>
 {% endblock %}
 
 {% block seperformance_body %}
+<div class="well well-black col-md-12">
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Job</th>
+					<th>Team</th>
+					<th>Departement</th>
+				</tr>
+				</thead>
+			<tbody>
+				{% for employee in listEmployees %}
+			      		<tr>
+			      			<td>{{ employee.id }}</td>
+			      			<td>{{ employee.name }}</td>
+			      			<td>{{ employee.job.description }}</td>
+			      			<td>{{ employee.defaultTeam.name }}</td>
+			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+						</tr>
+			    {% else %}
+			    	<tr><td> No employee listed in your departement </td></tr>
+			    {% endfor %}
+			 </tbody>
+		</table>
+	</div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

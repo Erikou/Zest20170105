@@ -47,16 +47,16 @@
     
     {% if is_granted('ROLE_USER') %}
     <li class="menu-right"><a href="{{ path('se_notification_homepage') }}" {% if app.user.unreadNotifications > 0 %}style="color: orange;"{% endif %}>
-    	<i class="glyphicon glyphicon-envelope"> </i>{% if app.user.unreadNotifications > 0 %} ({{ app.user.unreadNotifications }}){% endif %}</a>
-    	<div class="hovertext" {% if app.user.unreadNotifications > 0 %}style="color: orange;"{% endif %}>Notifications</div></li>
+    	<i class="glyphicon glyphicon-envelope"> </i>{% if app.user.unreadNotifications > 0 %} ({{ app.user.unreadNotifications }}){% endif %}
+    	<div class="hovertext" {% if app.user.unreadNotifications > 0 %}style="color: orange;"{% endif %}>Notifications</div></a></li>
 	{% endif %}
     {% if is_granted('ROLE_USER') %}
-    <li class="menu-right"><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-log-out"></i></a>
-    <div class="hovertext">Logout</div></li>
+    <li class="menu-right"><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-log-out"></i>
+    <div class="hovertext">Logout</div></a></li>
 	{% endif %}
     {% if is_granted('ROLE_USER') %}
-    <li class="menu-right"><a href="{{ path('account') }}"><i class="glyphicon glyphicon-edit"></i></a>
-    <div class="hovertext">Account</div></li>
+    <li class="menu-right"><a href="{{ path('account') }}"><i class="glyphicon glyphicon-edit"></i>
+    <div class="hovertext">Account</div></a></li>
 	{% endif %}
   </ul>
  
