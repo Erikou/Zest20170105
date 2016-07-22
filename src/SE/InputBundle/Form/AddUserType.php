@@ -25,6 +25,12 @@ class AddUserType extends AbstractType
                     'first_options'  => array('label' => 'Password'),
                     'second_options' => array('label' => 'Repeat Password'),
                 ))
+            ->add('team', 'entity', array(
+    				'class' => 'SEInputBundle:Team',	
+    				'property' => 'name',
+        			'multiple' => false,'expanded' => false,
+            		'error_bubbling' => true
+            	))
             ->add('roles', 'entity', array(
     				'class' => 'SEInputBundle:Abilitation',	
     				'property' => 'name',

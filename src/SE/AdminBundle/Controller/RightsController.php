@@ -43,10 +43,11 @@ class RightsController extends Controller
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 		
-			// 3Encode the password (you could also do this via Doctrine listener)
+			// Encode the password
 			$password = $this->get('security.password_encoder')
 			->encodePassword($user, $user->getPlainPassword());
 			$user->setPassword($password);
+			$user->setUnreadNotifications(0);
 		
 			// Save the User
 			$em = $this->getDoctrine()->getManager();
@@ -78,7 +79,7 @@ class RightsController extends Controller
 		// Handle the submit (will only happen on POST)
 		if ($request->getMethod() == 'POST') {
 			$form->handleRequest($request);
-			//$form->submit($request);
+			
 			if( $form->isValid()){
 				$em->flush();
 				return $this->redirectToRoute('se_admin_manage_rights');

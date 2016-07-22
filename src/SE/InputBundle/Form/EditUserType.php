@@ -14,6 +14,12 @@ class EditUserType extends AbstractType
             ->add('name', 'text', array('error_bubbling' => true))
             ->add('email', 'email', array('error_bubbling' => true))
             ->add('username', 'text', array('error_bubbling' => true))
+            ->add('team', 'entity', array(
+    				'class' => 'SEInputBundle:Team',	
+    				'property' => 'name',
+        			'multiple' => false,'expanded' => false,
+            		'error_bubbling' => true
+            	))
             ->add('abilitations', 'entity', array(
     				'class' => 'SEInputBundle:Abilitation',	
     				'property' => 'name',

@@ -5,45 +5,45 @@
 {% endblock %}
 
 {% block seadmin_header %}
-  
   <header class="h-sap">
   	<div class="line"></div>
   	<h2><i class="glyphicon glyphicon-group"></i> Users rights</h2>
   </header>
-
 {% endblock %}
 
 {% block seadmin_body %}
-	<div class="well well-black col-md-12">
-		<h3>App users</h3>
-		<div class="table-responsive">
-			<table id="imports" class="table">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Username</th>
-						<th>Roles</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for user in listUsers %}
-			      		<tr>
-			      			<td>{{ user.name }}</td>
-			      			<td>{{ user.username }}</td>
-			      			<td>{% for abilitation in user.abilitations %}
-			      			{{ abilitation.name }}, {% else %}No role defined{% endfor %}</td>
-			      			<td><a href="{{ path('se_admin_edit_user', {'user_id': user.id }) }}" role="button"
-								class="btn btn-primary">Edit</a></td>
-						</tr>
-			    {% else %}
-			      <tr><td> No user registered </td></tr>
-			    {% endfor %}
-			  </tbody>
-			</table>
-		</div>
-		<a href="{{ path('se_admin_add_user') }}" role="button"
-		class="btn btn-primary">Add user</a>
+<div class="well well-black col-md-12">
+	<h3>App users</h3>
+	<div class="table-responsive">
+		<table id="imports" class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Username</th>
+					<th>Team</th>
+					<th>Roles</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for user in listUsers %}
+				<tr>
+			    	<td>{{ user.name }}</td>
+			      	<td>{{ user.username }}</td>
+			      	<td>{% if user.team %}{{ user.team.name }}{% else %}None{% endif %}</td>
+			      	<td>{% for abilitation in user.abilitations %}
+			      		{{ abilitation.name }}, {% else %}No role defined{% endfor %}</td>
+			      	<td><a href="{{ path('se_admin_edit_user', {'user_id': user.id }) }}" role="button"
+						class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% else %}
+				<tr><td> No user registered </td></tr>
+			{% endfor %}
+			 </tbody>
+		</table>
 	</div>
+	<a href="{{ path('se_admin_add_user') }}" role="button"
+		class="btn btn-primary">Add user</a>
+</div>
 	
 	<div class="well well-black col-md-12">
 		<h3>Defined roles</h3>

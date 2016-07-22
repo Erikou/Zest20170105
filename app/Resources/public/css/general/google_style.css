@@ -355,3 +355,8 @@ li.active {
 	background: #444;
 	transition: background 0.4s;
 }
+
+/********Fix table*****/
+.well-black {
+	background-image: none !important;
+}

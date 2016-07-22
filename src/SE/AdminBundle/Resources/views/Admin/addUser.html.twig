@@ -5,12 +5,10 @@
 {% endblock %}
 
 {% block seadmin_header %}
-  
   <header class="h-sap">
   	<div class="line"></div>
   	<h2><i class="glyphicon glyphicon-group"></i> Create new user</h2>
   </header>
-
 {% endblock %}
 
 {% block seadmin_body %}
@@ -22,6 +20,7 @@
     {{ form_row(form.email) }}
     {{ form_row(form.plainPassword.first) }}
     {{ form_row(form.plainPassword.second) }}
+    {{ form_row(form.team) }}
     {{ form_row(form.roles) }}
     <button type="submit" class="btn btn-primary">Add</button>
 {{ form_end(form) }}

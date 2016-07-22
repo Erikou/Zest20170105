@@ -5,12 +5,10 @@
 {% endblock %}
 
 {% block seadmin_header %}
-  
   <header class="h-sap">
   	<div class="line"></div>
   	<h2><i class="glyphicon glyphicon-group"></i> Edit user</h2>
   </header>
-
 {% endblock %}
 
 {% block seadmin_body %}
@@ -20,6 +18,7 @@
     {{ form_row(form.name) }}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
+    {{ form_row(form.team) }}
     {{ form_row(form.abilitations) }}
     <button type="submit" class="btn btn-primary">Confirm</button>
 {{ form_end(form) }}

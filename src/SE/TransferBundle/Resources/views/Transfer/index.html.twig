@@ -13,13 +13,16 @@
 {% block setransfer_body %}
 <div class="well well-black col-md-12">
 	<p>{{ monthlytotal }} transfers requested for this month.<br>
+	{% if monthlytotal > 0 %}
 		{% if confirmed > 0 %}<strong style="color: green;">
 			{{ confirmed }} ({{ '%.0f'|format(100 * confirmed / monthlytotal) }}%)</strong> confirmed.<br>{% endif %}
 		{% if refused > 0 %}<strong style="color: red;">
 			{{ refused }} ({{ '%.0f'|format(100 * refused / monthlytotal) }}%)</strong> refused.<br>{% endif %}
 		{% if pending > 0 %}<strong style="color: #f60;">
 			{{ pending }} ({{ '%.0f'|format(100 * pending / monthlytotal) }}%)</strong> pending.<br>{% endif %}
+	{% endif %}
 	</p>
+	{% if monthlytotal > 0 %}
 	<div class="progress">
 	  <div class="progress-bar progress-bar-success"
 	  style="width: {{ 100 * confirmed / monthlytotal }}%;">
@@ -34,6 +37,7 @@
 	    <span class="sr-only">refused</span>
 	  </div>
 	</div>
+	{% endif %}
 	<h3>Current transfers</h3>
 	<div class="table-responsive">
 		<table id="imports" class="table">
