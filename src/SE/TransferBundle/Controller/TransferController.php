@@ -195,7 +195,7 @@ class TransferController extends Controller
     			 
     	return $this->render('SETransferBundle:Transfer:employees.html.twig',
     					array('listEmployees' => $listEmployees,
-    							'usrDepId' => $usrDep->getId()
+    							'usrDepId' => ($usrDep ? $usrDep->getId() : -1)
     					));
     }
     

@@ -37,6 +37,10 @@ security:
     firewalls:
         #dev: # disables authentication for assets and the profiler, adapt it according to your needs
         #    security: false
+        login_assets:
+            pattern: ^/*.(css|images|js)
+            security: false
+        
         login_firewall:
             pattern:   ^/login$
             anonymous: true

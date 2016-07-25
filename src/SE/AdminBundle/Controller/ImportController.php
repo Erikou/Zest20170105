@@ -14,24 +14,24 @@ class ImportController extends Controller
 {
 	public function sapnwrfcAction()
 	{
-    $connection = new SapConnection();
-   // $connection->setUp();
-    $connection->sapConnect();
+    	$connection = new SapConnection();
+   		// $connection->setUp();
+    	$connection->sapConnect();
 
-    $em = $this->getDoctrine()->getManager();
+    	$em = $this->getDoctrine()->getManager();
 
-    $res = $connection->readTable();
-    $connection->saveTable($res, $em);
-    $connection->sapClose();
+    	$res = $connection->readTable();
+    	$connection->saveTable($res, $em);
+    	$connection->sapClose();
 
-    $listImport = $this->getDoctrine()
-        ->getManager()
-        ->getRepository('SEInputBundle:SAPRF')
-        ->findAll()
-      ;
+    	$listImport = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('SEInputBundle:SAPRF')
+    	    ->findAll()
+      	;
 
-    return $this->render('SEAdminBundle:Import:sapnwrfc_import.html.twig', array(
-        'listImport' => $listImport
+    	return $this->render('SEAdminBundle:Import:sapnwrfc_import.html.twig', array(
+        	'listImport' => $listImport
         ));
 	}
 
