@@ -62,10 +62,10 @@ class UserInputType extends AbstractType
                 ))
             ->add('otStartTime', 'time', array(
                   'widget' => 'single_text',
-                  'required' => false))
+                  'required' => true))
             ->add('otEndTime', 'time', array(
                   'widget' => 'single_text',
-                  'required' => false))
+                  'required' => true))
             ->add('input_entries', 'collection', array(
                 'type'         => new InputEntryType(),
                 'allow_add'    => true,

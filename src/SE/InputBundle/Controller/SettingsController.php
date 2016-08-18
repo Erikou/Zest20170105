@@ -28,6 +28,11 @@ class SettingsController extends Controller
   	public function employees_addAction(Request $request)
   	{
       $employee = new Employee();
+      $employee->setJobStartDate(new \DateTime());
+      $employee->setStartDate(new \DateTime());
+      $employee->setMasterId(1); // no idea what i'm doing
+      $employee->setRemarks("");
+      
       $form = $this->createForm(new EmployeeType(), $employee);
 
       if ($form->handleRequest($request)->isValid()) {
@@ -35,9 +40,9 @@ class SettingsController extends Controller
         $em->persist($employee);
         $em->flush();
 
-      $request->getSession()->getFlashBag()->add('notice', 'new employee entry saved');
+      	$request->getSession()->getFlashBag()->add('notice', 'new employee entry saved');
 
-      return $this->redirect($this->generateUrl('se_input_employees'));
+      	return $this->redirect($this->generateUrl('se_input_employees'));
       }
 
       return $this->render('SEInputBundle:Settings:employees_add.html.twig', array(

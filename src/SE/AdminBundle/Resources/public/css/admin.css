@@ -68,4 +68,7 @@ li.active{background: #009530;}
 	color: black;
 	margin: 5px;
 }
+
+label {
+	color: #eee;
 }
