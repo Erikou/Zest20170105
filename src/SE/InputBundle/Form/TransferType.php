@@ -36,9 +36,14 @@ class TransferType extends AbstractType
 				'property' => 'nameDepartement',
 				'error_bubbling' => true
 		))
-		->add('departement', 'entity', array(
-				'class' => 'SEInputBundle:Departement',
+		->add('team', 'entity', array(
+				'class' => 'SEInputBundle:Team',
 				'property' => 'name',
+				'error_bubbling' => true
+		))
+		->add('shift', 'entity', array(
+				'class' => 'SEInputBundle:Shift',
+				'property' => 'identifier',
 				'error_bubbling' => true
 		));
 	}

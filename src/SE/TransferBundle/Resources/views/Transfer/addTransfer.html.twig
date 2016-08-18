@@ -4,6 +4,7 @@
   New transfer - {{ parent() }}
 {% endblock %}
 
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block setransfer_header %}
   
   <header class="h-sap">
@@ -19,7 +20,8 @@
 	{{ form_errors(form) }}
     {{ form_row(form.date_start) }}
     {{ form_row(form.employee) }}
-    {{ form_row(form.departement) }}
+    {{ form_row(form.team) }}
+    {{ form_row(form.shift) }}
     <button type="submit" class="btn btn-primary">Submit</button>
 {{ form_end(form) }}
 </form>

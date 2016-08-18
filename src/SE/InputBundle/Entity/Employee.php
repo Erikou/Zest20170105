@@ -166,7 +166,7 @@ class Employee
      */
     public function getNameDepartement()
     {
-        return $this->name . ' (' . $this->default_team->getDepartement()->getName() . ')';
+        return $this->name . ' (team:' . $this->default_team->getName() . ' dpt:' . $this->default_team->getDepartement()->getName() . ')';
     }
 
     /**

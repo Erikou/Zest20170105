@@ -48,6 +48,18 @@ class Transfer
     private $departement;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\Team")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $team;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\Shift")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $shift;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="validated", type="integer")
@@ -195,6 +207,52 @@ class Transfer
     public function getDepartement()
     {
         return $this->departement;
+    }
+
+    /**
+     * Set team
+     *
+     * @param \SE\InputBundle\Entity\Team $team
+     * @return Transfer
+     */
+    public function setTeam(\SE\InputBundle\Entity\Team $team)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return \SE\InputBundle\Entity\Team 
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * Set shift
+     *
+     * @param \SE\InputBundle\Entity\Shift $shift
+     * @return Transfer
+     */
+    public function setShift(\SE\InputBundle\Entity\Shift $shift)
+    {
+        $this->shift = $shift;
+
+        return $this;
+    }
+
+    /**
+     * Get shift
+     *
+     * @return \SE\InputBundle\Entity\Shift 
+     */
+    public function getShift()
+    {
+        return $this->shift;
     }
 
     /**

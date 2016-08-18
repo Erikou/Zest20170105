@@ -215,6 +215,7 @@ class TransferController extends Controller
 		
 			// Save the new Transfer Demand
 			$transfer->setDemand($user);
+			$transfer->setDepartement($transfer->getTeam()->getDepartement());
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($transfer);
 			
