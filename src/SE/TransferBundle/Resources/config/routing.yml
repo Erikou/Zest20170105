@@ -14,6 +14,10 @@ se_transfer_add:
     path:     /add
     defaults: { _controller: SETransferBundle:Transfer:addTransfer }
     
+se_transfer_add2:
+    path:     /add2
+    defaults: { _controller: SETransferBundle:Transfer:addTransfer2 }
+    
 se_transfer_accept:
     path:     /accept/{transfer_id}
     defaults: { _controller: SETransferBundle:Transfer:accept }

@@ -28,14 +28,6 @@ class TransferType extends AbstractType
       	
 		$builder
 		->add('date_start', 'date', array('error_bubbling' => true))
-		->add('employee', 'entity', array(
-				'class' => 'SEInputBundle:Employee',
-    			'query_builder' => function(EmployeeRepository $er) use ($usrDepId) {
-        			return $er->getDepartementEmployees($usrDepId);
-    			},
-				'property' => 'nameDepartement',
-				'error_bubbling' => true
-		))
 		->add('team', 'entity', array(
 				'class' => 'SEInputBundle:Team',
 				'property' => 'name',
@@ -46,6 +38,14 @@ class TransferType extends AbstractType
 				'property' => 'identifier',
 				'error_bubbling' => true
 		));
+		/*->add('employee', 'entity', array(
+				'class' => 'SEInputBundle:Employee',
+    			'query_builder' => function(EmployeeRepository $er) use ($usrDepId) {
+        			return $er->getDepartementEmployees($usrDepId);
+    			},
+				'property' => 'nameDepartement',
+				'error_bubbling' => true
+		))*/
 	}
 
 	/*

@@ -205,7 +205,54 @@ class TransferController extends Controller
 		// Build the form
 		$transfer = new Transfer();
 		$transfer->setValidated(false);
-		$form = $this->createForm($this->get('inputBundle_addtransfer'), $transfer, array('max_length' => $usrDepId));
+		$form = $this->createFormBuilder($transfer)
+		->add('date_start', 'date', array('error_bubbling' => true))
+		->add('team', 'entity', array(
+				'class' => 'SEInputBundle:Team',
+				'property' => 'name',
+				'error_bubbling' => true
+		))
+		->add('shift', 'entity', array(
+				'class' => 'SEInputBundle:Shift',
+				'property' => 'identifier',
+				'error_bubbling' => true
+		))
+		->getForm();
+		
+		// Handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$transfer = new Transfer();
+			$transfer->setValidated(false);
+			$transfer->setShift($form->get("shift")->getData());
+			$transfer->setTeam($form->get("team")->getData());
+			$transfer->setDepartement($transfer->getTeam()->getDepartement());
+			$transfer->setDateStart($form->get("date_start")->getData());
+			
+			return $this->redirectToRoute('se_transfer_add2', array('transfer' => $transfer, 'request' => null));
+		}
+		
+		return $this->render(
+				'SETransferBundle:Transfer:addTransfer.html.twig',
+				array('form' => $form->createView())
+				);
+	}
+    
+    
+    public function addTransfer2Action(Request $request, Transfer $transfer)
+	{
+      	$usrDepId = $this->getUsrDepId();
+		// Build the form
+		$form = $this->createFormBuilder($transfer)
+		->add('employee', 'entity', array(
+				'class' => 'SEInputBundle:Employee',
+    			'query_builder' => function(EmployeeRepository $er) use ($usrDepId) {
+        			return $er->getDepartementEmployeesDate($usrDepId, $transfer->getDateStart());
+    			},
+				'property' => 'nameDepartement',
+				'error_bubbling' => true
+		))
+		->getForm();
 		
 		// Handle the submit (will only happen on POST)
 		$form->handleRequest($request);
@@ -285,7 +332,7 @@ class TransferController extends Controller
 		}
 		
 		return $this->render(
-				'SETransferBundle:Transfer:addTransfer.html.twig',
+				'SETransferBundle:Transfer:addTransfer2.html.twig',
 				array('form' => $form->createView())
 				);
 	}
