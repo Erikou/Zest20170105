@@ -241,6 +241,9 @@ class TransferController extends Controller
     
     public function addTransfer2Action(Request $request, Transfer $transfer)
 	{
+    	if ($transfer == null){
+    		return $this->redirectToRoute('se_transfer_homepage');
+    	}
       	$usrDepId = $this->getUsrDepId();
 		// Build the form
 		$form = $this->createFormBuilder($transfer)

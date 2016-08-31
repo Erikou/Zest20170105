@@ -7,17 +7,23 @@ use SE\InputBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use SE\InputBundle\Entity\Abilitation;
 
-class EmployeesController extends Controller
+class UsersController extends Controller
 {
+	/* 
+	 * This class isn't used anymore. User management is done via RightsController.
+	 * This file may get deleted at some point.
+	 * */
+	
+	
 	public function indexAction()
 	{
         $em = $this->getDoctrine()->getManager();
 
 		// Load all users from BDD
-        $listEmployees = $em->getRepository('SEInputBundle:Employee')->getAll();
+        $listUsers = $em->getRepository('SEInputBundle:Employee')->getAll();
         
 		return $this->render('SEAdminBundle:Admin:rights.html.twig', array(
-            'listEmployees' => $listEmployees,
+            'listUsers' => $listUsers,
 		));
 	}
 	
