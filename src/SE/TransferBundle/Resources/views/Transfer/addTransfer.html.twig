@@ -9,7 +9,7 @@
   
   <header class="h-sap">
   	<div class="line"></div>
-  	<h2><i class="glyphicon glyphicon-retweet"></i> Ask for new transfer (part 1)</h2>
+  	<h2><i class="glyphicon glyphicon-retweet"></i> Ask for new transfer</h2>
   </header>
 
 {% endblock %}
@@ -21,7 +21,8 @@
     {{ form_row(form.date_start) }}
     {{ form_row(form.team) }}
     {{ form_row(form.shift) }}
-    <button type="submit" class="btn btn-primary">Choose employee</button>
+    {{ form_row(form.employee) }}
+    <button type="submit" class="btn btn-primary">Ask for transfer</button>
 {{ form_end(form) }}
 </form>
 {% endblock %}

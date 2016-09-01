@@ -74,7 +74,7 @@
 			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove-sign"> </i>
 			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-question-sign"> </i> {% endif %}{% endif %}
 						</td>
-						<td>{% if transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT') and transfer.validated == 0 %}
+						<td>{% if ((transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT')) or is_granted('ROLE_ADMIN')) and transfer.validated == 0 %}
 							<a href="{{ path('se_transfer_accept', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-success btn-sm">Accept</a>
 							<a href="{{ path('se_transfer_refuse', {'transfer_id': transfer.id }) }}" role="button" class="btn btn-warning btn-sm">Refuse</a>
 							{% endif %}
