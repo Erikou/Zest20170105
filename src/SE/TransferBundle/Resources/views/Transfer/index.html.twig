@@ -87,7 +87,7 @@
 			 </tbody>
 		</table>
 	</div>
-	{% if usrDepId != -1 %}
+	{% if usrDepId != -1 or is_granted('ROLE_ADMIN') %}
 	<a href="{{ path('se_transfer_add') }}" role="button"
 	class="btn btn-primary">Ask for new transfer</a>
 	{% endif %}
