@@ -73,12 +73,14 @@ $(document).ready(function() {
     $(this).parent().siblings('.txtarea-sm').toggleClass('hide');
     window.alert("HERE");
   });
+
+  $( "div" ).find( ".input-transfer-team" ).hide();
   
   $('.input-activity select').change(function(){
       if ($(this).val() == "13") {
-    	  $(this).parent().siblings('.input-team').show();
+    	  $(this).parent().siblings('.input-transfer-team').show();
       } else {
-    	  $(this).parent().siblings('.input-team').hide();
+    	  $(this).parent().siblings('.input-transfer-team').hide();
       }
   });
 
