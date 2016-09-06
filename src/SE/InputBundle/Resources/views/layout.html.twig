@@ -4,6 +4,10 @@
   Input - {{ parent() }}
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('bundles/seinput/css/input/input_style.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block menu %}
   {{ render(controller("SEInputBundle:Entry:menu")) }}
 {% endblock %}

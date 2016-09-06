@@ -9,7 +9,7 @@
   	<div class="line"></div>
   	<h2><i class="glyphicon glyphicon-plus"> </i> New Employee</h2>
   </header>
-
+  {% if error is defined %}<p>{{error}}</p>{% endif %}
   {{ include("SEInputBundle:Settings:employee_form.html.twig") }}
 
 	<p>

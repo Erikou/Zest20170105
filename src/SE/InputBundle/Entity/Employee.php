@@ -122,7 +122,7 @@ class Employee
      * @Assert\NotNull()
      * @ORM\Column(name="master_id", type="integer", nullable=false)
      */
-    private $masterId;
+    private $masterId = 0;
 
     /**
      * @var \DateTime
@@ -506,7 +506,7 @@ class Employee
      */
     public function getMasterId()
     {
-        return $this->masterId;
+        return $this->id;
     }
 
     /**
