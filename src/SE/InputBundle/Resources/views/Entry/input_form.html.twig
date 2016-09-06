@@ -1,8 +1,22 @@
 {% extends "SEInputBundle:Entry:input.html.twig" %}
 
-{% macro entryCollection(entry) %}
+{% macro entryCollection(entry, key) %}
 <tr>
-	<td>time_name</td>
+	<td>{% if key %}{{ key }}{% else %}time_name{% endif %}</td>
+	{#
+		Ok, that one's strange. Apparently, time_name is only interpreted when no error message is displayed.
+		So I replaced it with an incremented variable named key.
+		But then, it only displays when there is no error message.
+		Not understanding what is going on there, I patched that hole combining the two methods.
+		I feel ashamed and filthy, but appearances are kept.
+		If you are brave enough, or smart enough to figure it out, praised be your name.
+		If you fail to do so, or are too lazy to try, I can't blame you.
+		Please accept, stranger, my deepest apologies for what you have witnessed here.
+		--
+		A lost soul
+		
+		PS: I know you can get my name with git. Please respect my last wish and don't.
+	#}
 	<td>
 		<div class="pull-left input-employee">{{ form_widget(entry.employee,
 			{'attr': {'class': 'form-control'}}) }}</div>
@@ -172,8 +186,9 @@
 				<tbody id="entries">
 					<div id="entries-prototype"
 						data-prototype="{{ _self.entryCollection(form.input_entries.vars.prototype)|e }}">
-						{% for entry in form.input_entries %} {{
-						_self.entryCollection(entry) }} 
+						{% set key = 0 %}
+						{% for entry in form.input_entries %} {% set key = key + 1 %}{{
+						_self.entryCollection(entry, key) }} 
 						{% endfor %}
 					</div>
 				</tbody>

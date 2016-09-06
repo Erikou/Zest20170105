@@ -89,14 +89,9 @@ class EmployeeRepository extends EntityRepository
 
 	public function getDepartementEmployeesDate($depId, $date)
 	{
-		/*$qb = $this
+		return $this
 		->createQueryBuilder('e')
 		->select("e")
-		->leftJoin('e.default_team', 't')
-		->addSelect('t')
-		->leftJoin('t.departement', 'd')
-		->addSelect('d')
-
 		->leftJoin('e.default_team', 't')
 		->addSelect('t')
 		->leftJoin('t.departement', 'd')
@@ -104,8 +99,8 @@ class EmployeeRepository extends EntityRepository
 		->where("d.id = ".$depId)
 		
 		->orderBy('e.id', 'ASC')
-		;*/
-		return $this->_em->createQuery('
+		;
+		/*return $this->_em->createQuery('
 			SELECT e
 			FROM
 				SEInputBundle:Employee e
@@ -128,7 +123,6 @@ class EmployeeRepository extends EntityRepository
 		')
 		->setMaxResults($limit)
 		->setParameter('depId', $depId)
-		->setParameter('tDate', $date);
-		return $qb;
+		->setParameter('tDate', $date);*/
 	}
 }
