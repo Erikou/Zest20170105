@@ -14,6 +14,10 @@ se_input_employees_add:
     path:     /input/employees/add
     defaults: { _controller: SEInputBundle:Settings:employees_add }
 
+se_input_employee_edit:
+    path:     /input/employees/edit/{id}
+    defaults: { _controller: SEInputBundle:Settings:employees_edit }
+
 se_input_activities:
     path:     /input/activities
     defaults: { _controller: SEInputBundle:Settings:activities }

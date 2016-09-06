@@ -1,0 +1,54 @@
+{% extends "SEInputBundle::layout.html.twig" %}
+
+{% block title %}
+  Edit Employee - {{ parent() }}
+{% endblock %}
+
+{% block seinput_body %}
+  <header class="h-employee">
+  	<div class="line"></div>
+  	<h2><i class="glyphicon glyphicon-plus"> </i> Edit Employee</h2>
+  </header>
+  {% if error is defined %}<p>{{error}}</p>{% endif %}
+  {{ include("SEInputBundle:Settings:employee_form.html.twig") }}
+	<p>
+    <h3>Employee History</h3>
+    {% if history is defined and history is not empty %}
+    <table class="employee_history">
+        <tr>
+          <th>team</th>
+          <th>shift</th>
+          <th>activity</th>
+          <th>zone</th>
+          <th>job</th>
+          <th>status</th>
+          <th>Job start</th>
+          <th>Job End</th>
+          <th>permanent</th>
+          <th>remark</th>
+          </tr>
+      {% for h in history %}
+        <tr>
+          <td>{% if h.defaultTeam is not null %}{{ h.defaultTeam.name }}{% endif %}</td>
+          <td>{% if h.defaultShift is not null %}{{ h.defaultShift.identifier }}{% endif %}</td>
+          <td>{% if h.defaultActivity is not null %}{{ h.defaultActivity.name }}{% endif %}</td>
+          <td>{% if h.defaultZone is not null %}{{ h.defaultZone.name }}{% endif %}</td>
+          <td>{% if h.job is not null %}{{ h.job.description }}{% endif %}</td>
+          <td>{{ h.status.name }}</td>
+          <td>{{ h.StartDate|date('Y-m-d') }}</td>
+          <td>{{ h.EndDate|date('Y-m-d') }}</td>
+          <td>{% if h.permanent == 1 %}yes{% else %}no{% endif %}</td>
+          <td>{{ h.remarks }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p>no history for this employee</p>
+    {% endif %}
+    <a href="{{ path('se_input_employees') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Return
+    </a>
+  </p>
+
+{% endblock %}

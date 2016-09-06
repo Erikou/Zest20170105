@@ -148,3 +148,20 @@
 #presence-container[disabled]  {
     pointer-events: none;
 }
+
+/* input_employee_edit */
+
+table.employee_history th, table.employee_history tr {
+	background-color: lightgray;
+	min-width: 100px;
+	text-align: center;
+}
+
+table.employee_history {
+	margin: 20px;
+	padding: 5px;
+}
+
+#employee_form form label {
+	display: block;
+}

@@ -21,13 +21,13 @@ class EmployeeType extends AbstractType
                 'class'    => 'SEInputBundle:Team',
                 'property' => 'name', 
                 'multiple' => false,
-                'expanded' => true
+                'expanded' => false
                 ), array('required' => false))
             ->add('defaultShift', 'entity', array(
                 'class'    => 'SEInputBundle:Shift',
                 'property' => 'identifier', 
                 'multiple' => false,
-                'expanded' => true
+                'expanded' => false
                 ), array('required' => false))
             ->add('defaultActivity', 'entity', array(
                 'class'    => 'SEInputBundle:Activity',
@@ -37,7 +37,7 @@ class EmployeeType extends AbstractType
                 ), array('required' => false))
             ->add('defaultZone', 'entity', array(
                 'class'    => 'SEInputBundle:Zone',
-                'property' => 'name', 
+                'property' => 'name',
                 'multiple' => false,
                 'expanded' => false
                 ), array('required' => false))
@@ -53,6 +53,18 @@ class EmployeeType extends AbstractType
                 'multiple' => false,
                 'expanded' => false
                 ))
+            ->add('startDate', 'date', array(
+                'widget' => 'choice',
+                'label' => "Job start date",
+                'years' => range(1990,2050),
+                'required' => true)
+            )
+            ->add('endDate', 'date', array(
+                'widget' => 'choice',
+                'label' => "Job end date",
+                'years' => range(1990,2050),
+                'required' => true)
+            )
             ->add('permanent', 'checkbox', array('required' => false))
             ->add('remarks', 'textarea', array('required' => false))
             ->add('save',      'submit')

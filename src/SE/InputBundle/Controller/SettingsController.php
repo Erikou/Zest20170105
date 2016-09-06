@@ -17,7 +17,7 @@ class SettingsController extends Controller
       $listEmployees = $this->getDoctrine()
         ->getManager()
         ->getRepository('SEInputBundle:Employee')
-        ->findAll()
+        ->findByStatusControl(true)
       ;
 
     	return $this->render('SEInputBundle:Settings:employees.html.twig', array(
@@ -30,12 +30,21 @@ class SettingsController extends Controller
       $employee = new Employee();
       $employee->setJobStartDate(new \DateTime());
       $employee->setStartDate(new \DateTime());
-      $employee->setMasterId(1); // no idea what i'm doing
-      $employee->setRemarks("");
       
       $form = $this->createForm(new EmployeeType(), $employee);
 
       if ($form->handleRequest($request)->isValid()) {
+        if ($employee->getSesa != 'NOSESA' && $this->getDoctrine()
+                 ->getManager()
+                 ->getRepository('SEInputBundle:Employee')
+                 ->findOneBy(array('sesa' => $employee->getSesa(), 'statusControl' => 1)))
+        {
+          $error_message = "This SESA is already used, do you want to be redirected to the employee profile ?";
+          return $this->render('SEInputBundle:Settings:employees_add.html.twig', array(
+            'form' => $form->createView(),
+            'error' => $error_message
+            ));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->persist($employee);
         $em->flush();
@@ -44,11 +53,44 @@ class SettingsController extends Controller
 
       	return $this->redirect($this->generateUrl('se_input_employees'));
       }
-
       return $this->render('SEInputBundle:Settings:employees_add.html.twig', array(
       'form' => $form->createView(),
+      'error' => $request->get('error'),
       ));
   	}
+
+    public function employees_editAction(Request $request, $id)
+    {
+      $error_message = $request->query->get('error');
+      $repo = $this->getDoctrine()->getManager()->getRepository('SEInputBundle:Employee');
+      $employee = $repo->findOneById($id);
+      if ($employee->getSesa() != 'NOSESA'){
+        $history = $repo->findBy(array('sesa' => $employee->getSesa(), 'statusControl' => 0), array('id' => 'DESC'));
+      }
+      else {
+        $history = null;
+      }
+      $form = $this->createForm(new EmployeeType(), $employee);
+
+      if ($employee == null && $history == null) {
+        $error_message = "This SESA is not used, you have been redirected to the creation page.";
+        return $this->redirect($this->generateUrl('se_input_employees_add', array('error' => $error_message)));
+      }
+      if ($form->handleRequest($request)->isValid()) {
+        $employee_draft = clone $employee;
+        $employee->setStatusControl(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($employee_draft);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('notice', 'employee entry updated');
+      }
+      return $this->render('SEInputBundle:Settings:employees_edit.html.twig', array(
+      'form' => $form->createView(),
+      'history' => $history,
+      'error' => $error_message
+      ));
+    }
 
   	public function activitiesAction()
   	{

@@ -19,8 +19,6 @@
 	</p>
 	{% endif %}
 
-	<p> Here will be the Employees List -> table with criteria + edit in line </p>
-
 	<div class="table-responsive">
 		<table class="table table-hover table-striped">
 			<thead>
@@ -28,12 +26,14 @@
 					<th>#</th>
 					<th>Name</th>
 					<th>SESA</th>
+					<th>Working ?</th>
 					<th>Team</th>
 					<th>Shift</th>
 					<th>Main Activity</th>
 					<th>Main Zone</th>
 					<th>Job</th>
 					<th>Remarks</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -42,6 +42,10 @@
 		      			<td>{{ employee.id }}</td>
 		      			<td>{{ employee.name }}</td>
 		      			<td>{{ employee.sesa }}</td>
+		      			<td>{% if employee.status is not null %}
+		      					{{ employee.status.name }}
+		      				{% endif %}
+	      				</td>
 		      			<td>{% if employee.defaultTeam is not null %}
 		      					{{ employee.defaultTeam.name }}
 							{% endif %}
@@ -66,7 +70,9 @@
 				        		{{ employee.remarks }}
 							{% endif %}
 						</td>
-					</tr>
+						<td><a href="{{ path('se_input_employee_edit', {'id': employee.id }) }}">
+							<span class="glyphicon glyphicon-pencil" title="edit"></span>&nbspedit</a></td>
+						</tr>
 		    {% else %}
 		      <tr><td> No employee recorded </td></tr>
 		    {% endfor %}
