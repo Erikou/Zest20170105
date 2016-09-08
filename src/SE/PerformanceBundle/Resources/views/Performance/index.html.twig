@@ -12,15 +12,16 @@
 {% block seperformance_body %}
 <div class="well well-black col-md-12">
 	<div class="table-responsive">
-		<h4>Departement: {% if departement is null %}Tous{% else %}{{ departement.name }}{% endif %}</h4>
+		<h4>Departement: {% if departement is null %}All{% else %}{{ departement.name }}{% endif %}</h4>
+		<h4>Team: {% if team is null %}None{% else %}{{ team.name }} #{{ team.id }}{% endif %}</h4>
 		<table id="imports" class="table">
 			<thead>
 				<tr>
 					<th>Employee</th>
 					<th>Details------------------------formatting-WIP-</th>
-					<th>Date1</th>
-					<th>Date2</th>
-					<th>...</th>
+					{%  for d in dates %}
+					<th>{{ d.format('d/m') }}</th>
+					{% endfor %}
 				</tr>
 				</thead>
 			<tbody>
