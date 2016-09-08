@@ -12,24 +12,35 @@
 {% block seperformance_body %}
 <div class="well well-black col-md-12">
 	<div class="table-responsive">
+		<h4>Departement: {% if departement is null %}Tous{% else %}{{ departement.name }}{% endif %}</h4>
 		<table id="imports" class="table">
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th>Job</th>
-					<th>Team</th>
-					<th>Departement</th>
+					<th>Employee</th>
+					<th>Details------------------------formatting-WIP-</th>
+					<th>Date1</th>
+					<th>Date2</th>
+					<th>...</th>
 				</tr>
 				</thead>
 			<tbody>
 				{% for employee in listEmployees %}
 			      		<tr>
-			      			<td>{{ employee.id }}</td>
 			      			<td>{{ employee.name }}</td>
-			      			<td>{{ employee.job.description }}</td>
-			      			<td>{{ employee.defaultTeam.name }}</td>
-			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+			      			<td>
+			      				<div>TO Confirmed</div>
+			      				<div>Productivity</div>
+			      				<div>Worked hours</div>
+			      				<div>Overtime hours</div>
+			      			</td>
+			      			{% for day in employeeData[employee.id] %}
+			      			<td>
+			      				<div>{{ day['TO Confirmed'] }}</div>
+			      				<div>{{ day['Productivity'] }}</div>
+			      				<div>{{ day['Worked'] }}</div>
+			      				<div>{{ day['Overtime'] }}</div>
+			      			</td>
+			    			{% endfor %}
 						</tr>
 			    {% else %}
 			    	<tr><td> No employee listed in your departement </td></tr>

@@ -16,6 +16,8 @@ use SE\InputBundle\SAP;
 use SE\InputBundle\Entity\Permission;
 use SE\InputBundle\Entity\Abilitation;
 use Symfony\Component\Validator\Constraints\Time;
+use SE\InputBundle\Entity\Transfer;
+use SE\InputBundle\Entity\Notification;
 
 class EntryController extends Controller
 {
@@ -32,12 +34,29 @@ class EntryController extends Controller
 
     	if ($form->handleRequest($request)->isValid()) {
       		$em = $this->getDoctrine()->getManager();
+      		
+      		foreach ($userInput->getInputEntries() as $inputentry){
+      			foreach ($inputentry->getActivityHours() as $activityhour){
+      				if ($activityhour->getActivity()->getId() == 13){// if is a transfer
+      					$transfer = new Transfer();
+      					$transfer->setDemand($this->get('security.context')->getToken()->getUser());
+      					$transfer->setEmployee($inputentry->getEmployee());
+      					$transfer->setTeam($activityhour->getTransferTeam());
+      					$transfer->setShift($userInput->getShift());
+      					$transfer->setDateStart($userInput->getDateInput());
+      					$transfer->setValidated(false);
+      					$em->persist($transfer);
+      					$this->transferNotice($transfer, $em);
+      				}
+      			}
+      		}
+      		
       		$em->persist($userInput);
       		$em->flush();
 
-    	$request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
+    		$request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
 
-    	return $this->redirect($this->generateUrl('se_input_review'));
+    		return $this->redirectToRoute('se_transfer_homepage');
    		}
 
     	return $this->render('SEInputBundle:Entry:input_form.html.twig', array(
@@ -46,6 +65,70 @@ class EntryController extends Controller
     	));
 	}
 
+
+	public function transferNotice(Transfer $transfer, $em){
+		$user = $this->get('security.context')->getToken()->getUser();
+			
+		$receivers = [];
+		$listUsers = $em->getRepository('SEInputBundle:User')->getAll();
+			
+		// Find all users who can accept the transfer and create notifications
+		foreach ($listUsers as $usr){
+			$t = $usr->getTeam();
+			if ($t != null && $t->getDepartement() == $transfer->getDepartement()){
+				if (in_array('ROLE_TRANSFER_EDIT', $usr->getRoles(), true)){
+					$notif = new Notification();
+					$notif->setDateCreation(new \DateTime("now"));
+					$notif->setSender($user);
+					$notif->setReceiver($usr);
+					$receivers[] = $usr->getName();
+					$notif->setTitle('Transfer demand');
+					$notif->setText($user->getName().' demands the transfer of '
+							.$transfer->getEmployee()->getNameDepartement().' to '
+							.$transfer->getDepartement()->getName()." the "
+							.$transfer->getDateStartString()
+							.". You have to confirm/invalidate this transfer.");//todo add link
+	
+							$em->persist($notif);
+				}
+			}
+		}
+			
+		// If no manager is registered, the administrators are warned via notifications
+		if (empty($receivers)){
+			$receivers[] = "no one (no manager has been set for this department. The administrator has been warned.)";
+			foreach ($listUsers as $usr){
+				if (in_array('ROLE_ADMIN', $usr->getRoles(), true)){
+					$notif = new Notification();
+					$notif->setDateCreation(new \DateTime("now"));
+					$notif->setSender($user);
+					$notif->setReceiver($usr);
+					$notif->setTitle('Manager missing');
+					$notif->setText('No user in the '
+							.$transfer->getDepartement()->getName()
+							." department has the right to confirm transfers.");
+	
+					$em->persist($notif);
+				}
+			}
+		}
+			
+		// A feedback notification is created for the demander
+		$notif = new Notification();
+		$notif->setDateCreation(new \DateTime("now"));
+		$notif->setSender($user);
+		$notif->setReceiver($user);
+		$notif->setTitle('Transfer demand sent');
+		$notif->setText('You have sent a demand of transfer of '
+				.$transfer->getEmployee()->getNameDepartement().' to '
+				.$transfer->getDepartement()->getName()." the "
+				.$transfer->getDateStartString()
+				." to ".implode(", ", $receivers)
+				.". Wait until they confirm/invalidate this transfer.");
+	
+		$em->persist($notif);
+	}
+	
 	public function menuAction()
   	{
     	return $this->render('SEInputBundle:Entry:menu.html.twig');

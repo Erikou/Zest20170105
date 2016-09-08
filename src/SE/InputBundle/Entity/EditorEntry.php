@@ -439,7 +439,7 @@ class EditorEntry
         foreach ($this->editorActivities as $a){
             $i = $a->getActivity()->getId();
             //COMMENT PROPERTY NEEDED IN ACTIVITIES
-            if( ($i == 13 || $i == 11 || $i == 7) && $this->comments === null){
+            if( ($i == 11 || $i == 7) && $this->comments === null){
                 return false;
             }
         }

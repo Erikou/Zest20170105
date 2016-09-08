@@ -218,6 +218,7 @@ class Transfer
     public function setTeam(\SE\InputBundle\Entity\Team $team)
     {
         $this->team = $team;
+        $this->departement = $team->getDepartement();
 
         return $this;
     }
