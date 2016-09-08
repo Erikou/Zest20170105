@@ -23,6 +23,12 @@ class ActivityHoursType extends AbstractType
                 ), array('required' => true))
             ->add('regularHours', 'number')
             ->add('otHours', 'number')
+            ->add('transfer_team', 'entity', array(
+                'class'    => 'SEInputBundle:Team',
+                'property' => 'name', 
+                'multiple' => false,
+                'expanded' => false
+                ), array('required' => false))
             /*->add('zone', 'entity', array(
                 'class'    => 'SEInputBundle:Zone',
                 'property' => 'name', 

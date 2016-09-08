@@ -95,6 +95,9 @@
 			class="glyphicon glyphicon-remove"></i>
 		</a>
 	</div>
+	<div class="pull-left input-transfer-team">{{
+			form_widget(activity.transfer_team, {'attr': {'class':
+			'form-control'}}) }}</div>
 	{{ form_widget(activity) }}
 </div>
 {% endmacro %}
@@ -179,6 +182,7 @@
 							<div class="input-activity pull-left">Activity</div>
 							<div class="input-regular-hours pull-left">Hours</div>
 							<div class="header-overtime pull-left">Overtime</div>
+							<div class="input-activity pull-left">Transfer team</div>
 						</th>
 						<th class="th-options">Options</th>
 					</tr>
