@@ -47,6 +47,7 @@
 					<th>Employee</th>
 					<th>From</th>
 					<th>To</th>
+					<th>Hours</th>
 					<th>Date</th>
 					<th>Validated</th>
 					<th></th>
@@ -68,6 +69,7 @@
 			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
 			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
 			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.totalHours }}</td>
 			      		<td>{{ transfer.dateStartString }}</td>
 			      		<td>{% if transfer.validated == 1 %}
 			      			<i style="color: green;" class="glyphicon glyphicon-ok-sign"> </i>{% else %}
@@ -87,10 +89,10 @@
 			 </tbody>
 		</table>
 	</div>
-	{% if usrDepId != -1 or is_granted('ROLE_ADMIN') %}
+	{#{% if usrDepId != -1 or is_granted('ROLE_ADMIN') %}
 	<a href="{{ path('se_transfer_add') }}" role="button"
 	class="btn btn-primary">Ask for new transfer</a>
-	{% endif %}
+	{% endif %} #}
 </div>
 
 

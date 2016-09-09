@@ -45,6 +45,7 @@ class EntryController extends Controller
       					$transfer->setShift($userInput->getShift());
       					$transfer->setDateStart($userInput->getDateInput());
       					$transfer->setValidated(false);
+      					$transfer->setTotalHours($activityhour->getRegularHours()+$activityhour->getOtHours());
       					$em->persist($transfer);
       					$this->transferNotice($transfer, $em);
       				}
@@ -56,7 +57,7 @@ class EntryController extends Controller
 
     		$request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
 
-    		return $this->redirectToRoute('se_transfer_homepage');
+    		return $this->redirectToRoute('se_input_home');
    		}
 
     	return $this->render('SEInputBundle:Entry:input_form.html.twig', array(

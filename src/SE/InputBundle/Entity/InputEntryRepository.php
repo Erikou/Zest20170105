@@ -17,8 +17,12 @@ class InputEntryRepository extends EntityRepository
 	{
 		$date = new \DateTime();
 		$date->setDate($y, $m, $d);
-		$date->setTime(0, 0, 0);
-
+		
+		return $this->getEmployeeInputsAtDate2($date, $e);
+	}
+	
+	public function getEmployeeInputsAtDate2($date,$e)
+	{
 		$qb = $this
 		->createQueryBuilder('a')
 		->select("a")
@@ -31,7 +35,7 @@ class InputEntryRepository extends EntityRepository
         ->addOrderBy('a.id', 'DESC');
         
   		$qb->setParameter('eId', $e);
-        $qb->setParameter('date', $date->format('Y-m-d H:i:s'));
+        $qb->setParameter('date', $date->format('Y-m-d'));
 		
 		return $qb->getQuery()->getResult();
 	}

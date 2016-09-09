@@ -24,6 +24,7 @@
 					<th>Employee</th>
 					<th>From</th>
 					<th>To</th>
+					<th>Hours</th>
 					<th>Date</th>
 					<th>Validated</th>
 				</tr>
@@ -36,6 +37,7 @@
 			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
 			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
 			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.totalHours }}</td>
 			      		<td>{{ transfer.dateStartString }}</td>
 			      		<td>{% if transfer.validated == 1 %}
 			      			<i style="color: green;" class="glyphicon glyphicon-ok-sign"> </i>{% else %}

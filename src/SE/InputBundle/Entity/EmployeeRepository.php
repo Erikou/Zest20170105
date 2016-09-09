@@ -81,13 +81,14 @@ class EmployeeRepository extends EntityRepository
 		->leftJoin('t.departement', 'd')
 		->addSelect('d')
 		->where("d.id = ".$depId)
-		->where("a.statusControl = 1")
+		//->where("e.statusControl = 1")
         ->orderBy('e.id', 'ASC')
 		;
 		return $qb;
 	}
 	
 
+	// Doesn't work yet
 	public function getDepartementEmployeesDate($depId, $date)
 	{
 		return $this

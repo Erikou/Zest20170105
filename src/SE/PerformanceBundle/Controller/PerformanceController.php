@@ -18,21 +18,31 @@ class PerformanceController extends Controller
     public function indexAction()
     {
     	set_time_limit(300);//ini_set('max_execution_time', 300);
-    	$dep = $this->getUsrDep();
+    	$team = $this->get('security.context')->getToken()->getUser()->getTeam();
+    	$dep = $team ? $team->getDepartement() : null;
     	
-    	// Get concerned employees
-    	$listEmployees = $this->getDoctrine()
-    	->getManager()
-    	->getRepository('SEInputBundle:Employee')
-    	->getDepartementEmployees($dep->getId())
-    	; // doesn't work ? uh ?
-    	
-    	if ($dep == null){
+    	if ($team == null){
     		$listEmployees = $this->getDoctrine()
     			->getManager()
     			->getRepository('SEInputBundle:Employee')
-    			->getCurrentEmployees()
-    			;// in case user doesn't have a team (admin for example)
+    			->getCurrentEmployees();// in case user doesn't have a team (admin for example)
+    	} else {
+    		// Get concerned employees
+    		/*$listEmployees = $this->getDoctrine()
+    			->getManager()
+    			->getRepository('SEInputBundle:Employee')
+    			->getDepartementEmployees($dep->getId()); // doesn't work ? uh ?*/
+
+    		$listtmp = $this->getDoctrine()
+    			->getManager()
+    			->getRepository('SEInputBundle:Employee')
+    			->getCurrentEmployees();
+    		$listEmployees = array();
+    		foreach ($listtmp as $e){
+    			if ($e->getDefaultTeam() == $team){
+    				$listEmployees[] = $e;
+    			}
+    		}
     	}
     	/*$listEmployees = $this->getDoctrine()
     		->getManager()
@@ -59,14 +69,16 @@ class PerformanceController extends Controller
     			$entries = $this->getDoctrine()
     				->getManager()
     				->getRepository('SEInputBundle:InputEntry')
-    				->getEmployeeInputsAtDate($date->format('d'), $date->format('m'),
-    						$date->format('y'), $e->getId());
-    			$TO = 0; $Prod = 0; $Worked = 0; $Overtime = 0;
+    				->getEmployeeInputsAtDate2($date, $e->getId());
+				
+    			$TO = 0; $Worked = 0; $Overtime = 0;
     			foreach ($entries as $entry){
     				$TO += $entry->getTotalTo();
-    				$Worked += $entry->getTotalWorked();
+    				$Worked += $entry->getTotalWorkingHours();
     				$Overtime += $entry->getTotalOvertime();
+    				//$Overtime = $Overtime."<br\>".$entry->getUserInput()->getDateInput()->format('Y-m-d ');
     			}
+				
     			$day['TO Confirmed'] = $TO;
     			$day['Productivity'] = $Worked ? $TO/$Worked : "-";
     			$day['Worked'] = $Worked;
@@ -81,7 +93,7 @@ class PerformanceController extends Controller
     	return $this->render('SEPerformanceBundle:Performance:index.html.twig',
     					array('listEmployees' => $listEmployees,
     							'departement' => $dep,
-    							'team' => $this->get('security.context')->getToken()->getUser()->getTeam(),
+    							'team' => $team,
     							'employeeData' => $employeeData,
     							'dates' => $dates
     					));

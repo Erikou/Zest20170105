@@ -12,8 +12,9 @@
 {% block seperformance_body %}
 <div class="well well-black col-md-12">
 	<div class="table-responsive">
-		<h4>Departement: {% if departement is null %}All{% else %}{{ departement.name }}{% endif %}</h4>
-		<h4>Team: {% if team is null %}None{% else %}{{ team.name }} #{{ team.id }}{% endif %}</h4>
+		<h4>Departement: {% if departement is null %}All{% else %}{{ departement.name }} #{{ departement.id }}{% endif %}</h4>
+		<h4>Team: {% if team is null %}None{% else %}
+			{{ team.name }} #{{ team.id }} ({{ listEmployees|length }} employees){% endif %}</h4>
 		<table id="imports" class="table">
 			<thead>
 				<tr>

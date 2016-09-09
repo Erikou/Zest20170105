@@ -73,6 +73,13 @@ class Transfer
      */
     private $date_start;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_hours", type="integer")
+     */
+    private $total_hours;
+
     public function __construct()
     {
         $this->date_start = new \Datetime();
@@ -277,6 +284,29 @@ class Transfer
     public function getValidated()
     {
         return $this->validated;
+    }
+
+    /**
+     * Set total_hours
+     *
+     * @param integer $total_hours
+     * @return Transfer
+     */
+    public function setTotalHours($total_hours)
+    {
+        $this->total_hours = $total_hours;
+
+        return $this;
+    }
+
+    /**
+     * Get total_hours
+     *
+     * @return integer 
+     */
+    public function getTotalHours()
+    {
+        return $this->total_hours;
     }
 
 }
