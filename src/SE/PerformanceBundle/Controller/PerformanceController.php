@@ -3,6 +3,8 @@
 namespace SE\PerformanceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use SE\InputBundle\Entity\Employee;
+use SE\InputBundle\Entity\Activity;
 
 class PerformanceController extends Controller
 {
@@ -32,7 +34,6 @@ class PerformanceController extends Controller
     			->getManager()
     			->getRepository('SEInputBundle:Employee')
     			->getDepartementEmployees($dep->getId()); // doesn't work ? uh ?*/
-
     		$listtmp = $this->getDoctrine()
     			->getManager()
     			->getRepository('SEInputBundle:Employee')
@@ -44,12 +45,6 @@ class PerformanceController extends Controller
     			}
     		}
     	}
-    	/*$listEmployees = $this->getDoctrine()
-    		->getManager()
-    		->getRepository('SEInputBundle:Employee')
-    		->getAlphaCurrentEmployees()
-    		;*/
-    	
     	
     	$dates = array();
     	$date = new \DateTime();
@@ -71,16 +66,16 @@ class PerformanceController extends Controller
     				->getRepository('SEInputBundle:InputEntry')
     				->getEmployeeInputsAtDate2($date, $e->getId());
 				
-    			$TO = 0; $Worked = 0; $Overtime = 0;
+    			$TO = 0; $Worked = 0; $Overtime = 0; $Productivity = 0;
     			foreach ($entries as $entry){
     				$TO += $entry->getTotalTo();
     				$Worked += $entry->getTotalWorkingHours();
     				$Overtime += $entry->getTotalOvertime();
-    				//$Overtime = $Overtime."<br\>".$entry->getUserInput()->getDateInput()->format('Y-m-d ');
+    				$Productivity += $entry->getTotalProd();
     			}
 				
     			$day['TO Confirmed'] = $TO;
-    			$day['Productivity'] = $Worked ? $TO/$Worked : "-";
+    			$day['Productivity'] = $Productivity;
     			$day['Worked'] = $Worked;
     			$day['Overtime'] = $Overtime;
     			$data[$i] = $day;
@@ -99,6 +94,75 @@ class PerformanceController extends Controller
     					));
     }
 
+    public function detailAction($employee_id){
+		$em = $this->getDoctrine()->getManager();
+		$emp = $em->find(Employee::class, $employee_id);
+    	
+    	if ($emp == null){
+    		return $this->redirectToRoute('se_performance_homepage');
+    	}
+    	
+    	$dates = array();
+    	$date = new \DateTime();
+    	$month = $date->format('m');
+    	$date->setDate($date->format('Y'), $month, 1);
+    	for ($i = 0; $month == $date->format('m') or $i >= 31; $i++){
+    		$dates[$i] = clone $date;
+    		$date->modify("+1 day");
+    	}
+    	
+    	$activities = array();
+    	$allActivities = $this->getDoctrine()->getRepository(Activity::class)->findAll();
+    	foreach ($allActivities as $a){
+    		if ($a->getId() != 11 && $a->getId() != 13)
+    			$activities[$a->getName()] = 0;
+    	}
+    	
+    	$month = array();
+    	$data = array('TO' => 0, 'Hours' => 0, 'Regular' => 0,
+    			'Overtime' => 0, 'Absent' => 0, 'Training' => 0, 'Transfer' => 0);
+    	for ($i = 0; $i < sizeof($dates); $i++){
+    		$day = array();
+    		$date = $dates[$i];
+    		$entries = $this->getDoctrine()
+    			->getManager()
+    			->getRepository('SEInputBundle:InputEntry')
+    			->getEmployeeInputsAtDate2($date, $employee_id);
+			
+    		$TO = 0; $Worked = 0; $Overtime = 0; $Productivity = 0;
+    		foreach ($entries as $entry){
+    			$TO += $entry->getTotalTo();
+    			$Worked += $entry->getTotalWorkingHours();
+    			$Overtime += $entry->getTotalOvertime();
+    			$Productivity += $entry->getTotalProd();
+    			if ($entry->getPresent() == 0)
+    				$data['Absent']++;
+    			foreach ($entry->getActivityHours() as $ah){
+    				if ($a->getId() != 11 && $a->getId() != 13)
+    					$activities[$ah->getActivity()->getName()] += $ah->getRegularHours() + $ah->getOtHours();
+    			}
+    		}
+    		$data['TO'] += $TO;
+    		$data['Hours'] += $Worked + $Overtime;
+    		$data['Regular'] += $Worked;
+    		$data['Overtime'] += $Overtime;
+			
+    		$day['TO Confirmed'] = $TO;
+    		$day['Productivity'] = $Productivity;
+    		$day['Worked'] = $Worked;
+    		$day['Overtime'] = $Overtime;
+    		$month[$i] = $day;
+    	}
+
+    	return $this->render('SEPerformanceBundle:Performance:detail.html.twig',
+    			array('employee' => $emp,
+    					'month' => $month,
+    					'data' => $data,
+    					'dates' => $dates,
+    					'activities' => $activities,
+    			));
+    }
+    
     public function menuAction()
 	{
 		return $this->render('SEPerformanceBundle:Performance:menu.html.twig');

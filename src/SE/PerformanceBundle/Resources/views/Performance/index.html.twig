@@ -28,7 +28,7 @@
 			<tbody>
 				{% for employee in listEmployees %}
 			      		<tr>
-			      			<td>{{ employee.name }}</td>
+			      			<td><a href="{{ path('se_performance_detail', {'employee_id': employee.id }) }}">{{ employee.name }}</a></td>
 			      			<td>
 			      				<div>TO Confirmed</div>
 			      				<div>Productivity</div>
@@ -37,10 +37,11 @@
 			      			</td>
 			      			{% for day in employeeData[employee.id] %}
 			      			<td>
-			      				<div>{{ day['TO Confirmed'] }}</div>
-			      				<div>{{ day['Productivity'] }}</div>
-			      				<div>{{ day['Worked'] }}</div>
-			      				<div>{{ day['Overtime'] }}</div>
+			      				<div>{% if day['Worked'] > 0 %}{{ day['TO Confirmed'] }}{% else %}-{% endif %}</div>
+			      				<div>{% if day['Worked'] > 0 %}{{ day['Productivity'] }}{% else %}-{% endif %}</div>
+			      				<div class="{% if day['Worked'] > 0 %}bg-success{% endif %}">
+			      					{% if day['Worked'] > 0 %}{{ day['Worked'] }}{% else %}-{% endif %}</div>
+			      				<div>{% if day['Overtime'] > 0 %}{{ day['Overtime'] }}{% else %}-{% endif %}</div>
 			      			</td>
 			    			{% endfor %}
 						</tr>
