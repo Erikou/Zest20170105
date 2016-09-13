@@ -83,3 +83,6 @@ stof_doctrine_extensions:
     orm:
         default:
             sluggable: true
+
+cmen_google_charts:
+    version: "1"

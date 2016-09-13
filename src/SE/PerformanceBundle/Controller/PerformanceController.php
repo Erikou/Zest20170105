@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SE\InputBundle\Entity\Employee;
 use SE\InputBundle\Entity\Activity;
 
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ComboChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Options\VAxis;
+
 class PerformanceController extends Controller
 {
 	private function getUsrDep(){
@@ -147,6 +150,7 @@ class PerformanceController extends Controller
     		$data['Regular'] += $Worked;
     		$data['Overtime'] += $Overtime;
 			
+    		$day['date'] = $date->format('d');
     		$day['TO Confirmed'] = $TO;
     		$day['Productivity'] = $Productivity;
     		$day['Worked'] = $Worked;
@@ -166,5 +170,23 @@ class PerformanceController extends Controller
     public function menuAction()
 	{
 		return $this->render('SEPerformanceBundle:Performance:menu.html.twig');
+	}
+
+	public function getChart1($month)
+	{
+		$data = array();
+		$data[] = ['Day', 'Prod'];
+		foreach($month as $day){
+			$data[] = [$day['date'], $day['Productivity']];
+		}
+		
+		$chart = new LineChart();
+		$chart->getData()->setArrayToDataTable($data);
+		$chart->getOptions()->getAnimation()->setStartup(true);
+		$chart->getOptions()->getAnimation()->setDuration(1000);
+		$chart->getOptions()->getChartArea()->setHeight('80%');
+		$chart->getOptions()->getChartArea()->setWidth('80%');
+	
+		return $chart;
 	}
 }

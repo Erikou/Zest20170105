@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new SE\PerformanceBundle\SEPerformanceBundle(),
             new SE\TransferBundle\SETransferBundle(),
             new SE\NotificationBundle\SENotificationBundle(),
+        	new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
