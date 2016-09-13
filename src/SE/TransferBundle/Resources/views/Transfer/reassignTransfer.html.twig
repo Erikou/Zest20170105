@@ -1,0 +1,33 @@
+{% extends "SETransferBundle::layout.html.twig" %}
+
+{% block title %}
+  New transfer - {{ parent() }}
+{% endblock %}
+
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block setransfer_header %}
+  
+  <header class="h-sap">
+  	<div class="line"></div>
+  	<h2><i class="glyphicon glyphicon-retweet"></i> Ask for new transfer</h2>
+  </header>
+
+{% endblock %}
+
+{% block setransfer_body %}
+<form style="color: black;" method="POST">
+<h5>Employee: {{ oldTransfer.employee.name }}</h5>
+<h5>Date: {{ oldTransfer.dateStart.format('d/m/Y') }}</h5>
+<h5>Shift: {{ oldTransfer.shift.identifier }}</h5>
+<h5>Hours: {{ oldTransfer.totalHours }}</h5>
+{{ form_start(form) }}
+	{{ form_errors(form) }}
+    {{ form_row(form.team) }}
+    <button type="submit" class="btn btn-primary">Ask for new transfer</button>
+{{ form_end(form) }}
+</form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}
