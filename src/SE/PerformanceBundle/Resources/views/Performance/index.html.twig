@@ -19,9 +19,9 @@
 			<thead>
 				<tr>
 					<th>Employee</th>
-					<th>Details------------------------formatting-WIP-</th>
+					<th>Details</th>
 					{%  for d in dates %}
-					<th>{{ d.format('d/m') }}</th>
+					<th>{{ d.format('d') }}</th>
 					{% endfor %}
 				</tr>
 				</thead>

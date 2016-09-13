@@ -7,7 +7,7 @@
 	<h5>From <strong>{{ det_notif.sender.name }}</strong> to <strong>{{ det_notif.receiver.name }}</strong>
 , <strong>{{ det_notif.dateCreationString }}</strong></h5>
 	<div class="notif-text">
-		{{ det_notif.text }}
+		{{ det_notif.text|raw }}
 	</div>
 </div>
 {% endif %}

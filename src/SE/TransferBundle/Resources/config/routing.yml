@@ -18,6 +18,12 @@ se_transfer_employees:
 #    path:     /add2
 #    defaults: { _controller: SETransferBundle:Transfer:addTransfer2 }
     
+se_transfer_reassign:
+    path:     /reassign/{transfer_id}
+    defaults: { _controller: SETransferBundle:Transfer:reassign }
+    requirements:
+        id:  \d+
+    
 se_transfer_accept:
     path:     /accept/{transfer_id}
     defaults: { _controller: SETransferBundle:Transfer:accept }
