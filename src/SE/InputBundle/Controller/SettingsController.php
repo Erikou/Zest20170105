@@ -28,13 +28,13 @@ class SettingsController extends Controller
   	public function employees_addAction(Request $request)
   	{
       $employee = new Employee();
-      $employee->setJobStartDate(new \DateTime());
-      $employee->setStartDate(new \DateTime());
+      $employee->setStartDate(new \DateTime('now'));
+      $employee->setDateCreation(new \DateTime('now'));
       
       $form = $this->createForm(new EmployeeType(), $employee);
 
       if ($form->handleRequest($request)->isValid()) {
-        if ($employee->getSesa != 'NOSESA' && $this->getDoctrine()
+        if ($employee->getSesa() != 'NOSESA' && $this->getDoctrine()
                  ->getManager()
                  ->getRepository('SEInputBundle:Employee')
                  ->findOneBy(array('sesa' => $employee->getSesa(), 'statusControl' => 1)))
@@ -46,6 +46,7 @@ class SettingsController extends Controller
             ));
         }
         $em = $this->getDoctrine()->getManager();
+        $employee->setJobStartDate($employee->getStartDate());
         $em->persist($employee);
         $em->flush();
 
@@ -63,28 +64,32 @@ class SettingsController extends Controller
     {
       $error_message = $request->query->get('error');
       $repo = $this->getDoctrine()->getManager()->getRepository('SEInputBundle:Employee');
-      $employee = $repo->findOneById($id);
-      if ($employee->getSesa() != 'NOSESA'){
-        $history = $repo->findBy(array('sesa' => $employee->getSesa(), 'statusControl' => 0), array('id' => 'DESC'));
-      }
-      else {
-        $history = null;
-      }
-      $form = $this->createForm(new EmployeeType(), $employee);
-
-      if ($employee == null && $history == null) {
+      $employee_old = $repo->findOneById($id);
+      if (!$employee_old) {
         $error_message = "This SESA is not used, you have been redirected to the creation page.";
         return $this->redirect($this->generateUrl('se_input_employees_add', array('error' => $error_message)));
       }
+      $employee = clone $employee_old;
+      $employee->setDateCreation(new \DateTime('now'));
+      
+      $form = $this->createForm(new EmployeeType(), $employee);
+
       if ($form->handleRequest($request)->isValid()) {
-        $employee_draft = clone $employee;
-        $employee->setStatusControl(0);
         $em = $this->getDoctrine()->getManager();
-        $em->persist($employee_draft);
+        $employee_old->setStatusControl(0);
+        $em->persist($employee);
         $em->flush();
 
         $request->getSession()->getFlashBag()->add('notice', 'employee entry updated');
       }
+
+      if ($employee->getSesa() != 'NOSESA'){
+        $history = $repo->findBy(array('sesa' => $employee->getSesa(), 'statusControl' => 0), array('startDate' => 'DESC', 'id' => 'DESC'));
+      }
+      else {
+        $history = null;
+      }
+
       return $this->render('SEInputBundle:Settings:employees_edit.html.twig', array(
       'form' => $form->createView(),
       'history' => $history,

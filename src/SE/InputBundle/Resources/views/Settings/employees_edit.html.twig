@@ -35,8 +35,8 @@
           <td>{% if h.defaultZone is not null %}{{ h.defaultZone.name }}{% endif %}</td>
           <td>{% if h.job is not null %}{{ h.job.description }}{% endif %}</td>
           <td>{{ h.status.name }}</td>
-          <td>{{ h.StartDate|date('Y-m-d') }}</td>
-          <td>{{ h.EndDate|date('Y-m-d') }}</td>
+          <td>{{ h.StartDate|date('d-m-Y') }}</td>
+          <td>{{ h.EndDate|date('d-m-Y') }}</td>
           <td>{% if h.permanent == 1 %}yes{% else %}no{% endif %}</td>
           <td>{{ h.remarks }}</td>
         </tr>
