@@ -56,7 +56,7 @@ class EmployeeType extends AbstractType
             ->add('startDate', 'date', array(
                 'widget' => 'choice',
                 'label' => "Job start date",
-                'years' => range(1990,3000),
+                'years' => range(1990,2050),
                 'format' => 'ddMMMyyyy',
                 'required' => true)
             )
@@ -64,7 +64,7 @@ class EmployeeType extends AbstractType
                 'widget' => 'choice',
                 'label' => "Job end date",
                 'format' => 'ddMMMyyyy',
-                'years' => range(1990,2000),
+                'years' => range(1990,2050),
                 'required' => true)
             )
             ->add('permanent', 'checkbox', array('required' => false))
