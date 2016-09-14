@@ -241,7 +241,7 @@ class TransferController extends Controller
 			$transfer->setDateStart($form->get("date_start")->getData());
 			$transfer->setEmployee($form->get("employee")->getData());
 
-			return $this->handleTransfer($transfer);
+			return $this->handleTransfer($transfer, $this->getDoctrine()->getManager());
 			//return $this->redirectToRoute('se_transfer_add2', array('transfer' => $transfer, 'request' => null));
 		}
 		
@@ -286,13 +286,12 @@ class TransferController extends Controller
 	/*
 	 * Persist transfer and send notifications to the right people.
 	 * */
-	public function handleTransfer(Transfer $transfer){
+	public function handleTransfer(Transfer $transfer, $em){
 		$user = $this->get('security.context')->getToken()->getUser();
 		
 		// Save the new Transfer Demand
 		$transfer->setDemand($user);
 		$transfer->setDepartement($transfer->getTeam()->getDepartement());
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($transfer);
 			
 		$receivers = [];
@@ -369,6 +368,9 @@ class TransferController extends Controller
 
 		$em = $this->getDoctrine()->getManager();
 		$transfer = $em->find(Transfer::class, $transfer_id);
+		if ($transfer->getValidated() != 0){
+			return $this->redirectToRoute('se_transfer_homepage');
+		}
 
 		$usrDepId = $this->getUsrDepId();
 		
@@ -399,6 +401,9 @@ class TransferController extends Controller
 
 		$em = $this->getDoctrine()->getManager();
 		$transfer = $em->find(Transfer::class, $transfer_id);
+		if ($transfer->getValidated() != 0){
+			return $this->redirectToRoute('se_transfer_homepage');
+		}
 
 		$usrDepId = $this->getUsrDepId();
 		
@@ -432,6 +437,9 @@ class TransferController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		$oldTransfer = $em->find(Transfer::class, $transfer_id);
+		if ($oldTransfer->getValidated() != 2){
+			return $this->redirectToRoute('se_transfer_homepage');
+		}
 		// Build the form
 		$transfer = new Transfer();
 		$transfer->setValidated(false);
@@ -452,8 +460,11 @@ class TransferController extends Controller
 		if ($form->isSubmitted() && $form->isValid()) {
 			$transfer->setTeam($form->get("team")->getData());
 			$transfer->setDepartement($transfer->getTeam()->getDepartement());
+			
+			$oldTransfer->setValidated(3);
+			$em->persist($oldTransfer);
 	
-			return $this->handleTransfer($transfer);
+			return $this->handleTransfer($transfer, $em);
 		}
 	
 		return $this->render(

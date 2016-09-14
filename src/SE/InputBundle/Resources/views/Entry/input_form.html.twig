@@ -95,10 +95,19 @@
 			class="glyphicon glyphicon-remove"></i>
 		</a>
 	</div>
-	<div class="pull-left input-transfer-team">{{
+	<div class="pull-left input-transfer-team" style="display: none;">{{
 			form_widget(activity.transfer_team, {'attr': {'class':
 			'form-control'}}) }}</div>
 	{{ form_widget(activity) }}
+	<script>
+	$('.input-activity select').change(function(){
+	      if ($(this).val() == "13") {
+	    	  $(this).parent().siblings('.input-transfer-team').show();
+	      } else {
+	    	  $(this).parent().siblings('.input-transfer-team').hide();
+	      }
+	});
+	</script>
 </div>
 {% endmacro %}
 

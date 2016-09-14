@@ -73,7 +73,7 @@
 			      		<td>{{ transfer.dateStartString }}</td>
 			      		<td>{% if transfer.validated == 1 %}
 			      			<i style="color: green;" class="glyphicon glyphicon-ok-sign"> </i>{% else %}
-			      			{%  if transfer.validated == 2 %} <i style="color: red;" class="glyphicon glyphicon-remove-sign"> </i>
+			      			{%  if transfer.validated >= 2 %} <i style="color: red;" class="glyphicon glyphicon-remove-sign"> </i>
 			      			{% else %} <i style="color: #f60;" class="glyphicon glyphicon-question-sign"> </i> {% endif %}{% endif %}
 						</td>
 						<td>{% if ((transfer.departement.id == usrDepId and is_granted('ROLE_TRANSFER_EDIT')) or is_granted('ROLE_ADMIN')) and transfer.validated == 0 %}

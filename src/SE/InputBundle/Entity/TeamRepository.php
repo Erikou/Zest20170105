@@ -24,20 +24,28 @@ class TeamRepository extends EntityRepository
 		return $qb;
 	}
 
-	public function getCurrentTeams()
+	public function getCurrentTeamsQueryBuilder()
 	{
 		$qb = $this
 		->createQueryBuilder('a')
 		->select("a")
 		->where("a.statusControl = 1")
 	    ->orderBy('a.masterId', 'ASC')
+		;
+		return $qb;
+	}
+
+	public function getCurrentTeams()
+	{
+		$qb = $this
+		->getCurrentTeamsQueryBuilder()
 		->getQuery()
 		->getResult()
 		;
 		return $qb;
 	}
 
-	public function getHistoricalTeams($year, $month)
+	public function getHistoricalTeamsQueryBuilder($year, $month)
 	{
 		$start = new \DateTime();
 		$end = new \DateTime();
@@ -49,10 +57,12 @@ class TeamRepository extends EntityRepository
 		->select("a")
 		->where("( a.endDate IS NOT NULL and a.endDate >= '".$end."' ) or ( a.endDate IS NULL and a.statusControl = 1 ) ")
         ->andWhere("a.startDate <= '".$start->format("Y-m-d")."'")
-	    ->orderBy('a.masterId', 'ASC')
-		->getQuery()
-		->getResult()
-		;
+	    ->orderBy('a.masterId', 'ASC');
 		return $qb;
+	}
+
+	public function getHistoricalTeams($year, $month)
+	{
+		return $this->getHistoricalTeamsQueryBuilder($year, $month)->getQuery()->getResult();
 	}
 }

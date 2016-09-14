@@ -23,6 +23,7 @@ $(document).ready(function() {
       $('.confirmation').hide();
       $('.saver').show();
       $('.saver').prop('disabled', false);
+      resetTransferTeams();
     });
 
     $(document).on('change', 'form',  function(e){
@@ -74,17 +75,28 @@ $(document).ready(function() {
     window.alert("HERE");
   });
 
-  $( "div" ).find( ".input-transfer-team" ).hide();
-  
-  $('.input-activity select').change(function(){
-      if ($(this).val() == "13") {
-    	  $(this).parent().siblings('.input-transfer-team').show();
-      } else {
-    	  $(this).parent().siblings('.input-transfer-team').hide();
-      }
-  });
+  resetTransferTeams();
 
 });
+
+function resetTransferTeams(){
+	$("div").find( ".input-transfer-team" ).hide();
+	(function(){
+	      if ($(this).val() == "13") {
+	    	  $(this).parent().siblings('.input-transfer-team').show();
+	      } else {
+	    	  $(this).parent().siblings('.input-transfer-team').hide();
+	      }
+	}).apply($(this), $('.input-activity select'));
+	  
+	$('.input-activity select').change(function(){
+	      if ($(this).val() == "13") {
+	    	  $(this).parent().siblings('.input-transfer-team').show();
+	      } else {
+	    	  $(this).parent().siblings('.input-transfer-team').hide();
+	      }
+	});
+}
 
 function addElement($prototypeHolder, values){
   if($prototypeHolder.is("#entries-prototype")){
@@ -218,6 +230,9 @@ function initCollection(){
   }
   $('.clockpicker').clockpicker(); 
   $("*[data-toggle='tooltip']").tooltip();
+  
+  //Hide teams
+  //resetTransferTeams();
 }
 
 function displayOvertime(start, end, $overt){
