@@ -416,7 +416,9 @@ class TransferController extends Controller
 			$notif->setText($usr->getName().' refused the transfer of '
 					.$transfer->getEmployee()->getNameDepartement().' to '
 					.$transfer->getDepartement()->getName()." the "
-					.$transfer->getDateStartString().".");
+					.$transfer->getDateStartString().". Please <a href=\""
+					.$this->generateUrl('se_transfer_reassign', array('transfer_id' => $transfer_id))
+					."\">reassign</a>.");
 
 			$em->persist($notif);
 			$em->flush();
@@ -424,4 +426,40 @@ class TransferController extends Controller
 
 		return $this->redirectToRoute('se_transfer_homepage');
 	}
+
+
+	public function reassignAction($transfer_id, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$oldTransfer = $em->find(Transfer::class, $transfer_id);
+		// Build the form
+		$transfer = new Transfer();
+		$transfer->setValidated(false);
+		$transfer->setDateStart($oldTransfer->getDateStart());
+		$transfer->setEmployee($oldTransfer->getEmployee());
+		$transfer->setShift($oldTransfer->getShift());
+		$transfer->setTotalHours($oldTransfer->getTotalHours());
+		
+		$form = $this->createFormBuilder($transfer)
+		->add('team', 'entity', array(
+				'class' => 'SEInputBundle:Team',
+				'property' => 'name',
+				'error_bubbling' => true
+		))->getForm();
+	
+		// Handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$transfer->setTeam($form->get("team")->getData());
+			$transfer->setDepartement($transfer->getTeam()->getDepartement());
+	
+			return $this->handleTransfer($transfer);
+		}
+	
+		return $this->render(
+			'SETransferBundle:Transfer:reassignTransfer.html.twig',
+				array('form' => $form->createView(), 'oldTransfer' => $oldTransfer)
+		);
+	}
+	
 }

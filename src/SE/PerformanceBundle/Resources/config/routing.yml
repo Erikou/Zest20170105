@@ -1,3 +1,9 @@
 se_performance_homepage:
     path:     /
     defaults: { _controller: SEPerformanceBundle:Performance:index }
+
+se_performance_detail:
+    path:     /detail/{employee_id}
+    defaults: { _controller: SEPerformanceBundle:Performance:detail }
+    requirements:
+        id:  \d+

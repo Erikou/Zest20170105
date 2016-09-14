@@ -12,24 +12,38 @@
 {% block seperformance_body %}
 <div class="well well-black col-md-12">
 	<div class="table-responsive">
+		<h4>Departement: {% if departement is null %}All{% else %}{{ departement.name }} #{{ departement.id }}{% endif %}</h4>
+		<h4>Team: {% if team is null %}None{% else %}
+			{{ team.name }} #{{ team.id }} ({{ listEmployees|length }} employees){% endif %}</h4>
 		<table id="imports" class="table">
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th>Job</th>
-					<th>Team</th>
-					<th>Departement</th>
+					<th>Employee</th>
+					<th>Details</th>
+					{%  for d in dates %}
+					<th>{{ d.format('d') }}</th>
+					{% endfor %}
 				</tr>
 				</thead>
 			<tbody>
 				{% for employee in listEmployees %}
 			      		<tr>
-			      			<td>{{ employee.id }}</td>
-			      			<td>{{ employee.name }}</td>
-			      			<td>{{ employee.job.description }}</td>
-			      			<td>{{ employee.defaultTeam.name }}</td>
-			      			<td>{{ employee.defaultTeam.departement.name }}</td>
+			      			<td><a href="{{ path('se_performance_detail', {'employee_id': employee.id }) }}">{{ employee.name }}</a></td>
+			      			<td>
+			      				<div>TO Confirmed</div>
+			      				<div>Productivity</div>
+			      				<div>Worked hours</div>
+			      				<div>Overtime hours</div>
+			      			</td>
+			      			{% for day in employeeData[employee.id] %}
+			      			<td>
+			      				<div>{% if day['Worked'] > 0 %}{{ day['TO Confirmed'] }}{% else %}-{% endif %}</div>
+			      				<div>{% if day['Worked'] > 0 %}{{ day['Productivity'] }}{% else %}-{% endif %}</div>
+			      				<div class="{% if day['Worked'] > 0 %}bg-success{% endif %}">
+			      					{% if day['Worked'] > 0 %}{{ day['Worked'] }}{% else %}-{% endif %}</div>
+			      				<div>{% if day['Overtime'] > 0 %}{{ day['Overtime'] }}{% else %}-{% endif %}</div>
+			      			</td>
+			    			{% endfor %}
 						</tr>
 			    {% else %}
 			    	<tr><td> No employee listed in your departement </td></tr>

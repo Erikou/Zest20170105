@@ -195,4 +195,20 @@ class ActivityHours
         }
         return true;
     }
+    
+    private $transfer_team;
+    
+    public function setTransferTeam($team){
+    	$this->transfer_team = $team;
+    	return $this;
+    }
+
+    /**
+     * Get transfer_team
+     *
+     * @return Team
+     */
+    public function getTransferTeam(){
+    	return $this->transfer_team;
+    }
 }
