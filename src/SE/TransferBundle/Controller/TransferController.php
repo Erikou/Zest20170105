@@ -13,6 +13,7 @@ use SE\InputBundle\Form\EmployeeType;
 use SE\InputBundle\Entity\Employee;
 use SE\InputBundle\Entity\EmployeeRepository;
 use SE\InputBundle\Entity\DepartementRepository;
+use SE\InputBundle\Entity\TeamRepository;
 
 class TransferController extends Controller
 {
@@ -452,7 +453,10 @@ class TransferController extends Controller
 		->add('team', 'entity', array(
 				'class' => 'SEInputBundle:Team',
 				'property' => 'name',
-				'error_bubbling' => true
+				'error_bubbling' => true,
+            	'query_builder' => function(TeamRepository $tr) {
+            		return $tr->getCurrentTeamsQueryBuilder();
+            	},
 		))->getForm();
 	
 		// Handle the submit (will only happen on POST)

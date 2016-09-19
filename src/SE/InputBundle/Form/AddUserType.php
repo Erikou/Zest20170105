@@ -11,6 +11,7 @@ namespace SE\InputBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SE\InputBundle\Entity\TeamRepository;
 
 class AddUserType extends AbstractType
 {
@@ -29,7 +30,10 @@ class AddUserType extends AbstractType
     				'class' => 'SEInputBundle:Team',	
     				'property' => 'name',
         			'multiple' => false,'expanded' => false,
-            		'error_bubbling' => true
+            		'error_bubbling' => true,
+            		'query_builder' => function(TeamRepository $tr) {
+            			return $tr->getCurrentTeamsQueryBuilder();
+            		},
             	))
             ->add('roles', 'entity', array(
     				'class' => 'SEInputBundle:Abilitation',	

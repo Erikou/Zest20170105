@@ -138,7 +138,7 @@ class PerformanceController extends Controller
     			if ($entry->getPresent() == 0)
     				$data['Absent']++;
     			foreach ($entry->getActivityHours() as $ah){
-    				if ($a->getId() != 11 && $a->getId() != 13)
+    				if ($ah->getActivity()->getId() != 11 && $ah->getActivity()->getId() != 13)
     					$activities[$ah->getActivity()->getName()] += $ah->getRegularHours() + $ah->getOtHours();
     			}
     		}
