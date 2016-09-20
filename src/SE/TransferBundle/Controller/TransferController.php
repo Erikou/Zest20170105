@@ -365,7 +365,7 @@ class TransferController extends Controller
 		return $this->render('SETransferBundle:Transfer:menu.html.twig');
 	}
 	
-	public function acceptAction($transfer_id){
+	public function acceptAction($transfer_id, Request $request){
 
 		$em = $this->getDoctrine()->getManager();
 		$transfer = $em->find(Transfer::class, $transfer_id);
@@ -375,27 +375,48 @@ class TransferController extends Controller
 
 		$usrDepId = $this->getUsrDepId();
 		
-      	if ($usrDepId == $transfer->getDepartement()->getId() || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
-			$transfer->setValidated(1);
-			$transfer->setDecision($this->get('security.context')->getToken()->getUser());
-			$em->persist($transfer);
+		// Build the form
+		$form = $this->createFormBuilder($transfer)
+		->add('activity', 'entity', array(
+				'class' => 'SEInputBundle:Activity',
+				'property' => 'name',
+				'error_bubbling' => true
+		))
+		->getForm();
 		
-			$notif = new Notification();
-			$usr = $this->get('security.context')->getToken()->getUser();
-			$notif->setDateCreation(new \DateTime("now"));
-			$notif->setSender($usr);
-			$notif->setReceiver($transfer->getDemand());
-			$notif->setTitle('Transfer confirmed');
-			$notif->setText($usr->getName().' confirmed the transfer of '
-					.$transfer->getEmployee()->getNameDepartement().' to '
-					.$transfer->getDepartement()->getName()." the "
-					.$transfer->getDateStartString().".");
+		// Handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			if ($usrDepId == $transfer->getDepartement()->getId()
+      				|| $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+				$transfer->setValidated(1);
+				$transfer->setDecision($this->get('security.context')->getToken()->getUser());
+				$em->persist($transfer);
+		
+				$notif = new Notification();
+				$usr = $this->get('security.context')->getToken()->getUser();
+				$notif->setDateCreation(new \DateTime("now"));
+				$notif->setSender($usr);
+				$notif->setReceiver($transfer->getDemand());
+				$notif->setTitle('Transfer confirmed');
+				$notif->setText($usr->getName().' confirmed the transfer of '
+						.$transfer->getEmployee()->getNameDepartement().' to '
+						.$transfer->getDepartement()->getName()." the "
+						.$transfer->getDateStartString().".");
 
-			$em->persist($notif);
-			$em->flush();
-      	}
+				$em->persist($notif);
+				$em->flush();
+      		}
 		
-		return $this->redirectToRoute('se_transfer_homepage');
+			return $this->redirectToRoute('se_transfer_homepage');
+			
+		}
+		
+		return $this->render(
+				'SETransferBundle:Transfer:transferActivity.html.twig',
+				array('form' => $form->createView(),
+						'transfer' => $transfer,
+				));
 	}
 	
 	public function refuseAction($transfer_id){
@@ -450,7 +471,9 @@ class TransferController extends Controller
 		$transfer->setTotalHours($oldTransfer->getTotalHours());
 		
 		$form = $this->createFormBuilder($transfer)
-		->add('team', 'entity', array(
+        ->add('totalHours', 'number', array(
+        		'data' => $oldTransfer->getTotalHours()
+        ))->add('team', 'entity', array(
 				'class' => 'SEInputBundle:Team',
 				'property' => 'name',
 				'error_bubbling' => true,
@@ -462,7 +485,8 @@ class TransferController extends Controller
 		// Handle the submit (will only happen on POST)
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
-			$transfer->setTeam($form->get("team")->getData());
+			$transfer->setTeam($form->get("team")->getData());;
+			$transfer->setTotalHours($form->get("totalHours")->getData());
 			$transfer->setDepartement($transfer->getTeam()->getDepartement());
 			
 			$oldTransfer->setValidated(3);

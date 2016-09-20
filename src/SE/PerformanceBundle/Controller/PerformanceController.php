@@ -114,7 +114,7 @@ class PerformanceController extends Controller
     	$activities = array();
     	$allActivities = $this->getDoctrine()->getRepository(Activity::class)->findAll();
     	foreach ($allActivities as $a){
-    		if ($a->getId() != 11 && $a->getId() != 13)
+    		if ($a->getId() != 11/* && $a->getId() != 13*/)
     			$activities[$a->getName()] = 0;
     	}
     	
@@ -139,6 +139,8 @@ class PerformanceController extends Controller
     				$data['Absent']++;
     			foreach ($entry->getActivityHours() as $ah){
     				if ($ah->getActivity()->getId() != 11 && $ah->getActivity()->getId() != 13)
+    					$activities[$ah->getActivity()->getName()] += $ah->getRegularHours() + $ah->getOtHours();
+    				else if ($ah->getActivity()->getId() == 13) // TODO: check Transfer activity
     					$activities[$ah->getActivity()->getName()] += $ah->getRegularHours() + $ah->getOtHours();
     			}
     		}

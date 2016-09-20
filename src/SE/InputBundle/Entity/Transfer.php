@@ -80,6 +80,18 @@ class Transfer
      */
     private $total_hours;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\Activity")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $activity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\InputEntry")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $inputentry;
+
     public function __construct()
     {
         $this->date_start = new \Datetime();
@@ -309,4 +321,50 @@ class Transfer
         return $this->total_hours;
     }
 
+
+    /**
+     * Set activity
+     *
+     * @param \SE\InputBundle\Entity\Activity $activity
+     * @return Transfer
+     */
+    public function setActivity(\SE\InputBundle\Entity\Activity $activity = null)
+    {
+    	$this->activity = $activity;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get activity
+     *
+     * @return \SE\InputBundle\Entity\Activity
+     */
+    public function getActivity()
+    {
+    	return $this->activity;
+    }
+
+    /**
+     * Set inputentry
+     *
+     * @param \SE\InputBundle\Entity\InputEntry $inputentry
+     * @return Transfer
+     */
+    public function setInputEntry(\SE\InputBundle\Entity\InputEntry $inputentry = null)
+    {
+        $this->inputentry = $inputentry;
+
+        return $this;
+    }
+
+    /**
+     * Get inputentry
+     *
+     * @return \SE\InputBundle\Entity\InputEntry 
+     */
+    public function getInputEntry()
+    {
+        return $this->inputentry;
+    }
 }

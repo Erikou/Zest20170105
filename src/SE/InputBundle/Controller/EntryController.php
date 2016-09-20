@@ -45,6 +45,7 @@ class EntryController extends Controller
       					$transfer->setShift($userInput->getShift());
       					$transfer->setDateStart($userInput->getDateInput());
       					$transfer->setValidated(false);
+      					$transfer->setInputEntry($inputentry);
       					$transfer->setTotalHours($activityhour->getRegularHours()+$activityhour->getOtHours());
       					$em->persist($transfer);
       					$this->transferNotice($transfer, $em);

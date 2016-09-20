@@ -1,7 +1,7 @@
 {% extends "SETransferBundle::layout.html.twig" %}
 
 {% block title %}
-  New transfer - {{ parent() }}
+  Choose transfer activity - {{ parent() }}
 {% endblock %}
 
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
@@ -9,22 +9,22 @@
   
   <header class="h-sap">
   	<div class="line"></div>
-  	<h2><i class="glyphicon glyphicon-retweet"></i> Ask for new transfer</h2>
+  	<h2><i class="glyphicon glyphicon-retweet"></i> Define transfer activity</h2>
   </header>
 
 {% endblock %}
 
 {% block setransfer_body %}
 <form style="color: black;" method="POST">
-<h5>Employee: {{ oldTransfer.employee.name }}</h5>
-<h5>Date: {{ oldTransfer.dateStart.format('d/m/Y') }}</h5>
-<h5>Shift: {{ oldTransfer.shift.identifier }}</h5>
-<h5>Hours: {{ oldTransfer.totalHours }}</h5>
+<h5>Employee: {{ transfer.employee.name }}</h5>
+<h5>Date: {{ transfer.dateStart.format('d/m/Y') }}</h5>
+<h5>Team: {{ transfer.team.name }}</h5>
+<h5>Shift: {{ transfer.shift.identifier }}</h5>
+<h5>Hours: {{ transfer.totalHours }}</h5>
 {{ form_start(form) }}
 	{{ form_errors(form) }}
-    {{ form_row(form.totalHours) }}
-    {{ form_row(form.team) }}
-    <button type="submit" class="btn btn-primary">Ask for new transfer</button>
+    {{ form_row(form.activity) }}
+    <button type="submit" class="btn btn-primary">Confirm transfer</button>
 {{ form_end(form) }}
 </form>
 {% endblock %}
