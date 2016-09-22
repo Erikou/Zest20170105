@@ -12,13 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class DepartementRepository extends EntityRepository
 {
-	public function getCurrentDepartements()
+	public function getCurrentDepartementsQueryBuilder()
 	{
 		$qb = $this
 		->createQueryBuilder('a')
 		->select("a")
 		->where("a.statusControl = 1")
 	    ->orderBy('a.masterId', 'ASC')
+		;
+		return $qb;
+	}
+	
+	public function getCurrentDepartements()
+	{
+		$qb = $this
+		->getCurrentDepartementsQueryBuilder()
 		->getQuery()
 		->getResult()
 		;

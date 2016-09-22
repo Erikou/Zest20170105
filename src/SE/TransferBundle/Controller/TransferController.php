@@ -97,16 +97,16 @@ class TransferController extends Controller
     			'property' => 'name',
     			'multiple' => true, 'expanded' => true,
     			'required' => false,
-    			'query_builder' => function(DepartementRepository $er){
-    			return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');},
+            	'query_builder' => function(DepartementRepository $tr) {
+            		return $tr->getCurrentDepartementsQueryBuilder();}
     			))
     	->add('to', 'entity', array(
     			'class' => 'SEInputBundle:Departement',
     			'property' => 'name',
     			'multiple' => true, 'expanded' => true,
     			'required' => false,
-    			'query_builder' => function(DepartementRepository $er){
-    			return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');},
+            	'query_builder' => function(DepartementRepository $tr) {
+            		return $tr->getCurrentDepartementsQueryBuilder();}
     			))
     	->add('employee', 'entity', array(
     			'class' => 'SEInputBundle:Employee',

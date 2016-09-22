@@ -43,7 +43,6 @@
 		<table id="imports" class="table">
 			<thead>
 				<tr>
-					<th>#</th>
 					<th>Employee</th>
 					<th>From</th>
 					<th>To</th>
@@ -66,11 +65,10 @@
 			      			<tr>
 			    		{% endif %}
 			    	{% endif %}
-			      		<td>{{ transfer.id }}</td>
-			      		<td>{{ transfer.employee.name }}#{{ transfer.employee.id }}</td>
+			      		<td>{{ transfer.employee.name }}</td>
 			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
 			      		<td>{{ transfer.departement.name }}</td>
-			      		<td>{% if transfer.validated == 1 %}{{ transfer.activity.name }}{% else %}
+			      		<td>{% if transfer.validated == 1 and transfer.activity != null %}{{ transfer.activity.name }}{% else %}
 			      			{%  if transfer.validated >= 2 %}-
 			      			{% else %}undefined{% endif %}{% endif %}</td>
 			      		<td>{{ transfer.totalHours }}</td>
