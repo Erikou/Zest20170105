@@ -45,6 +45,9 @@ class DepartementRepository extends EntityRepository
 		->select("a")
 		->where("( a.endDate IS NOT NULL and a.endDate >= '".$end."' ) or ( a.endDate IS NULL and a.statusControl = 1 ) ")
         ->andWhere("a.startDate <= '".$start->format("Y-m-d")."'")
+        // Ignore Management
+        ->andWhere("a.name NOT LIKE 'Management'")// Not working ?
+        ->andWhere("a.id <> 16")
 	    ->orderBy('a.masterId', 'ASC')
 		->getQuery()
 		->getResult()

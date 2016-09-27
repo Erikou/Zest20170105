@@ -35,6 +35,11 @@ class UserInputType extends AbstractType
                 'query_builder' => function(EntityRepository $er) {
                   return $er->createQueryBuilder('u')
                             ->select('u')
+                            ->leftJoin('u.abilitations', 'ab')
+                            ->addSelect('ab')
+                            ->leftJoin('ab.permissions', 'p')
+                            ->addSelect('p')
+                            ->where("p.name = 'ROLE_INPUT_EDIT'")
                             ->orderBy("u.name", "ASC");
                   }
                 ), array('required' => true))
