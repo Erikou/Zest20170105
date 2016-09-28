@@ -15,8 +15,8 @@ class EditPasswordType extends AbstractType
                     'type' => 'password',
             		'invalid_message' => 'The password fields must match.',
             		'required' => true,
-                    'first_options'  => array('label' => 'New Password'),
-                    'second_options' => array('label' => 'Repeat New Password'),
+                    'first_options'  => array('label' => 'New-Password'),
+                    'second_options' => array('label' => 'Repeat'),
                 ))
             ->add('save', 'submit');
     }
