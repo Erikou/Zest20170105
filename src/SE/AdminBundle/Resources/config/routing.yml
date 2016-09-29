@@ -20,6 +20,10 @@ se_admin_import_confirm:
     defaults: {_controller: SEAdminBundle:Import:confirm }
     requirements:
         _method: POST
+        
+se_admin_import_auto:
+    path:     /import/auto
+    defaults: {_controller: SEAdminBundle:Import:auto }
 
 se_admin_editor_currentEntry:
     path:  /editor/currentEntry
