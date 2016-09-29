@@ -17,7 +17,7 @@
 	{{ form(form) }}
 	
 	<div class="table-responsive">
-		<table id="imports" class="table">
+		<table id="transfers" class="table">
 			<thead>
 				<tr>
 					<th>Employee</th>
@@ -56,4 +56,17 @@
 	</div>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+  	$('#transfers').DataTable( {
+		"paging": true,
+	  	"dom": 'rtip',
+	  	"info": false,
+	  	"order": [[ 4, "desc" ]]
+	});
+  </script>
+  
 {% endblock %}

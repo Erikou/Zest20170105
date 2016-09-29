@@ -8,22 +8,22 @@
 	<div class="well well-black col-md-12">
 		<h3>Notifications</h3>
 		<div class="table-responsive">
-			<table id="imports" class="table">
+			<table id="notifs" class="table">
 				<thead>
 					<tr>
+						<th>Date</th>
 						<th>Sender</th>
 						<th>Title</th>
-						<th>Date</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for notif in notifs %}
 						<tr class="{% if not notif.hasBeenRead %}unread-notification{% endif %}">
+			      			<td>{{ notif.dateCreationString }}</td>
 			      			<td>{{ notif.sender.name }}</td>
 			      			<td><a class="see-more" href="{{ path('se_notification_detailed', {'id': notif.id }) }}">
 			      			{{ notif.title }} <strong class="message-preview">({{ notif.messagePreview }})</strong>
 			      			</a></td>
-			      			<td>{{ notif.dateCreationString }}</td>
 						</tr>
 			    {% else %}
 			      <tr><td> No notification yet. </td></tr>
@@ -32,4 +32,16 @@
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/s/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-html5-1.1.0,b-print-1.1.0/datatables.min.js"></script>
+  
+  <script type="text/javascript">
+  	$('#notifs').DataTable( {
+		"paging": true
+	});
+  </script>
+  
 {% endblock %}

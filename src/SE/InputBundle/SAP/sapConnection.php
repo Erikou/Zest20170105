@@ -73,7 +73,8 @@ class sapConnection
     }
 
     public function dataPersist($em, $date){
-        for($i=0; $i<sizeof($this->results) && $i < 10; $i++) {
+    	$inputs = 0;
+        for($i=0; $i<sizeof($this->results); $i++) {
             $data = $this->results[$i];
             for ($j = 0; $j < sizeof($data); $j++) {
                 $_saprf = new SAPRF;
@@ -90,18 +91,19 @@ class sapConnection
                 $_saprf->setStorageLocation($data[$j]['storage_location']);
 
                 $em->persist($_saprf);
+                $inputs++;
             }
-
-            $_sapImport = new SapImports();
-            $_sapImport->setDate($date);
-            $_sapImport->setImport(true);
-            $_sapImport->setProcess(false);
-            $_sapImport->setReview(false);
-            $_sapImport->setInputs(0);
-            $em->persist($_sapImport);
-
-            $em->flush();
         }
+
+        $_sapImport = new SapImports();
+        $_sapImport->setDate($date);
+        $_sapImport->setImport(true);
+        $_sapImport->setProcess(false);
+       	$_sapImport->setReview(false);
+        $_sapImport->setInputs($inputs);
+        $em->persist($_sapImport);
+
+        $em->flush();
         return true;
     }
 
