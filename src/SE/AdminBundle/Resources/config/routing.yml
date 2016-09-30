@@ -24,6 +24,15 @@ se_admin_import_confirm:
 se_admin_import_auto:
     path:     /import/auto
     defaults: {_controller: SEAdminBundle:Import:auto }
+    
+
+se_admin_import_delete:
+    pattern:  /import/{import_id}/delete
+    defaults: { _controller: SEAdminBundle:Import:delete }
+    requirements:
+    requirements:
+        id:  \d+
+
 
 se_admin_editor_currentEntry:
     path:  /editor/currentEntry
@@ -49,6 +58,7 @@ se_admin_editor_ignore:
     requirements:
         _method:  POST
         
+        
 se_admin_add_user:
     path:     /user/add
     defaults: { _controller: SEAdminBundle:Rights:addUser }
@@ -58,6 +68,7 @@ se_admin_edit_user:
     defaults: { _controller: SEAdminBundle:Rights:editUser }
     requirements:
         id:  \d+
+        
         
 se_admin_add_abilitation:
     path:     /role/add

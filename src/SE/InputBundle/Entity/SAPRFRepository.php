@@ -294,4 +294,18 @@ class SAPRFRepository extends EntityRepository
   		return $qb->getQuery()->getResult();
 	}
 
+
+	public function getDayLines($date){
+	
+		$qb = $this
+		->createQueryBuilder('a')
+		->select("a")
+		->where("a.dateImport = :date")
+		->orderBy('a.timeConfirmation', 'ASC');
+	
+		$qb->setParameter('date', $date->format('Y-m-d H:i:s'));
+	
+		return $qb->getQuery()->getResult();
+	}
+	
 }

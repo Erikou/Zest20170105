@@ -28,6 +28,7 @@
 	</div>
 
 	<div class="well well-black col-md-12">
+		<h3>{{ info }}</h3>
 		<h3>Last SAP Imports</h3>
 		<div class="table-responsive">
 			<table id="imports" class="table">
@@ -39,6 +40,7 @@
 						<th>Inputs</th>
 						<th>Process</th>
 						<th>Review</th>
+						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,6 +66,11 @@
 					        	{% else %}
 					        		<i class="glyphicon glyphicon-remove text-danger"></i>
 								{% endif %}
+							</td>
+							<td>
+								<a href="{{ path('se_admin_import_delete', {'import_id': importSap.id }) }}" role="button" {# class="btn btn-warning btn-sm" #}>
+									<i class="glyphicon glyphicon-trash text-warning"></i>
+								</a>
 							</td>
 						</tr>
 			    {% else %}
