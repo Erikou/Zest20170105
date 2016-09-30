@@ -63,15 +63,16 @@ class ImportController extends Controller
     public function confirmAction(Request $request)
     {
     	set_time_limit(600);//ini_set('max_execution_time', 600);
-    	//$date = $request->request->all()['dateinput'];
-		//if ($date == null){
+    	$date = $request->request->all()['date'];
+		if ($date == null){
 			$date = new \DateTime("now");
-		//}
+		} else {
+			$date = \DateTime::createFromFormat("d/m/Y", $date);
+		}
     	
     	$em = $this->getDoctrine()->getManager();
     	// Get sap exports into BDD
     	$sapCo = new SAP\sapConnection();
-    	// FIXME: change path
     	$path = $this->get('kernel')->getRootDir() . '/../import_files/FUSION_TO_'.$date->format('Ymd').'.txt';
     	$sapCo->fileOpen($path);
     	$sapCo->readTable();
@@ -91,7 +92,6 @@ class ImportController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	// Get sap exports into BDD
     	$sapCo = new SAP\sapConnection();
-    	// FIXME: change path
     	$path = $this->get('kernel')->getRootDir() . '/../import_files/FUSION_TO_'.$date->format('Ymd').'.txt';
     	$sapCo->fileOpen($path);
     	$sapCo->readTable();

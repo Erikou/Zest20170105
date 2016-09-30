@@ -104,15 +104,15 @@ class sapConnection
     	ini_set('display_errors', 1);
     	error_reporting(E_ALL);
     	
-    	$inputs = 0;
+    	//$inputs = 0;
         for($i=0; $i<sizeof($this->results); $i++) {
             $data = $this->results[$i];
             for ($j = 0; $j < sizeof($data); $j++) {
                 $_saprf = new SAPRF;
                 $_saprf->setTransferOrder($data[$j]['transfer_order']);
                 $_saprf->setMaterial($data[$j]['material']);
-                //$_saprf->setDateConfirmation(\DateTime::createFromFormat('d.m.Y', $data[$j]['date_confirmation']));
-                //$_saprf->setTimeConfirmation(\DateTime::createFromFormat('H:i:s', $data[$j]['time_confirmation']));
+                $_saprf->setDateConfirmation(\DateTime::createFromFormat('d.m.Y', $data[$j]['date_confirmation']));
+                $_saprf->setTimeConfirmation(\DateTime::createFromFormat('H:i:s', $data[$j]['time_confirmation']));
                 $_saprf->setUser($data[$j]['user']);
                 $_saprf->setSourceStorageType($data[$j]['source_storage_type']);
                 $_saprf->setSourceStorageBin($data[$j]['source_storage_bin']);
@@ -122,7 +122,7 @@ class sapConnection
                 $_saprf->setStorageLocation($data[$j]['storage_location']);
                 
                 $em->persist($_saprf);
-                $inputs++;
+                //$inputs++;
             }
         }
 
@@ -131,7 +131,7 @@ class sapConnection
         $_sapImport->setImport(true);
         $_sapImport->setProcess(false);
        	$_sapImport->setReview(false);
-        $_sapImport->setInputs($inputs);
+        $_sapImport->setInputs(0);
         $em->persist($_sapImport);
 
         $em->flush();
