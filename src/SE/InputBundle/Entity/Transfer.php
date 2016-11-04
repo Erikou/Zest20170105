@@ -69,7 +69,7 @@ class Transfer
     /**
      * @var \DateTime
      * @Assert\DateTime()
-     * @ORM\Column(name="date_start", type="date", nullable=false)
+     * @ORM\Column(name="date_start", type="date", nullable=true)
      */
     private $date_start;
 
@@ -82,7 +82,7 @@ class Transfer
 
     /**
      * @ORM\ManyToOne(targetEntity="SE\InputBundle\Entity\Activity")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $activity;
 

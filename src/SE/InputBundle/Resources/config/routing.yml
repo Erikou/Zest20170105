@@ -92,5 +92,4 @@ se_input_review_edit:
     pattern:  review/edit/{id}
     defaults: { _controller: SEInputBundle:Dashboard:editor }
     requirements:
-        _method:  POST
         id:  \d+

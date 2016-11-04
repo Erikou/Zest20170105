@@ -83,7 +83,7 @@ class Employee
     /**
      * @var string
      *
-     * @ORM\Column(name="remarks", type="text")
+     * @ORM\Column(name="remarks", length=256, type="text", nullable=true)
      */
     private $remarks;
 
