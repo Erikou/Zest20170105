@@ -9,7 +9,7 @@ body {
 
 .welcome{
   width: 500px;
-  height: 300px;
+  min-height: 300px;
   padding: 20px;
   position: absolute;
   top: 50%;

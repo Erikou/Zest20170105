@@ -464,7 +464,7 @@ class UserInput
 
 
             foreach ($i->getActivityHours() as $a) {
-                
+            	
                 $totH += $a->getRegularHours();
                 $totO += $a->getOtHours();
                 if ($a->getActivity()->getProductive()){
@@ -473,9 +473,11 @@ class UserInput
                 if ($a->getActivity()->getTrackable() and $a->getActivity()->getProductive()){
                     $prodH += $a->getRegularHours() + $a->getOtHours();
                 }
-                if($a->getActivity()->getId() == 7){
+                if($a->getActivity()->getId() == 7){ //training
                     $totTH += $a->getRegularHours() + $a->getOtHours();
                 }
+                
+                // not sure how to handle transfer here.
             }
 
             if(!$i->getPresent()){

@@ -57,7 +57,12 @@ class AttendanceController extends Controller
 		$response['filters'] = $this->render('SEReportBundle:Utilities:filters.html.twig', array('tm' => $tm))->getContent();
 		
 		$headers = array();
-		foreach ($days as $d) {$headers[$d['d']][] = array('id' => $d['d']."/".$d['m'], 'wd' => $d['isWeekday'], 'hd' => $d['isHoliday']);}
+		foreach ($days as $d) {
+			$headers[$d['d']][] = array(
+					'id' => $d['d']."/".$d['m'],
+					'wd' => $d['isWeekday'],
+					'hd' => $d['isHoliday']);
+		}
 		$response['headers'] = $headers;
 		$response['daysNb'] = sizeof($days); 
 

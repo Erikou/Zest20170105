@@ -8,8 +8,8 @@ var yearVal;
 var attendanceTable;
 initData();
 
-monthVal = parseInt($('.monthpick').val()) + 1;
-yearVal = $('.yearpick').val();
+monthVal = parseInt($('.monthpick').val()) + 1; // where is class="monthpick" ?
+yearVal = $('.yearpick').val();					// same
 $('form select').addClass('form-control');
 
 $.get(
@@ -59,6 +59,7 @@ $(document).on('change', '.month select', function(e){
 
 });
 
+//TODO
 function initData(){
     var d = new Date();
     $('#monthpicker').monthpicker({'minYear' : 2015, 'maxYear' : 2016});
@@ -81,8 +82,10 @@ function createCharts(json, t, s, h, n){
 
   var categories = [];
   for (var i=1; i <= n; i++) {
-        if(typeof(h[i]) != "undefined" && h[i] !== null) {categories.push(h[i][0]['id']);}
-    };
+	  if(typeof(h[i]) != "undefined" && h[i] !== null) {
+		  categories.push(h[i][0]['id']);
+	  }
+  };
       
   $('#container-attendance').highcharts({
     chart: {
@@ -157,9 +160,7 @@ function createCharts(json, t, s, h, n){
     },
     xAxis: {
         categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        title: {
-                text: null
-            }
+        title: { text: null }
     },
     yAxis: {
         title: {
