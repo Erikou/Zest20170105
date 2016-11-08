@@ -139,11 +139,16 @@
                           <a id="view" href="{{ path('se_input_review_details', {'id': input.id}) }}">
                             <i class="text-info glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View input details"> </i>
                           </a>
-                          <i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit input"> </i> 
+                          <a id="view" href="{{ path('se_input_review_edit', {'id': input.id}) }}">
+                            <i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit input"> </i> 
+                          </a>
                           <a id="delete" href=# data-id="{{ input.id }}">
                             <i class="text-danger glyphicon glyphicon-remove-circle" data-toggle="tooltip" title="Delete input (all data will be lost)"> </i>
                           </a>
-                          <i class="glyphicon glyphicon-check text-success" data-toggle="tooltip" title="Validate review of errors for this input"> </i></td>  
+                          <a id="view" href="{{ path('se_input_review_details', {'id': input.id}) }}">
+                            <i class="glyphicon glyphicon-check text-success" data-toggle="tooltip" title="Validate review of errors for this input"> </i>
+                          </a>
+                        </td>  
                     </tr>
                   {% endfor %}                
                 </tbody>

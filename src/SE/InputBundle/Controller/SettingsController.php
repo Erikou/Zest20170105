@@ -49,6 +49,9 @@ class SettingsController extends Controller
         $employee->setJobStartDate($employee->getStartDate());
         $em->persist($employee);
         $em->flush();
+        $employee->setMasterId($employee->getId());
+        $em->persist($employee);
+        $em->flush();
 
       	$request->getSession()->getFlashBag()->add('notice', 'new employee entry saved');
 
@@ -64,27 +67,29 @@ class SettingsController extends Controller
     {
       $error_message = $request->query->get('error');
       $repo = $this->getDoctrine()->getManager()->getRepository('SEInputBundle:Employee');
-      $employee_old = $repo->findOneById($id);
-      if (!$employee_old) {
+      $employeeToUpdate = $repo->findOneBy(array("masterId" => $id, 'statusControl' => 1));
+      if (!$employeeToUpdate) {
         $error_message = "This SESA is not used, you have been redirected to the creation page.";
         return $this->redirect($this->generateUrl('se_input_employees_add', array('error' => $error_message)));
       }
-      $employee = clone $employee_old;
-      $employee->setDateCreation(new \DateTime('now'));
+      $employeeToHistory = clone $employeeToUpdate;
+      $employeeToHistory->setDateCreation(new \DateTime('now'));
+      $employeeToHistory->setStatusControl(false);
       
-      $form = $this->createForm(new EmployeeType(), $employee);
+      $form = $this->createForm(new EmployeeType(), $employeeToUpdate);
 
       if ($form->handleRequest($request)->isValid()) {
         $em = $this->getDoctrine()->getManager();
-        $employee_old->setStatusControl(0);
-        $em->persist($employee);
+        $employeeToUpdate->setStatusControl(true);
+        $employeeToHistory->setEndDate(new \DateTime('now'));
+        $em->persist($employeeToHistory);
         $em->flush();
 
         $request->getSession()->getFlashBag()->add('notice', 'employee entry updated');
       }
 
-      if ($employee->getSesa() != 'NOSESA'){
-        $history = $repo->findBy(array('sesa' => $employee->getSesa(), 'statusControl' => 0), array('startDate' => 'DESC', 'id' => 'DESC'));
+      if ($employeeToUpdate->getSesa() != 'NOSESA'){
+        $history = $repo->findBy(array('sesa' => $employeeToUpdate->getSesa(), 'statusControl' => 0), array('id' => 'DESC'));
       }
       else {
         $history = null;

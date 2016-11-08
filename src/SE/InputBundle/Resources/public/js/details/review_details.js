@@ -234,9 +234,9 @@ function getForm(type, entryId){
         .fail(function (jqXHR, textStatus, errorThrown) {
             if (typeof jqXHR.responseJSON !== 'undefined') {
                 if (jqXHR.responseJSON.hasOwnProperty('form')) {
-                    //$('#ajaxForm').html(jqXHR.responseJSON.form);
+                    $('#ajaxForm').html(jqXHR.responseJSON.form);
                 }
-                $('form #errors').html(jqXHR.responseJSON.message).parent(".col-md-12").removeClass('hide');
+                $('form #errors').html("lol").parent(".col-md-12").removeClass('hide');
                 $('.modal-footer button[type="submit"]').prop('disabled', false);
  
             } else {

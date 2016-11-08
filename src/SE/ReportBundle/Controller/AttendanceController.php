@@ -72,7 +72,7 @@ class AttendanceController extends Controller
 	public function activitiesDetailsAction()
 	{ 
 		//$em = $this->getDoctrine()->getManager();
-	    $request = $this->get('request');        
+	    $request = $this->get('request');
 	    $y = $request->get('y');
 	    $m = $request->get('m');
 	    $d = $request->get('d');
