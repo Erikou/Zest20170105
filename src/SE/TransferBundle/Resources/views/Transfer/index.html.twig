@@ -40,7 +40,7 @@
 	{% endif %}
 	<h3>Current transfers</h3>
 	<div class="table-responsive">
-		<table id="imports" class="table">
+		<table id="transfers" class="table">
 			<thead>
 				<tr>
 					<th>Employee</th>
@@ -66,8 +66,8 @@
 			    		{% endif %}
 			    	{% endif %}
 			      		<td>{{ transfer.employee.name }}</td>
-			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
-			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.employee.defaultTeam.name }}</td>
+			      		<td>{% if transfer.team.id == 0 %}{{ transfer.departement.name}}{% else %}{{ transfer.team.name }}{% endif %}</td>
 			      		<td>{% if transfer.validated == 1 and transfer.activity != null %}{{ transfer.activity.name }}{% else %}
 			      			{%  if transfer.validated >= 2 %}-
 			      			{% else %}undefined{% endif %}{% endif %}</td>
@@ -96,6 +96,17 @@
 	class="btn btn-primary">Ask for new transfer</a>
 	{% endif %} #}
 </div>
+{% endblock %}
 
-
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+  	$('#transfers').DataTable( {
+		"paging": true,
+	  	"dom": 'rtip',
+	  	"info": false,
+	  	"order": [[ 0, "desc" ]]
+	});
+  </script>
+  
 {% endblock %}

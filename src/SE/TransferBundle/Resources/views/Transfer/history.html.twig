@@ -34,8 +34,8 @@
 				{% if date(transfer.dateStart) < date('-1days') %}
 			      	<tr>
 			      		<td>{{ transfer.employee.name }}</td>
-			      		<td>{{ transfer.employee.defaultTeam.departement.name }}</td>
-			      		<td>{{ transfer.departement.name }}</td>
+			      		<td>{{ transfer.employee.defaultTeam.name }}</td>
+			      		<td>{% if transfer.team.id == 0 %}{{ transfer.departement.name}}{% else %}{{ transfer.team.name }}{% endif %}</td>
 			      		<td>{% if transfer.validated == 1 and transfer.activity != null %}{{ transfer.activity.name }}{% else %}
 			      			{%  if transfer.validated >= 2 %}-
 			      			{% else %}undefined{% endif %}{% endif %}</td>
