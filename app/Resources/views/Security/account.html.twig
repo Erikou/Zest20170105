@@ -19,7 +19,7 @@
 {% block body %}
 <div class="col-xs-12 col-md-6 col-md-offset-3">
 {% if is_granted('ROLE_CAN_CHANGE_CREDENTIALS') %}
-<form style="color: black;" method="POST">
+<form class="editaccountform" style="color: black;" method="POST">
 {{ form_start(form1) }}
 	{{ form_errors(form1) }}
     {{ form_row(form1.name) }}
@@ -34,7 +34,7 @@
 {% endif %}
 </div>
 <div class="col-xs-12 col-md-6 col-md-offset-3">
-<form style="color: black;" method="POST">
+<form class="editaccountform" style="color: black;" method="POST">
 {{ form_start(form2) }}
 	{{ form_errors(form2) }}
     {{ form_row(form2.newPassword) }}

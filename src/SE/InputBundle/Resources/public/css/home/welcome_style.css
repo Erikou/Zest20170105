@@ -17,6 +17,7 @@ body {
   margin: -282px 0 0 -300px;
   background-color: rgba(245, 245, 245, 0.7);
   text-align: center;
+  background-image: none;
 }
 
 .welcome img{

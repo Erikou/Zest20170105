@@ -17,7 +17,7 @@ class SettingsController extends Controller
       $listEmployees = $this->getDoctrine()
         ->getManager()
         ->getRepository('SEInputBundle:Employee')
-        ->findByStatusControl(true)
+        ->findByStatusControl(1)
       ;
 
     	return $this->render('SEInputBundle:Settings:employees.html.twig', array(
@@ -67,9 +67,9 @@ class SettingsController extends Controller
     {
       $error_message = $request->query->get('error');
       $repo = $this->getDoctrine()->getManager()->getRepository('SEInputBundle:Employee');
-      $employeeToUpdate = $repo->findOneBy(array("masterId" => $id, 'statusControl' => 1));
+      $employeeToUpdate = $repo->findOneBy(array("id" => $id, 'statusControl' => 1));
       if (!$employeeToUpdate) {
-        $error_message = "This SESA is not used, you have been redirected to the creation page.";
+        $error_message = "This id is not used, you have been redirected to the creation page.";
         return $this->redirect($this->generateUrl('se_input_employees_add', array('error' => $error_message)));
       }
       $employeeToHistory = clone $employeeToUpdate;

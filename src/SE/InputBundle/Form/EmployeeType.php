@@ -53,20 +53,21 @@ class EmployeeType extends AbstractType
                 'multiple' => false,
                 'expanded' => false
                 ))
-            ->add('startDate', 'date', array(
+            ->add('jobStartDate', 'date', array(
                 'widget' => 'choice',
-                'label' => "Start date",
+                'label' => "Job Start date",
                 'years' => range(1990,2050),
                 'format' => 'ddMMMyyyy',
-                'required' => true)
-            )
-            ->add('endDate', 'date', array(
+                'required' => true
+            	))
+            ->add('jobEndDate', 'date', array(
                 'widget' => 'choice',
-                'label' => "End date",
+                'label' => "Job end date",
                 'format' => 'ddMMMyyyy',
                 'years' => range(1990,2050),
-                'required' => false)
-            )
+                'required' => false
+            	))
+            
             ->add('permanent', 'checkbox', array('required' => false))
             ->add('remarks', 'textarea', array('required' => false))
             ->add('save',      'submit')

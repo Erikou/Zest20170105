@@ -13,6 +13,7 @@
 
 {% block body %}
     <form action="{{ path('login_check') }}" method="post">
+		<img alt="Zest" src="{{ asset('bundles/sereport/images/zest.png') }}" style="width: 80%;"><br/>
         <div class="field">
             <label for="username">Username:</label>
             <input type="text" id="username" name="_username" value="{{ last_username }}" />

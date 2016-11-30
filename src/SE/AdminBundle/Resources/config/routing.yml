@@ -1,6 +1,6 @@
 se_admin_index:
     path:     /
-    defaults: { _controller: SEAdminBundle:Admin:index }
+    defaults: { _controller: SEAdminBundle:Rights:index }
 
 se_admin_editor:
     path:     /editor
