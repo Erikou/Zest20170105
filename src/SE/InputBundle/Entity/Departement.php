@@ -79,6 +79,13 @@ class Departement
      */
     private $statusControl = 1;
 
+    /**
+     * @var integer
+     * @Assert\NotNull()
+     * @ORM\Column(name="display_order", type="integer", nullable=false)
+     */
+    private $displayOrder;
+
 
     /**
      * Get id
@@ -325,5 +332,28 @@ class Departement
     public function getLet()
     {
         return $this->let;
+    }
+
+    /**
+     * Set displayOrder
+     *
+     * @param integer $displayOrder
+     * @return Departement
+     */
+    public function setDisplayOrder($displayOrder)
+    {
+        $this->displayOrder = $displayOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get displayOrder
+     *
+     * @return integer 
+     */
+    public function getDisplayOrder()
+    {
+        return $this->displayOrder;
     }
 }

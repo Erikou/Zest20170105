@@ -117,6 +117,10 @@ class User implements UserInterface
     {
         return $this->name;
     }
+    
+    public function __toString() {
+    	return $this->name;
+    }
 
     /**
      * Set team

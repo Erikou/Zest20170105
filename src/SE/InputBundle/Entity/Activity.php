@@ -3,6 +3,8 @@
 namespace SE\InputBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Activity
@@ -56,6 +58,13 @@ class Activity
     private $trackable = false;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="fictive", type="boolean")
+     */
+    private $fictive = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="SE\InputBundle\Entity\ActivityZone", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
@@ -70,6 +79,34 @@ class Activity
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var integer
+     * @Assert\NotNull()
+     * @ORM\Column(name="master_id", type="integer", nullable=false)
+     */
+    private $masterId;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime()
+     * @ORM\Column(name="start_date", type="date", nullable=false)
+     */
+    private $startDate;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime()
+     * @ORM\Column(name="end_date", type="date", nullable=true)
+     */
+    private $endDate = null;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="status_control", type="boolean")
+     */
+    private $statusControl = 1;
 
     /**
      * Get id
@@ -305,4 +342,119 @@ class Activity
         return $this->trackable;
     }
 
+
+    /**
+     * Set fictive
+     *
+     * @param boolean $fictive
+     * @return Activity
+     */
+    public function setFictive($fictive)
+    {
+        $this->fictive = $fictive;
+
+        return $this;
+    }
+
+    /**
+     * Get fictive
+     *
+     * @return boolean 
+     */
+    public function getFictive()
+    {
+        return $this->fictive;
+    }
+
+    /**
+     * Set masterId
+     *
+     * @param integer $masterId
+     * @return Activity
+     */
+    public function setMasterId($masterId)
+    {
+        $this->masterId = $masterId;
+
+        return $this;
+    }
+
+    /**
+     * Get masterId
+     *
+     * @return integer 
+     */
+    public function getMasterId()
+    {
+        return $this->masterId;
+    }
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     * @return Activity
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime 
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set endDate
+     *
+     * @param \DateTime $endDate
+     * @return Activity
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Get endDate
+     *
+     * @return \DateTime 
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * Set statusControl
+     *
+     * @param boolean $statusControl
+     * @return Activity
+     */
+    public function setStatusControl($statusControl)
+    {
+        $this->statusControl = $statusControl;
+
+        return $this;
+    }
+
+    /**
+     * Get statusControl
+     *
+     * @return boolean 
+     */
+    public function getStatusControl()
+    {
+        return $this->statusControl;
+    }
 }

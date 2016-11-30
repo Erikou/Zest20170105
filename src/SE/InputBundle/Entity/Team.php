@@ -83,6 +83,13 @@ class Team
      */
     private $statusControl = 1;
 
+    /**
+     * @var integer
+     * @Assert\NotNull()
+     * @ORM\Column(name="display_order", type="integer", nullable=false)
+     */
+    private $displayOrder;
+
 
     /**
      * Get id
@@ -359,5 +366,28 @@ class Team
         }
 
         $em->flush();
+    }
+
+    /**
+     * Set displayOrder
+     *
+     * @param integer $displayOrder
+     * @return Team
+     */
+    public function setDisplayOrder($displayOrder)
+    {
+        $this->displayOrder = $displayOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get displayOrder
+     *
+     * @return integer 
+     */
+    public function getDisplayOrder()
+    {
+        return $this->displayOrder;
     }
 }
