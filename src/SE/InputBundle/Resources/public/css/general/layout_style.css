@@ -157,3 +157,12 @@ header.h-weight{background-color: rgba(250, 197, 28, 0.1);}
     -webkit-transform: scale(1.0);
   }
 }
+
+/* account form */
+
+.editaccountform div .col-sm-2 {
+	width: 25%;
+}
+.editaccountform div .col-sm-10 {
+	width: 75%;
+}
