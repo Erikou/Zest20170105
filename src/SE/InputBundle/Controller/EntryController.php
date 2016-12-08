@@ -51,9 +51,13 @@ class EntryController extends Controller
       					$this->transferNotice($transfer, $em);
       				}
       			}
-      		}
-      		
+      		}      		
       		$em->persist($userInput);
+      		
+      		$now = new \DateTime();
+      		$ad = $em->getRepository('SEInputBundle:Attendancedata')->getDate($now->format("Y"), $now->format("m"))[0];
+      		$ad->setRefresher(0);
+      		$em->remove($ad);
       		$em->flush();
 
     		$request->getSession()->getFlashBag()->add('notice', 'new working hours entry saved');
