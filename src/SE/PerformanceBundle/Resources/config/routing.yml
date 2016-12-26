@@ -1,9 +1,37 @@
 se_performance_homepage:
     path:     /
     defaults: { _controller: SEPerformanceBundle:Performance:index }
+    
+se_performance_global_month:
+    path:     /month/{month}-{year}
+    defaults: { _controller: SEPerformanceBundle:Performance:globalMonth }
+    requirements:
+        month:  \d+
+        year:  \d+
+    
+se_performance_global_year:
+    path:     /year/{year}
+    defaults: { _controller: SEPerformanceBundle:Performance:globalYear }
+    requirements:
+        year:  \d+
 
 se_performance_detail:
-    path:     /detail/{employee_id}
+    path:     /detail/{employee_id}/month
     defaults: { _controller: SEPerformanceBundle:Performance:detail }
     requirements:
         id:  \d+
+        
+se_performance_detail_month:
+    path:     /detail/{employee_id}/month/{month}-{year}
+    defaults: { _controller: SEPerformanceBundle:Performance:employeeMonth }
+    requirements:
+        id:  \d+
+        month:  \d+
+        year:  \d+
+        
+se_performance_detail_year:
+    path:     /detail/{employee_id}/year/{year}
+    defaults: { _controller: SEPerformanceBundle:Performance:employeeYear }
+    requirements:
+        id:  \d+
+        year:  \d+

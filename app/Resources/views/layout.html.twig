@@ -13,6 +13,7 @@
       <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
     {% endstylesheets %}
   {% endblock %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -32,9 +33,9 @@
     {% if is_granted('ROLE_REPORT_READ') %}
     <li><a href="{{ path('se_report_home') }}"><i class="glyphicon glyphicon-stats"></i> Reports</a></li>
 	{% endif %}
-	{#{% if is_granted('ROLE_PERFORMANCE_READ') %}
+	{% if is_granted('ROLE_PERFORMANCE_READ') %}
     <li><a href="{{ path('se_performance_homepage') }}"><i class="glyphicon glyphicon-dashboard"></i> Performance</a></li>
-	{% endif %}#}
+	{% endif %}
     {% if is_granted('ROLE_TRANSFER_READ') %}
     <li><a href="{{ path('se_transfer_homepage') }}"><i class="glyphicon glyphicon-resize-horizontal"></i> Transfer</a></li>
 	{% endif %}

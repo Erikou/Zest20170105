@@ -13,13 +13,9 @@
 <div class="well well-black col-md-12">
 	<div class="well well-black col-md-9">
 		<form class=form-inline method="POST">
-			<button type="button" class="btn btn-primary">Month</button>
-			<a href="{{ path('se_performance_global_year', {'year': year }) }}">
-				<button type="button" class="btn btn-default">Week</button></a>
-	  		<div class="form-group">
-	    		<label for="exampleInputEmail1">Month:</label>
-	    		<input type="month" class="form-control" name="month-picker">
-	  		</div>
+			<a href="{{ path('se_performance_homepage') }}">
+				<button type="button" class="btn btn-default">Month</button></a>
+			<button type="button" class="btn btn-primary">Week</button>
 	  		<div class="form-group">
 	    		<label for="exampleInputEmail1">Year:</label>
 	    		<input type="number" class="form-control" name="year-picker" value="2017">
@@ -40,7 +36,7 @@
 					<th>Employee</th>
 					<th>Details</th>
 					{%  for d in dates %}
-					<th>{{ d.format('d') }}</th>
+					<th>{{ d.format('d-m') }}</th>
 					{% endfor %}
 				</tr>
 				</thead>

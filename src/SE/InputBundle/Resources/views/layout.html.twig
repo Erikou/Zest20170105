@@ -7,6 +7,9 @@
 {% block stylesheets %}
   {{ parent() }}
   <link href="{{ asset('bundles/seinput/css/input/input_style.css') }}" rel="stylesheet" />
+  {% stylesheets 'bundles/seinput/css/general/*' %}
+      <link rel="stylesheet" type="text/css" charset="UTF-8" media="all" href="{{ asset_url }}"/>
+  {% endstylesheets %}
 {% endblock %}
 
 {% block menu %}
